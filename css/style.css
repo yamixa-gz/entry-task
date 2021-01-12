@@ -1,0 +1,335 @@
+@charset "UTF-8";
+/*Обнуление*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+:focus, :active {
+  outline: none;
+}
+
+a:focus, a:active {
+  outline: none;
+}
+
+nav, footer, header, aside {
+  display: block;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+ol li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*--------------------*/
+body {
+  background-color: #fefefe;
+  font-family: 'Roboto', sans-serif;
+}
+
+body.lock {
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1 1 auto;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#6889d4+1,c7d0f7+92,c6ccf4+100,cdd5f7+100,c6ccf4+100 */
+  background: #6889d4;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #6889d4 1%, #c7d0f7 92%, #c6ccf4 100%, #cdd5f7 100%, #c6ccf4 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.container {
+  max-width: 1030px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.container-small {
+  max-width: 730px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  padding: 30px 0px 15px 0px;
+}
+
+h1 {
+  display: inline-block;
+  font-size: 35px;
+  color: #0b224b;
+  border: #0f1f50 2px solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  padding: 5px 20px;
+  background-color: #e5f7fb;
+  box-shadow: 5px 5px 10px 5px rgba(27, 19, 73, 0.164);
+}
+
+.description {
+  padding: 15px 0px;
+}
+
+.description-text {
+  padding: 10px 20px;
+  color: #fefefe;
+  border: #61c6cf 2px solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  padding: 5px 27px;
+  font-size: 16px;
+  background-color: #61c6cf;
+  box-shadow: 5px 5px 10px 5px rgba(14, 85, 90, 0.3);
+}
+
+.list-body {
+  padding: 15px 0;
+}
+
+.list-items {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border: #0f1f50 2px solid;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-top-right-radius: 7px;
+  box-shadow: 5px 5px 10px 5px rgba(50, 46, 71, 0.3);
+}
+
+.list-description {
+  margin-top: 20px;
+  padding: 15px;
+  color: #344454;
+  font-size: 16px;
+  background-color: #e5f7fb;
+  border: #e5f7fb 2px solid;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 5px 5px 10px 5px rgba(116, 116, 116, 0.3);
+  text-align: left;
+}
+
+.list-description p {
+  margin-top: 10px;
+}
+
+.list-description p:first-child {
+  margin-top: 0px;
+}
+
+.list-description-text {
+  display: none;
+}
+
+.list-description-text.active {
+  display: block;
+}
+
+.discussed-elements {
+  counter-reset: num;
+  /* set counter number */
+  color: #313f64;
+  font-size: 16px;
+}
+
+.discussed-elements li {
+  margin-top: 10px;
+  position: relative;
+  margin-left: 25px;
+  counter-increment: num;
+  /* increment counter */
+}
+
+.discussed-elements li::before {
+  color: #11265b;
+  position: absolute;
+  padding: 2px;
+  height: 20px;
+  top: -3px;
+  left: -25px;
+  border: #0f1f50 1px solid;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  text-align: center;
+  background-color: #e5f7fb;
+}
+
+.discussed-elements li::first-letter {
+  text-transform: uppercase;
+}
+
+.discussed-elements > li:first-child {
+  margin-top: 0px;
+}
+
+.discussed-elements > li:hover::before, .discussed-elements > li.active::before {
+  color: red;
+}
+
+.discussed-elements > li:hover:not(:nth-child(2)), .discussed-elements > li:not(:nth-child(2)).active {
+  color: #0131b4;
+  cursor: pointer;
+}
+
+.discussed-elements > li:hover:not(:nth-child(2))::before, .discussed-elements > li:not(:nth-child(2)).active::before {
+  color: red;
+}
+
+.discussed-elements > li::before {
+  content: counter(num) ".";
+  /* input number */
+}
+
+.discussed-elements .inner-list {
+  counter-reset: num;
+  /* set counter number */
+}
+
+.discussed-elements .inner-list li:hover, .discussed-elements .inner-list li.active {
+  color: #0131b4;
+  cursor: pointer;
+}
+
+.discussed-elements .inner-list li:hover::before, .discussed-elements .inner-list li.active::before {
+  color: red;
+}
+
+.discussed-elements .inner-list li::before {
+  content: counter(num, lower-latin) ".";
+  /* input number */
+}
+
+.footer {
+  background-color: #1c294c;
+  padding: 30px 0;
+  height: 160px;
+  color: #f1f1f1;
+}
+
+.footer-content {
+  position: relative;
+  padding: 0 15px;
+  max-width: 1030px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-content::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  display: block;
+  width: calc(100% - 30px);
+  height: 2px;
+  background-color: #313f64;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 1 170px;
+}
+
+.footer-links a {
+  transition: all 0.2s ease;
+  display: block;
+  height: 50px;
+  width: 50px;
+  background-color: #2d4374;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+
+.footer-links a:hover {
+  background-color: #3e4f75;
+  box-shadow: 0px 0px 10px 5px rgba(117, 117, 117, 0.863);
+}
+
+.footer-links a img {
+  padding: 17px;
+  width: 100%;
+}
+
+.footer-author {
+  color: #7f8ba3;
+  padding-right: 5px;
+}
+/*# sourceMappingURL=style.css.map */
