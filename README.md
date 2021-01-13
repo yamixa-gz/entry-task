@@ -1,2 +1,3 @@
+
 # entry-task
-# available here https://github.com/yamixa-gz/entry-task
+# available here https://yamixa-gz.github.io/entry-task
