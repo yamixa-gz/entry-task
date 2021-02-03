@@ -1,14 +1,3 @@
-@charset "UTF-8";
-@import "nullstyle.scss";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
-body {
-  // background-color: #fcfcfc;
-  font-family: "Roboto", sans-serif;
-}
-body.lock {
-  overflow: hidden;
-}
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -264,8 +253,8 @@ header {
         display: none;
       }
       & {
-        background: url("/img/descr/arrow-white.png") #12c4e0 12px 14px / auto
-          auto no-repeat;
+        background: url("../assets/img/descr/arrow-white.png") #12c4e0 12px 14px /
+          auto auto no-repeat;
         border: #12c4e0 2px solid;
         color: #fff;
       }
