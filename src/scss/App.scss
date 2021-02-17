@@ -9,9 +9,14 @@
   flex: 1 1 auto;
 }
 
-.container,
+.app-container,
 .footer-container {
   max-width: 1630px;
   padding: 0 15px;
   margin: 0 auto;
+}
+.middle-container {
+  max-width: 1170px;
+  margin: 0 auto;
+
 }

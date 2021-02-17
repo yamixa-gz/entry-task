@@ -13,6 +13,29 @@ code {
 }
 
 /*-----------------------------------------------------------------------------------*/
+$grid-breakpoints: (
+        xxs: 0,
+        xs: 375px,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1170px,
+        xxl: 1600px
+);
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1170px,
+        xxl: 1600px
+);
+$grid-gutter-width: 0;
+
+
+
+
+
+@import "~bootstrap/scss/bootstrap";
 @import "nullstyle.scss";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
@@ -23,7 +46,5 @@ body {
 body.lock {
   overflow: hidden;
 }
-@import "~bootstrap/scss/bootstrap";
-
 
 

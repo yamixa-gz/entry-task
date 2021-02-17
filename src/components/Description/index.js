@@ -111,19 +111,17 @@ class Description extends Component {
   state = {
     openCardId: null
   }
-  clickHandler = (id) => {
+  clickHandler = id => {
     this.setState({
       openCardId: this.state.openCardId === id ? null : id
     })
   }
   makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
-    let shortText = ''
     if (fullText.length < symbolsAmount) {
       return fullText
     } else {
-      shortText = fullText.slice(0, symbolsAmount) + '...'
+      return fullText.slice(0, symbolsAmount) + '...'
     }
-    return shortText
   }
 
   render() {

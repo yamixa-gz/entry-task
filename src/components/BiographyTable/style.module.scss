@@ -1,0 +1,54 @@
+.arrowHeading {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #cecece;
+  }
+
+  &::before, &::after {
+    position: absolute;
+    content: "";
+    display: none;
+    width: 1px;
+    height: 5px;
+    background-color: #0b224b;
+  }
+
+  &Up {
+    &::before, &::after {
+      display: block;
+    }
+
+    &::before {
+      top: 12px;
+      right: 10px;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      right: 7px;
+      bottom: 11px;
+      transform: rotate(-45deg);
+    }
+  }
+
+  &Down {
+    &::before, &::after {
+      display: block;
+    }
+
+    &::before {
+      top: 12px;
+      right: 10px;
+      transform: rotate(135deg);
+    }
+
+    &::after {
+      right: 7px;
+      bottom: 11px;
+      transform: rotate(45deg);
+    }
+  }
+}
+
