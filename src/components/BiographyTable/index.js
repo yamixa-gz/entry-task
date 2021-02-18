@@ -2,7 +2,6 @@ import React, {Component, createRef} from 'react'
 import {Table, Container, Button, FormControl} from 'react-bootstrap'
 import BiographyTableRow from './BiographyTableRow'
 import classNames from 'classnames/bind'
-// eslint-disable-next-line
 import s from './style.module.scss'
 
 const cx = classNames.bind(s)
