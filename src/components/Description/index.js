@@ -6,7 +6,7 @@ import nodejs from '../../assets/img/description/nodejs.png'
 import npm from '../../assets/img/description/npm.png'
 import html from '../../assets/img/description/html.png'
 import css from '../../assets/img/description/css.png'
-import Card from "./Card";
+import Card from './Card'
 
 class Description extends Component {
   cvsTitle = 'Что такое система контроля версий и зачем она нужна'
@@ -117,11 +117,14 @@ class Description extends Component {
     })
   }
   makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
-    if (fullText.length < symbolsAmount) {
-      return fullText
-    } else {
-      return fullText.slice(0, symbolsAmount) + '...'
-    }
+    // if (fullText.length < symbolsAmount) {
+    //   return fullText
+    // } else {
+    //   return fullText.slice(0, symbolsAmount) + '...'
+    // }
+    return fullText.length < symbolsAmount
+        ? fullText
+        : fullText.slice(0, symbolsAmount) + '...'
   }
 
   render() {
