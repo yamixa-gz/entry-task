@@ -7,7 +7,7 @@ class Header extends Component {
   render() {
     return (
         <header className={s.header}>
-          <div className='container'>
+          <div className='app-container'>
             <div className={s.headerWrapper}>
               <div className={s.headerContacts}>adress, location and stuff</div>
               <div className={s.headerMenuRow}>
