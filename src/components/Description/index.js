@@ -1,22 +1,20 @@
 import React, {Component} from 'react'
 import s from './style.module.scss'
+import vcs from '../../assets/img/description/cvs.png'
 import git from '../../assets/img/description/git.png'
-import cvs from '../../assets/img/description/cvs.png'
 import nodejs from '../../assets/img/description/nodejs.png'
 import npm from '../../assets/img/description/npm.png'
 import html from '../../assets/img/description/html.png'
 import css from '../../assets/img/description/css.png'
 import Card from './Card'
+import uuid from 'react-uuid'
 
 class Description extends Component {
-  cvsTitle = 'Что такое система контроля версий и зачем она нужна'
-  gitTitle = 'checkout, add, commit, pull, push. Основы ветвления и слияния'
-  cssTitle = 'Css: стили, классы, идентификаторы, селекторы, псевдоклассы, псевдоэлементы'
-  htmlTitle = 'Html: теги, структура html страницы, блочные и строчные элементы.'
-  nodejsTitle = 'что такое nodejs, зачем он нужен и как устанавливать'
-  npmTitle = 'Что такое менеджер пакетов, установка npm'
-
-  cvsTextContent = `
+  cards = [
+    {
+      id: uuid(),
+      title: 'Что такое система контроля версий и зачем она нужна',
+      description: `
       Система контроля версий (VCS – Version Control System)
       – это система с помощью которой можно фиксировать
       изменения в файлах, и при необходимости возвращатся к
@@ -27,8 +25,13 @@ class Description extends Component {
       разработчика находится полная копия проекта и все
       сразу могут работать, а на сервере лежит основной
       репозиторий.
-`
-  gitTextContent = `
+`,
+      img: vcs,
+    },
+    {
+      id: uuid(),
+      title: 'checkout, add, commit, pull, push. Основы ветвления и слияния',
+      description: `
       Команда checkout используется с параметрами коммита,
       ветки и файла. А также с параметрами и без них.
       
@@ -45,8 +48,13 @@ class Description extends Component {
 
       – git branch “new branch”(без перехода на new branch)
       или git checkout –b “new branch” (с переходом).
-`
-  cssTextContent = `
+`,
+      img: git,
+    },
+    {
+      id: uuid(),
+      title: 'Css: стили, классы, идентификаторы, селекторы, псевдоклассы, псевдоэлементы',
+      description: `
     Стили определяют внешний вид html элементов.
 
       Связанные – через подключение внешнего файла со
@@ -64,8 +72,13 @@ class Description extends Component {
 
       Псевдоэлементы позволяют задать стиль элементов не
       определённых в дереве элементов документа.
-`
-  htmlTextContent = `
+`,
+      img: css,
+    },
+    {
+      id: uuid(),
+      title: 'Html: теги, структура html страницы, блочные и строчные элементы.',
+      description: `
       HTML — стандартизированный язык разметки веб-страниц.
 
      страница должна содержать DOCTYPE и html.
@@ -84,8 +97,13 @@ class Description extends Component {
 
       W3c – организация, разрабатывающая и внедряющая
       технологические стандарты для Всемирной паутины.
-`
-  nodejsTextContent = `
+`,
+      img: html,
+    },
+    {
+      id: uuid(),
+      title: 'что такое nodejs, зачем он нужен и как устанавливать',
+      description: `
       Node.js — это JavaScript-окружение построенное на
       движке Chrome V8.
 
@@ -97,14 +115,22 @@ class Description extends Component {
       Для установки необходимо перейти на официальный сайт
       https://nodejs.org и на главной странице скачать
       последнюю стабильную версию для своей ОС.
-`
-  npmTextContent = `
+`,
+      img: nodejs,
+    },
+    {
+      id: uuid(),
+      title: 'Что такое менеджер пакетов, установка npm',
+      description: `
       Менеджер пакетов — набор ПО позволяющего управлять
       процессом установки, удаления, настройки и обновления
       различных компонентов программного обеспечения.
 
       Npm идет в комплекте с node
-`
+`,
+      img: npm,
+    },
+  ]
 
   descriptionTitle = 'Данный проект раскрывает основные понятия git, node.js, а также затрагивает основы html и css.'
 
@@ -117,17 +143,23 @@ class Description extends Component {
     })
   }
   makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
-    // if (fullText.length < symbolsAmount) {
-    //   return fullText
-    // } else {
-    //   return fullText.slice(0, symbolsAmount) + '...'
-    // }
     return fullText.length < symbolsAmount
         ? fullText
         : fullText.slice(0, symbolsAmount) + '...'
   }
 
   render() {
+    const cardsList = this.cards.map( item =>
+        <Card
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            description={item.description}
+            img={item.img}
+            openCardId={this.state.openCardId}
+            clickHandler={this.clickHandler}
+            makeShortTextForCardContent={this.makeShortTextForCardContent}/>
+    )
     return (
         <div className={s.description}>
           <div className={s.descriptionTitle}>
@@ -135,24 +167,7 @@ class Description extends Component {
           </div>
           <div className={s.descriptionContent}>
             <div className={s.descriptionCardWrapper}>
-              <Card id={1} title={this.cvsTitle} fullTextContent={this.cvsTextContent} img={cvs}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-              <Card id={2} title={this.gitTitle} fullTextContent={this.gitTextContent} img={git}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-              <Card id={3} title={this.cssTitle} fullTextContent={this.cssTextContent} img={css}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-              <Card id={4} title={this.htmlTitle} fullTextContent={this.htmlTextContent} img={html}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-              <Card id={5} title={this.nodejsTitle} fullTextContent={this.nodejsTextContent} img={nodejs}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-              <Card id={6} title={this.npmTitle} fullTextContent={this.npmTextContent} img={npm}
-                    openCardId={this.state.openCardId} clickHandler={this.clickHandler}
-                    makeShortTextForCardContent={this.makeShortTextForCardContent}/>
+              {cardsList}
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ const CLOSED_CARD = 'Read More'
 class Card extends Component {
 
   render() {
-    const {id, title, fullTextContent, img, clickHandler, openCardId, makeShortTextForCardContent} = this.props
+    const {id, title, description, img, clickHandler, openCardId, makeShortTextForCardContent} = this.props
     const isOpen = openCardId === id
 
     return (
@@ -20,7 +20,7 @@ class Card extends Component {
               {title}
             </div>
             <div className={s.cardDescription}>
-              {isOpen ? fullTextContent : makeShortTextForCardContent(fullTextContent)}
+              {isOpen ? description : makeShortTextForCardContent(description)}
             </div>
             <button onClick={() => clickHandler(id)}
                     className={s.cardButton}>{isOpen ? OPEN_CARD : CLOSED_CARD}</button>

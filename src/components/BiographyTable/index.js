@@ -110,6 +110,7 @@ class BiographyTable extends Component {
   }
 
   render() {
+    console.log(this.firmStruct)
     const sortDirection = this.state.sortDirection
 
     // use inherit sort method
