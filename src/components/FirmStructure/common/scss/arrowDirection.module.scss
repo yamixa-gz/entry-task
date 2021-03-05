@@ -21,14 +21,14 @@
     }
 
     &::before {
-      top: 12px;
-      left: 46px;
+      top: 6px;
+      right: -8px;
       transform: rotate(45deg);
     }
 
     &::after {
-      left: 49px;
-      bottom: 11px;
+      top: 6px;
+      right: -11px;
       transform: rotate(-45deg);
     }
   }
@@ -39,16 +39,24 @@
     }
 
     &::before {
-      top: 12px;
-      left: 46px;
+      top: 6px;
+      right: -8px;
       transform: rotate(135deg);
     }
 
     &::after {
-      left: 49px;
-      bottom: 11px;
+      bottom: 6px;
+      right: -11px;
       transform: rotate(45deg);
     }
+  }
+}
+
+.titleCell {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #cecece;
   }
 }
 

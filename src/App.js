@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import './scss/App.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Description from './components/Description'
-import Biography from "./components/BiographyTable";
+import FirmStructure from './components/FirmStructure'
 
 class App extends Component {
   render() {
@@ -12,8 +11,7 @@ class App extends Component {
           <Header/>
           <div className='content'>
             <div className='app-container'>
-              <Description/>
-              <Biography/>
+              <FirmStructure/>
             </div>
           </div>
           <Footer/>
