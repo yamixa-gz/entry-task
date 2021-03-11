@@ -262,7 +262,7 @@ class FirmStructure extends Component {
       ...this.state, firmStructControls: {
         ...this.state.firmStructControls,
         itemsIdForDelete: [],
-        showingFirmStructSection: [...newShowingFirmStructSection],
+        showingFirmStructSection: newShowingFirmStructSection,
       }
     })
   }
@@ -335,7 +335,7 @@ class FirmStructure extends Component {
       firmStructControls: {
         ...this.state.firmStructControls,
         [section + 'Index']: setSectionIndex,
-        categoryName: !!categoryName ? categoryName : this.state.firmStructControls.categoryName,
+        categoryName: categoryName ? categoryName : this.state.firmStructControls.categoryName,
         ...setSectionValues,
         itemsIdForDelete: [],
         tableStyle,
@@ -354,7 +354,7 @@ class FirmStructure extends Component {
     const sortDirection = this.state.sortDirection
     const columnName = this.state.sortedColumnName
 
-// sort using build-in method
+// sort using built-in method
     const showingFirmStructSection = sortDirection
         ? [...this.state.firmStructControls.showingFirmStructSection]
             .sort(this.sortColumnByName(columnName, sortDirection))
