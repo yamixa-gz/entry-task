@@ -15,16 +15,17 @@ import {firmStruct} from './common/data'
 import EmployeesTableRow from './EmployeesTableRow'
 import useTableComponents from './common/useTableComponents'
 import uuid from 'react-uuid'
+import cloneDeep from 'lodash.clonedeep'
 
 const cx = classNames.bind(s)
 
 class FirmStructure extends Component {
-
   jobInput = createRef()
   nameInput = createRef()
   surnameInput = createRef()
   salaryInput = createRef()
   branchNameInput = createRef()
+
   state = {
     sortDirection: '', //one of these -> '', ascending, descending
     sortedColumnName: '',
@@ -33,12 +34,11 @@ class FirmStructure extends Component {
       branchesIndex: -1,
       subBranchesIndex: -1,
       isEmployees: false,
-      showingFirmStructSection: [...firmStruct.branches],
+      showingFirmStructSection: cloneDeep(firmStruct.branches),
       tableStyle: 'branchesStyle',
       itemsIdForDelete: [],
     }
   }
-
   sortColumnByName = (columnName, sortDirection) => {
     if (columnName === 'salary') {
       if (sortDirection === 'ascending') {
@@ -107,7 +107,7 @@ class FirmStructure extends Component {
     this.setState({
       ...this.state,
       sortDirection: setSortDirection,
-      sortedColumnName: sortedColumnName
+      sortedColumnName,
     })
   }
   getValidatedDataFromInputs = (...arr) => {
@@ -139,7 +139,18 @@ class FirmStructure extends Component {
       return [job, name, surname, +salary]
     }
   }
-  addDataToFirmStructArrHandler = () => {
+  addItemToFirmStructSection = (section, data) => {
+    let modifiedSection
+    if (Array.isArray(section)) {
+      modifiedSection = cloneDeep(section)
+      modifiedSection.push({...data})
+    } else {
+      modifiedSection = Object.fromEntries(Object.entries(section))
+      modifiedSection[uuid()] = {...data}
+    }
+    return modifiedSection
+  }
+  addDataToFirmStructHandler = () => {
     let showingFirmStructSection
     let branchName
     let job
@@ -167,53 +178,87 @@ class FirmStructure extends Component {
       this.salaryInput.current.value = ''
     }
     if (this.state.firmStructControls.categoryName === 'directors') {
-      firmStruct.directors[uuid()] = {
-        id: uuid(),
-        job,
-        name,
-        surname,
-        salary,
-      }
-      showingFirmStructSection = Object.keys(firmStruct.directors).map(key => firmStruct.directors[key])
+      const newModifiedDirectors = this.addItemToFirmStructSection(firmStruct.directors,
+          {
+            id: uuid(),
+            job,
+            name,
+            surname,
+            salary,
+          })
+      // eslint-disable-next-line
+      console.log('Source section \"directors\":', Object.values(firmStruct.directors))
+      // eslint-disable-next-line
+      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors))
+      firmStruct.directors = newModifiedDirectors
+      showingFirmStructSection = Object.values(firmStruct.directors)
     }
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex === -1) {
-      firmStruct.branches.push({
-        id: uuid(),
-        title: branchName,
-        subBranches: []
-      })
-      showingFirmStructSection = [...firmStruct.branches]
+
+      const newModifiedBranches = this.addItemToFirmStructSection(firmStruct.branches,
+          {
+            id: uuid(),
+            title: branchName,
+            subBranches: []
+          })
+      // eslint-disable-next-line
+      console.log('Source section \"branches\":', firmStruct.branches)
+      // eslint-disable-next-line
+      console.log('New modified section \"branches\":', newModifiedBranches)
+      firmStruct.branches = newModifiedBranches
+      showingFirmStructSection = cloneDeep(newModifiedBranches)
     }
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex >= 0
         && !this.state.firmStructControls.isEmployees) {
-      firmStruct.branches[this.state.firmStructControls.branchesIndex]
-          .subBranches.push({
-        id: uuid(),
-        title: branchName,
-        employees: []
-      })
-      showingFirmStructSection = [...firmStruct.branches[this.state.firmStructControls.branchesIndex]
-          .subBranches]
+
+      const newModifiedSubBranches = this.addItemToFirmStructSection(firmStruct
+              .branches[this.state.firmStructControls.branchesIndex]
+              .subBranches,
+          {
+            id: uuid(),
+            title: branchName,
+            employees: []
+          })
+      // eslint-disable-next-line
+      console.log('Source section \"subBranches\":', firmStruct
+          .branches[this.state.firmStructControls.branchesIndex]
+          .subBranches)
+      // eslint-disable-next-line
+      console.log('New modified section \"subBranches\":', newModifiedSubBranches)
+      firmStruct
+          .branches[this.state.firmStructControls.branchesIndex]
+          .subBranches = newModifiedSubBranches
+      showingFirmStructSection = cloneDeep(newModifiedSubBranches)
     }
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex >= 0
         && this.state.firmStructControls.subBranchesIndex >= 0) {
+
+      const newModifiedEmployees = this.addItemToFirmStructSection(firmStruct
+              .branches[this.state.firmStructControls.branchesIndex]
+              .subBranches[this.state.firmStructControls.subBranchesIndex]
+              .employees,
+          {
+            id: uuid(),
+            job,
+            name,
+            surname,
+            salary,
+          })
+      // eslint-disable-next-line
+      console.log('Source section \"employees\":', firmStruct
+          .branches[this.state.firmStructControls.branchesIndex]
+          .subBranches[this.state.firmStructControls.subBranchesIndex]
+          .employees)
+      // eslint-disable-next-line
+      console.log('New modified section \"employees\":', newModifiedEmployees)
       firmStruct
           .branches[this.state.firmStructControls.branchesIndex]
           .subBranches[this.state.firmStructControls.subBranchesIndex]
-          .employees.push({
-        id: uuid(),
-        job,
-        name,
-        surname,
-        salary,
-      })
-      showingFirmStructSection = [...firmStruct
-          .branches[this.state.firmStructControls.branchesIndex]
-          .subBranches[this.state.firmStructControls.subBranchesIndex]
-          .employees]
+          .employees = newModifiedEmployees
+      showingFirmStructSection = cloneDeep(newModifiedEmployees)
     }
     this.setState({
       ...this.state, firmStructControls: {
@@ -222,36 +267,64 @@ class FirmStructure extends Component {
       }
     })
   }
-  removeDataFromFirmStructArrHandler = () => {
+  removeItemsFromFirmStructSection = (currentSection, itemsIdForDelete) => {
+    let modifiedSection
+    if (Array.isArray(currentSection)) {
+      modifiedSection = cloneDeep(currentSection.filter(el => {
+        for (let i = 0; i < itemsIdForDelete.length; i++) {
+          if (itemsIdForDelete[i] === el.id) return false
+        }
+        return true
+      }))
+    } else {
+      modifiedSection = Object.fromEntries(Object.entries(firmStruct.directors)
+          .filter(entry => !itemsIdForDelete.includes(entry[1].id)))
+    }
+    return modifiedSection
+  }
+  removeDataFromFirmStructHandler = () => {
     if (this.state.firmStructControls.itemsIdForDelete.length === 0) return
     const itemsIdForDelete = this.state.firmStructControls.itemsIdForDelete
     const showingFirmStructSection = this.state.firmStructControls.showingFirmStructSection
+    let newShowingFirmStructSection = []
 
-    const newShowingFirmStructSection = showingFirmStructSection.filter(el => {
-      for (let i = 0; i < itemsIdForDelete.length; i++) {
-        if (itemsIdForDelete[i] === el.id) return false
-      }
-      return true
-    })
     if (this.state.firmStructControls.categoryName === 'directors') {
 
-      itemsIdForDelete.forEach(id => {
-        Object.keys(firmStruct.directors).forEach(key => {
-          if (firmStruct.directors[key].id === id) {
-            delete firmStruct.directors[key]
-          }
-        })
-      })
+      const newModifiedDirectors = this.removeItemsFromFirmStructSection(firmStruct.directors, itemsIdForDelete)
+      // eslint-disable-next-line
+      console.log('Source section \"directors\":', Object.values(firmStruct.directors))
+      // eslint-disable-next-line
+      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors))
+      newShowingFirmStructSection = Object.values(newModifiedDirectors)
+      firmStruct.directors = newModifiedDirectors
     } else if (this.state.firmStructControls.categoryName === 'branches') {
+
+      newShowingFirmStructSection = this.removeItemsFromFirmStructSection(showingFirmStructSection, itemsIdForDelete)
       switch (showingFirmStructSection[0].id) {
         case firmStruct.branches[0].id:
+          // eslint-disable-next-line
+          console.log('Source section \"branches\":', firmStruct.branches)
+          // eslint-disable-next-line
+          console.log('New modified section \"branches\":', newShowingFirmStructSection)
           firmStruct.branches = newShowingFirmStructSection
           break
         case firmStruct.branches[this.state.firmStructControls.branchesIndex].subBranches[0].id:
+          // eslint-disable-next-line
+          console.log('Source section \"subBranches\":', firmStruct
+              .branches[this.state.firmStructControls.branchesIndex]
+              .subBranches)
+          // eslint-disable-next-line
+          console.log('New modified section \"subBranches\":', newShowingFirmStructSection)
           firmStruct.branches[this.state.firmStructControls.branchesIndex].subBranches = newShowingFirmStructSection
           break
         case firmStruct.branches[this.state.firmStructControls.branchesIndex]
             .subBranches[this.state.firmStructControls.subBranchesIndex].employees[0].id:
+          // eslint-disable-next-line
+          console.log('Source section \"employees\":', firmStruct
+              .branches[this.state.firmStructControls.branchesIndex]
+              .subBranches[this.state.firmStructControls.subBranchesIndex].employees)
+          // eslint-disable-next-line
+          console.log('New modified section \"employees\":', newShowingFirmStructSection)
           firmStruct.branches[this.state.firmStructControls.branchesIndex]
               .subBranches[this.state.firmStructControls.subBranchesIndex].employees = newShowingFirmStructSection
           break
@@ -289,7 +362,7 @@ class FirmStructure extends Component {
     if (section === 'categoryName') {
       categoryName = selectedMenuItem.split('-*-')[2]
       if (categoryName === 'branches') {
-        showingFirmStructSection = [...firmStruct[categoryName]]
+        showingFirmStructSection = cloneDeep(firmStruct[categoryName])
       } else if (categoryName === 'directors') {
         Object.keys(firmStruct.directors).forEach((key) => {
           showingFirmStructSection.push({...firmStruct.directors[key]})
@@ -312,7 +385,7 @@ class FirmStructure extends Component {
     }
     if (section === 'branches') {
       setSectionIndex = selectedIndex
-      showingFirmStructSection = [...firmStruct.branches[selectedIndex].subBranches]
+      showingFirmStructSection = cloneDeep(firmStruct.branches[selectedIndex].subBranches)
       tableStyle = 'branchesStyle'
       setSectionValues = {
         subBranchesIndex: -1,
@@ -321,8 +394,8 @@ class FirmStructure extends Component {
     }
     if (section === 'subBranches') {
       setSectionIndex = selectedIndex
-      showingFirmStructSection = [...firmStruct.branches[this.state.firmStructControls.branchesIndex]
-          .subBranches[selectedIndex].employees]
+      showingFirmStructSection = cloneDeep(firmStruct.branches[this.state.firmStructControls.branchesIndex]
+          .subBranches[selectedIndex].employees)
       tableStyle = 'employeesStyle'
       setSectionValues = {
         isEmployees: true,
@@ -358,12 +431,16 @@ class FirmStructure extends Component {
     const showingFirmStructSection = sortDirection
         ? [...this.state.firmStructControls.showingFirmStructSection]
             .sort(this.sortColumnByName(columnName, sortDirection))
-        : [...this.state.firmStructControls.showingFirmStructSection]
+        : this.state.firmStructControls.showingFirmStructSection
 
 // sort using own method
     // const showingFirmStructSection = this.selectionSort(
     //     this.state.firmStructControls.showingFirmStructSection,
     //     sortDirection, columnName)
+    if (sortDirection) {
+      console.log('Source object array to show: ', this.state.firmStructControls.showingFirmStructSection)
+      console.log('New sorted object array to show: ', showingFirmStructSection)
+    }
 
     const {EmployeesTableHeader, BranchesTableHeader} = useTableComponents
     const branchesIndex = this.state.firmStructControls.branchesIndex
@@ -512,10 +589,10 @@ class FirmStructure extends Component {
             </Table>
 
             <div className="d-grid gap-2 d-md-block">
-              <Button onClick={this.addDataToFirmStructArrHandler}
+              <Button onClick={this.addDataToFirmStructHandler}
                       variant="secondary" className=''
               >Добавить</Button>
-              <Button onClick={this.removeDataFromFirmStructArrHandler}
+              <Button onClick={this.removeDataFromFirmStructHandler}
                       variant="secondary"
                       className='ms-md-2'
                       disabled={!this.state.firmStructControls.itemsIdForDelete.length}
