@@ -1,9 +1,8 @@
-import React, {Component, createRef} from 'react'
+import React, {Component} from 'react'
 import {
   Table,
   Container,
   Button,
-  FormControl,
   Dropdown,
   DropdownButton,
   ButtonGroup
@@ -16,17 +15,13 @@ import EmployeesTableRow from './EmployeesTableRow'
 import useTableComponents from './common/useTableComponents'
 import uuid from 'react-uuid'
 import cloneDeep from 'lodash.clonedeep'
+import AddFirmStructItemModal from "./AddFirmStructItemModal";
 
 const cx = classNames.bind(s)
 
 class FirmStructure extends Component {
-  jobInput = createRef()
-  nameInput = createRef()
-  surnameInput = createRef()
-  salaryInput = createRef()
-  branchNameInput = createRef()
-
   state = {
+    modalShow: false,
     sortDirection: '', //one of these -> '', ascending, descending
     sortedColumnName: '',
     firmStructControls: {
@@ -39,6 +34,9 @@ class FirmStructure extends Component {
       itemsIdForDelete: [],
     }
   }
+  setModalShow = value => this.setState({
+    ...this.state, modalShow: value
+  })
   sortColumnByName = (columnName, sortDirection) => {
     if (columnName === 'salary') {
       if (sortDirection === 'ascending') {
@@ -110,35 +108,6 @@ class FirmStructure extends Component {
       sortedColumnName,
     })
   }
-  getValidatedDataFromInputs = (...arr) => {
-    if (arr.length === 1) {
-      const branchName = arr[0]
-      if (branchName.length > 30 || branchName.length < 5) {
-        console.error('Please input valid data!')
-        return ''
-      }
-      return branchName
-    }
-    if (arr.length === 4) {
-      const job = arr[0]
-      const name = arr[1]
-      const surname = arr[2]
-      const salary = arr[3]
-      if (isNaN(parseInt(salary))
-          || salary.length > 5
-          || name.length < 3
-          || name.length > 15
-          || surname.length < 3
-          || surname.length > 15
-          || job.length < 3
-          || job.length > 15
-      ) {
-        console.error('Please input valid data!')
-        return ['', '', '', '']
-      }
-      return [job, name, surname, +salary]
-    }
-  }
   addItemToFirmStructSection = (section, data) => {
     let modifiedSection
     if (Array.isArray(section)) {
@@ -150,34 +119,10 @@ class FirmStructure extends Component {
     }
     return modifiedSection
   }
-  addDataToFirmStructHandler = () => {
+  addDataFromFormToFirmStruct = (data) => {
     let showingFirmStructSection
-    let branchName
-    let job
-    let name
-    let surname
-    let salary
-    if (this.state.firmStructControls.tableStyle === 'branchesStyle') {
-      branchName = this.getValidatedDataFromInputs(this.branchNameInput.current.value)
-      if (!branchName) return
-      this.branchNameInput.current.value = ''
-    }
-    if (this.state.firmStructControls.tableStyle === 'employeesStyle') {
-      [job, name, surname, salary] = this.getValidatedDataFromInputs(
-          this.jobInput.current.value,
-          this.nameInput.current.value,
-          this.surnameInput.current.value,
-          this.salaryInput.current.value)
-      if (!job
-          || !name
-          || !surname
-          || !salary) return
-      this.jobInput.current.value = ''
-      this.nameInput.current.value = ''
-      this.surnameInput.current.value = ''
-      this.salaryInput.current.value = ''
-    }
     if (this.state.firmStructControls.categoryName === 'directors') {
+      let {job, name, surname, salary} = data
       const newModifiedDirectors = this.addItemToFirmStructSection(firmStruct.directors,
           {
             id: uuid(),
@@ -195,6 +140,7 @@ class FirmStructure extends Component {
     }
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex === -1) {
+      let {branchName} = data
 
       const newModifiedBranches = this.addItemToFirmStructSection(firmStruct.branches,
           {
@@ -212,7 +158,7 @@ class FirmStructure extends Component {
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex >= 0
         && !this.state.firmStructControls.isEmployees) {
-
+      let {branchName} = data
       const newModifiedSubBranches = this.addItemToFirmStructSection(firmStruct
               .branches[this.state.firmStructControls.branchesIndex]
               .subBranches,
@@ -235,7 +181,7 @@ class FirmStructure extends Component {
     if (this.state.firmStructControls.categoryName === 'branches'
         && this.state.firmStructControls.branchesIndex >= 0
         && this.state.firmStructControls.subBranchesIndex >= 0) {
-
+      let {job, name, surname, salary} = data
       const newModifiedEmployees = this.addItemToFirmStructSection(firmStruct
               .branches[this.state.firmStructControls.branchesIndex]
               .subBranches[this.state.firmStructControls.subBranchesIndex]
@@ -260,6 +206,7 @@ class FirmStructure extends Component {
           .employees = newModifiedEmployees
       showingFirmStructSection = cloneDeep(newModifiedEmployees)
     }
+
     this.setState({
       ...this.state, firmStructControls: {
         ...this.state.firmStructControls,
@@ -437,11 +384,11 @@ class FirmStructure extends Component {
     // const showingFirmStructSection = this.selectionSort(
     //     this.state.firmStructControls.showingFirmStructSection,
     //     sortDirection, columnName)
+
     if (sortDirection) {
       console.log('Source object array to show: ', this.state.firmStructControls.showingFirmStructSection)
       console.log('New sorted object array to show: ', showingFirmStructSection)
     }
-
     const {EmployeesTableHeader, BranchesTableHeader} = useTableComponents
     const branchesIndex = this.state.firmStructControls.branchesIndex
     const subBranchesIndex = this.state.firmStructControls.subBranchesIndex
@@ -450,7 +397,6 @@ class FirmStructure extends Component {
         && (this.state.firmStructControls.categoryName === 'branches'))
     const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
         && this.state.firmStructControls.categoryName === 'branches')
-
     return (
         <Container fluid className='bg-light mb-3 pt-3 h-100'>
           <div className='middle-container '>
@@ -560,36 +506,10 @@ class FirmStructure extends Component {
                           />
                       )
                       : ''}
-              {
-                this.state.firmStructControls.tableStyle === 'branchesStyle'
-                    ? <tr>
-                      <td>*</td>
-                      <td>
-                        <FormControl ref={this.branchNameInput} size="sm" aria-label="Small"/>
-                      </td>
-                    </tr>
-                    : this.state.firmStructControls.tableStyle === 'employeesStyle'
-                    ? <tr>
-                      <td>*</td>
-                      <td>
-                        <FormControl ref={this.jobInput} size="sm" aria-label="Small"/>
-                      </td>
-                      <td>
-                        <FormControl ref={this.nameInput} size="sm" aria-label="Small"/>
-                      </td>
-                      <td>
-                        <FormControl ref={this.surnameInput} size="sm" aria-label="Small"/>
-                      </td>
-                      <td>
-                        <FormControl ref={this.salaryInput} size="sm" aria-label="Small"/>
-                      </td>
-                    </tr> : <tr></tr>
-              }
               </tbody>
             </Table>
-
             <div className="d-grid gap-2 d-md-block">
-              <Button onClick={this.addDataToFirmStructHandler}
+              <Button onClick={() => this.setModalShow(true)}
                       variant="secondary" className=''
               >Добавить</Button>
               <Button onClick={this.removeDataFromFirmStructHandler}
@@ -599,6 +519,13 @@ class FirmStructure extends Component {
               >Удалить</Button>
             </div>
           </div>
+          <AddFirmStructItemModal
+              show={this.state.modalShow}
+              setModalShow={this.setModalShow}
+              onHide={() => this.setModalShow(false)}
+              addDataToFirmStruct={this.addDataFromFormToFirmStruct}
+              tableStyle={this.state.firmStructControls.tableStyle}
+          />
         </Container>
     )
   }
