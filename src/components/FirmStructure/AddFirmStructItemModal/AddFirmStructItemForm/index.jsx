@@ -24,7 +24,7 @@ const FormField = ({
             </Form.Text>
         </Form.Group>
 
-const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataToFirmStruct}) => {
+const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmStruct}) => {
     const employeesStyleSchema = Yup.object().shape({
         job: Yup.string()
                 .min(3, 'Too Short!')
@@ -59,7 +59,7 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataToFirmStruct}) 
             branchName: ''
         },
         onSubmit: values => {
-            addDataToFirmStruct(values)
+            addDataFromFormToFirmStruct(values)
             setModalShow(false)
         },
         validationSchema: tableStyle === 'employeesStyle' ? employeesStyleSchema : branchesStyleSchema,

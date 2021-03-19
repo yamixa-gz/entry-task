@@ -523,7 +523,7 @@ class FirmStructure extends Component {
               show={this.state.modalShow}
               setModalShow={this.setModalShow}
               onHide={() => this.setModalShow(false)}
-              addDataToFirmStruct={this.addDataFromFormToFirmStruct}
+              addDataFromFormToFirmStruct={this.addDataFromFormToFirmStruct}
               tableStyle={this.state.firmStructControls.tableStyle}
           />
         </Container>
