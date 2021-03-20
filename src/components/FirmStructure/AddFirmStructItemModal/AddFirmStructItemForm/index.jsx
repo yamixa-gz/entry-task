@@ -2,7 +2,9 @@ import React from 'react'
 import {Button, Form} from 'react-bootstrap'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
+import {EMPLOYEES_STYLE, JOB, NAME, SALARY, SURNAME} from '../../common/constants'
 
+const BRANCH_NAME = 'branchName'
 const FormField = ({
                        groupClass, type, placeholder, nameAndId, value,
                        label, errorText = '', handleBlur, handleChange
@@ -50,7 +52,7 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmS
                 .required('This field is Required!'),
     })
     const {handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched} = useFormik({
-        initialValues: tableStyle === 'employeesStyle' ? {
+        initialValues: tableStyle === EMPLOYEES_STYLE ? {
             job: '',
             name: '',
             surname: '',
@@ -62,50 +64,47 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmS
             addDataFromFormToFirmStruct(values)
             setModalShow(false)
         },
-        validationSchema: tableStyle === 'employeesStyle' ? employeesStyleSchema : branchesStyleSchema,
+        validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesStyleSchema : branchesStyleSchema,
     })
     return (
             <Form onSubmit={handleSubmit}>
                 {
-                    tableStyle === 'employeesStyle'
+                    tableStyle === EMPLOYEES_STYLE
                             ? <>
                                 <FormField groupClass={'mt-2'}
                                            type={'text'}
                                            placeholder={'Enter job'}
-                                           nameAndId={'job'}
+                                           nameAndId={JOB}
                                            handleBlur={handleBlur}
                                            handleChange={handleChange}
                                            value={values.job}
                                            label={'Job:'}
                                            errorText={errors.job && touched.job ? errors.job : ''}
                                 />
-
                                 <FormField groupClass={'mt-2'}
                                            type={'text'}
                                            placeholder={'Enter Name'}
-                                           nameAndId={'name'}
+                                           nameAndId={NAME}
                                            handleBlur={handleBlur}
                                            handleChange={handleChange}
                                            value={values.name}
                                            label={'Name:'}
                                            errorText={errors.name && touched.name ? errors.name : ''}
                                 />
-
                                 <FormField groupClass={'mt-2'}
                                            type={'text'}
                                            placeholder={'Enter Surname'}
-                                           nameAndId={'surname'}
+                                           nameAndId={SURNAME}
                                            handleBlur={handleBlur}
                                            handleChange={handleChange}
                                            value={values.surname}
                                            label={'Surname:'}
                                            errorText={errors.surname && touched.surname ? errors.surname : ''}
                                 />
-
                                 <FormField groupClass={'mt-2 mb-2'}
                                            type={'text'}
                                            placeholder={'Enter Salary'}
-                                           nameAndId={'salary'}
+                                           nameAndId={SALARY}
                                            handleBlur={handleBlur}
                                            handleChange={handleChange}
                                            value={values.salary}
@@ -116,7 +115,7 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmS
                             : <FormField groupClass={'mt-2 mb-2'}
                                          type={'text'}
                                          placeholder={'Enter Branch Name'}
-                                         nameAndId={'branchName'}
+                                         nameAndId={BRANCH_NAME}
                                          handleBlur={handleBlur}
                                          handleChange={handleChange}
                                          value={values.branchName}
