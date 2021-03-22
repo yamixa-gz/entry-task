@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './scss/App.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import FirmStructure from './components/FirmStructure'
+import FetchedDataTable from './components/FetchedDataTable'
 
 class App extends Component {
   render() {
@@ -11,7 +11,7 @@ class App extends Component {
           <Header/>
           <div className='content'>
             <div className='app-container'>
-              <FirmStructure/>
+              <FetchedDataTable/>
             </div>
           </div>
           <Footer/>

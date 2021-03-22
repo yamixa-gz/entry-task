@@ -1,5 +1,0 @@
-export const EMPLOYEES_STYLE =  'employeesStyle'
-export const JOB = 'job'
-export const NAME = 'name'
-export const SURNAME = 'surname'
-export const SALARY = 'salary'
