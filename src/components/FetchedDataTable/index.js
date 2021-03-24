@@ -7,6 +7,7 @@ import useTableComponents from './common/useTableComponents'
 import uuid from 'react-uuid'
 import MainDataListTableRow from './MainDataListTableRow'
 import Pagination from 'react-js-pagination'
+import Preloader from '../common/Preloader'
 
 const BASE_URL = 'https://pokeapi.co/api/v2/'
 
@@ -46,6 +47,7 @@ class FetchedDataTable extends Component {
         })
       }
     } catch (e) {
+      this.setPending(false)
       console.error('Something went wrong...', e)
     }
   }
@@ -65,7 +67,7 @@ class FetchedDataTable extends Component {
 
   render() {
     const {MainDataListTableHeader} = useTableComponents
-    const {fetchedDataArr, activePage, pagesAmount, pageLimit} = this.state
+    const {fetchedDataArr, activePage, pagesAmount, pageLimit, isPending} = this.state
     const fetchedDataComponents = fetchedDataArr.map(item =>
         <MainDataListTableRow
             key={item.id}
@@ -74,7 +76,7 @@ class FetchedDataTable extends Component {
     return (
         <Container fluid className='bg-light mb-3 pt-3 h-100'>
           <div className='middle-container '>
-            <Table striped bordered hover>
+            <Table className='mb-5' striped bordered hover>
               <thead>
               <MainDataListTableHeader/>
               </thead>
@@ -82,16 +84,19 @@ class FetchedDataTable extends Component {
               {fetchedDataComponents}
               </tbody>
             </Table>
-            <Pagination
-                itemClass='page-item'
-                linkClass='page-link'
-                innerClass='pagination justify-content-center'
-                itemsCountPerPage={pageLimit}
-                totalItemsCount={pagesAmount}
-                pageRangeDisplayed={5}
-                activePage={activePage}
-                onChange={this.pageChangeHandler}
-            />
+            <div className='position-relative'>
+              {isPending ? <Preloader/> : ''}
+              <Pagination
+                  itemClass='page-item'
+                  linkClass='page-link'
+                  innerClass='pagination justify-content-center'
+                  itemsCountPerPage={pageLimit}
+                  totalItemsCount={pagesAmount}
+                  pageRangeDisplayed={5}
+                  activePage={activePage}
+                  onChange={this.pageChangeHandler}
+              />
+            </div>
           </div>
         </Container>
     )
