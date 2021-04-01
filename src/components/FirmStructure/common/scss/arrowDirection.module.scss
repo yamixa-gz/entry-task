@@ -1,0 +1,62 @@
+.arrowDirection {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #cecece;
+  }
+
+  &::before, &::after {
+    position: absolute;
+    content: "";
+    display: none;
+    width: 1px;
+    height: 5px;
+    background-color: #0b224b;
+  }
+
+  &Up {
+    &::before, &::after {
+      display: block;
+    }
+
+    &::before {
+      top: 6px;
+      right: -8px;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      top: 6px;
+      right: -11px;
+      transform: rotate(-45deg);
+    }
+  }
+
+  &Down {
+    &::before, &::after {
+      display: block;
+    }
+
+    &::before {
+      top: 6px;
+      right: -8px;
+      transform: rotate(135deg);
+    }
+
+    &::after {
+      bottom: 6px;
+      right: -11px;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.titleCell {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #cecece;
+  }
+}
+

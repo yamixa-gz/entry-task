@@ -4,11 +4,12 @@ import React, {Component} from 'react'
 class PokemonDetailsBtn extends Component {
 
   render() {
-
     return (
-        <Button
-            onClick={(e) => e.target.textContent = 'Oops... functionality isn`t realized yet))'}
-            variant="outline-secondary" size="sm"
+        <Button onClick={(e) => {
+          alert('Oops... functionality isn`t realized yet))')
+          e.stopPropagation()
+        }}
+                variant="outline-secondary" size="sm"
         >See details...
         </Button>
     )
