@@ -10,6 +10,7 @@ const EmployeesTableHeader = ({setColumnStyle, sortClickHandler}) =>
       <th className={s.titleCell} onClick={() => sortClickHandler(SURNAME)}><span className={setColumnStyle(SURNAME)}>Surname</span></th>
       <th className={s.titleCell} onClick={() => sortClickHandler(SALARY)}><span className={setColumnStyle(SALARY)}>Salary</span></th>
     </tr>
+
 const BranchesTableHeader = ({setColumnStyle, sortClickHandler}) =>
     <tr>
       <th>#</th>

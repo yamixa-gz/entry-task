@@ -1,8 +1,8 @@
 import React from 'react'
 import {Button, Form} from 'react-bootstrap'
 import {useFormik} from 'formik'
-import * as Yup from 'yup'
 import {EMPLOYEES_STYLE, JOB, NAME, SALARY, SURNAME} from '../../common/constants'
+import {branchesValidationSchema, employeesValidationSchema} from '../../common/validators'
 
 const BRANCH_NAME = 'branchName'
 const FormField = ({
@@ -27,30 +27,6 @@ const FormField = ({
         </Form.Group>
 
 const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmStruct}) => {
-    const employeesStyleSchema = Yup.object().shape({
-        job: Yup.string()
-                .min(3, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('This field is Required!'),
-        name: Yup.string()
-                .min(3, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('This field is Required!'),
-        surname: Yup.string()
-                .min(3, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('This field is Required!'),
-        salary: Yup.number()
-                .min(100, 'Min value should be more then 99!')
-                .max(9000, 'Max value should be equals or less than 9000!')
-                .required('This field is Required!')
-    })
-    const branchesStyleSchema = Yup.object().shape({
-        branchName: Yup.string()
-                .min(3, 'Too Short!')
-                .max(30, 'Too Long!')
-                .required('This field is Required!'),
-    })
     const {handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched} = useFormik({
         initialValues: tableStyle === EMPLOYEES_STYLE ? {
             job: '',
@@ -64,7 +40,7 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmS
             addDataFromFormToFirmStruct(values)
             setModalShow(false)
         },
-        validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesStyleSchema : branchesStyleSchema,
+        validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesValidationSchema : branchesValidationSchema,
     })
     return (
             <Form onSubmit={handleSubmit}>

@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 // eslint-disable-next-line
 import FetchedDataTable from './components/FetchedDataTable'
 // eslint-disable-next-line
-import FirmStructure from './components/FirmStructure'
+import FirmStructureContainer from './components/FirmStructure/FirmStructureContainer'
 class App extends Component {
   render() {
     return (
@@ -13,7 +13,7 @@ class App extends Component {
           <Header/>
           <div className='content'>
             <div className='app-container'>
-              {/*<FirmStructure/>*/}
+              {/*<FirmStructureContainer/>*/}
               <FetchedDataTable/>
             </div>
           </div>

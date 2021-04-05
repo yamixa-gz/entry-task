@@ -20,19 +20,12 @@ class FetchedDataTable extends Component {
     pageLimit: 20,
     pagesAmount: 0,
     activePage: 1,
-    tableRowMetrics: {
-      nameCellWidth: 0,
-      descriptionCellWidth: 0,
-      rowTop: 0,
-      rowWidth: 0,
-      rowHeight: 0,
-    },
-    isSelection: false,
+
     activeElIndex: -1,
     hotKeyValue: '',
-    startPosition: 0,
     newFetchedDataArr: [],
-    movingElement: {}
+    movingElement: {},
+    insertingElIndex: -1,
   }
   setPending = value => {
     this.setState({
@@ -95,93 +88,68 @@ class FetchedDataTable extends Component {
     this.getPageRequest(pageNumber)
   }
   keyPressHandler = e => {
+    const {fetchedDataArr} = this.state
     this.setState({
       ...this.state, hotKeyValue: e.key,
-      activeElIndex: -1
+      activeElIndex: fetchedDataArr.findIndex(el => el.hotKey === e.key)
     })
   }
-  resetSelection = () => {
+  onClickHandler = (index, hotKey) => {
     this.setState({
       ...this.state,
-      activeElIndex: -1,
-      hotKeyValue: ''
+      activeElIndex: index,
+      hotKeyValue: hotKey,
     })
   }
-  onClickHandler = ({index, isActive, hotKey}) => {
-    if (isActive) return
-    const {hotKeyValue} = this.state
+  dragEnterHandler = index => {
     this.setState({
       ...this.state,
-      activeElIndex: hotKeyValue === '' ? index : -1,
-      hotKeyValue: hotKeyValue === '' ? '' : hotKey
+      insertingElIndex: index
     })
   }
-  mouseDownEventHandler = ({trTag, index}) => {
+  mouseDownEventHandler = index => {
     let {fetchedDataArr} = this.state
-    const {top: rowTop, width: rowWidth, height: rowHeight} = trTag.getBoundingClientRect()
-    const [nameCellWidth, descriptionCellWidth] = [trTag.cells[0].clientWidth, trTag.cells[1].clientWidth]
     const newFetchedDataArr = fetchedDataArr.filter((_, i) => i !== index)
     const movingElement = {...fetchedDataArr[index]}
-    trTag.classList.add('position-absolute')
-
     this.setState({
       ...this.state,
-      tableRowMetrics: {
-        ...this.state.tableRowMetrics,
-        nameCellWidth,
-        descriptionCellWidth,
-        rowTop,
-        rowWidth,
-        rowHeight,
-      },
-      isSelection: true,
       newFetchedDataArr,
       movingElement,
+      activeElIndex: index,
+      insertingElIndex: index
     })
   }
-  mouseUpEventHandler = ({trTag, offsetPosition}) => {
-    const {tableRowMetrics: {rowHeight}, newFetchedDataArr, movingElement} = this.state
+  mouseUpEventHandler = () => {
+    const {newFetchedDataArr, movingElement, insertingElIndex} = this.state
     let sortedFetchedDataArr = cloneDeep(newFetchedDataArr)
-    // measure tableBody top to page beginning. (tableBody + table)
-    const startPosition = trTag.parentNode.offsetTop + trTag.parentNode.parentNode.offsetTop
-    let foundIndex = null
 
-    for (let i = 1; i < newFetchedDataArr.length + 1; i++) {
-      if ((offsetPosition + 10) <= (startPosition + rowHeight * i)) {
-        foundIndex = i
-        break
-      }
-    }
-    sortedFetchedDataArr.splice(foundIndex, 0, {...movingElement})
+    sortedFetchedDataArr.splice(insertingElIndex, 0, {...movingElement})
     this.setState({
-          ...this.state,
-          fetchedDataArr: sortedFetchedDataArr,
-          activeElIndex: -1,
-          hotKeyValue: '',
-          isSelection: false,
-        }
-    )
-    trTag.classList.remove('position-absolute')
+      ...this.state,
+      fetchedDataArr: sortedFetchedDataArr,
+      activeElIndex: -1,
+      hotKeyValue: '',
+    })
   }
 
   render() {
     const {MainDataListTableHeader} = useTableComponents
     const {
-      fetchedDataArr, activePage, pagesAmount, pageLimit, isPending,
-      activeElIndex, hotKeyValue, tableRowMetrics, isSelection
+      fetchedDataArr, activePage, pagesAmount,
+      activeElIndex, hotKeyValue, pageLimit, isPending,
     } = this.state
     const fetchedDataComponents = fetchedDataArr.map((item, index) =>
         <MainDataListTableRow
+            dragEnterHandler={this.dragEnterHandler}
+            isActive={item.hotKey === hotKeyValue}
             hotKey={item.hotKey}
-            resetSelection={this.resetSelection}
-            isActive={(activeElIndex === index) || (item.hotKey === hotKeyValue)}
+            activeElIndex={activeElIndex}
             index={index}
             key={item.id}
             name={item.name ? `${this.nameCapitalize(item.name)}; HotKey: ${item.hotKey}` : 'unknown Name'}
             onClickHandler={this.onClickHandler}
             mouseUpEventHandler={this.mouseUpEventHandler}
             mouseDownEventHandler={this.mouseDownEventHandler}
-            tableRowMetrics={tableRowMetrics}
         />)
     return (
         <Container fluid className='bg-light mb-3 pt-3 h-100'>
@@ -201,9 +169,9 @@ class FetchedDataTable extends Component {
               <thead>
               <MainDataListTableHeader/>
               </thead>
-              <tbody className='position-relative'>
+              <tbody
+              >
               {fetchedDataComponents}
-              <tr style={isSelection ? {height: tableRowMetrics.rowHeight} : {}}/>
               </tbody>
             </Table>
             <div className='position-relative'>

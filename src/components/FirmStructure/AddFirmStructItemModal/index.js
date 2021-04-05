@@ -2,7 +2,7 @@ import {Modal} from 'react-bootstrap'
 import React from 'react'
 import AddFirmStructItemForm from './AddFirmStructItemForm'
 
-function AddFirmStructItemModal({setModalShow, addDataFromFormToFirmStruct, tableStyle, ...props}) {
+const AddFirmStructItemModal = ({setModalShow, addDataFromFormToFirmStruct, tableStyle, ...props}) => {
     return (
             <Modal
                     {...props}
