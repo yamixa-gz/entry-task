@@ -3,7 +3,7 @@ import PokemonDetailsBtn from './PokemonDetailsBtn'
 
 class MainDataListTableRow extends Component {
   state = {pageY: 0, startPageY: 0, scrollY: 0}
-  mouseMoveHandler = (e) => {
+  mouseMoveHandler = e => {
     this.setState({
       pageY: e.pageY,
     })
@@ -25,24 +25,23 @@ class MainDataListTableRow extends Component {
     }
     return (
         <tr style={isActive ? rowStyle : {}} className={isActive ? 'border border-2 border-danger' : ''}
-            onClick={(e) => {
+            onClick={e => {
               onClickHandler({index, isActive, hotKey})
             }}
-            onMouseLeave={(e) => {
+            onMouseLeave={e => {
               if (!isActive) return
               e.currentTarget.classList.remove('position-absolute')
               e.currentTarget.removeEventListener('mousemove', this.mouseMoveHandler)
               resetSelection()
             }}
-            onMouseDown={(e) => {
+            onMouseDown={e => {
               if (!isActive) return
               e.currentTarget.addEventListener('mousemove', this.mouseMoveHandler)
               this.setState({...this.state, pageY: e.pageY, startPageY: e.pageY, scrollY: e.pageY - e.clientY})
 
               mouseDownEventHandler({trTag: e.currentTarget, index})
-            }
-            }
-            onMouseUp={(e) => {
+            }}
+            onMouseUp={e => {
               if (!isActive) return
               this.setState({...this.state, pageY: e.pageY, startPageY: e.pageY, scrollY: e.pageY - e.clientY})
               e.currentTarget.removeEventListener('mousemove', this.mouseMoveHandler)
@@ -51,8 +50,7 @@ class MainDataListTableRow extends Component {
                 trTag: e.currentTarget,
                 offsetPosition: e.pageY
               })
-            }
-            }
+            }}
         >
           <td style={isActive ? {width: nameCellWidth} : {}}>{name}</td>
           <td style={isActive ? {width: descriptionCellWidth} : {}} colSpan='1'><PokemonDetailsBtn/></td>

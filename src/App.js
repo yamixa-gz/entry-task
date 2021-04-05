@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './scss/App.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
+// eslint-disable-next-line
 import FetchedDataTable from './components/FetchedDataTable'
 // eslint-disable-next-line
 import FirmStructure from './components/FirmStructure'

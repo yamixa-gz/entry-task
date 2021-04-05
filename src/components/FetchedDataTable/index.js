@@ -34,13 +34,13 @@ class FetchedDataTable extends Component {
     newFetchedDataArr: [],
     movingElement: {}
   }
-  setPending = (value) => {
+  setPending = value => {
     this.setState({
       ...this.state,
       isPending: value
     })
   }
-  setDataFromServer = (data) => {
+  setDataFromServer = data => {
     const fetchedDataArr = data.results.map((item, index) => (
         {
           id: uuid(),
@@ -89,12 +89,12 @@ class FetchedDataTable extends Component {
     this.getPageRequest(activePage)
   }
 
-  pageChangeHandler = (pageNumber) => {
+  pageChangeHandler = pageNumber => {
     const {isPending} = this.state
     if (isPending) return
     this.getPageRequest(pageNumber)
   }
-  keyPressHandler = (e) => {
+  keyPressHandler = e => {
     this.setState({
       ...this.state, hotKeyValue: e.key,
       activeElIndex: -1
@@ -189,7 +189,7 @@ class FetchedDataTable extends Component {
             <div className='d-flex justify-content-center mb-3'>
               <Image src='https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png'
                      alt='"PokeApi" image could be here...'
-                     onLoad={(e) => setTimeout(() => {
+                     onLoad={e => setTimeout(() => {
                        alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`)
                      }, 1000)}
                      onError={() => setTimeout(() => {
