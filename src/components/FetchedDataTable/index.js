@@ -81,6 +81,9 @@ class FetchedDataTable extends Component {
     document.addEventListener('keypress', this.keyPressHandler)
     this.getPageRequest(activePage)
   }
+  componentWillUnmount() {
+    document.removeEventListener('keypress', this.keyPressHandler)
+  }
 
   pageChangeHandler = pageNumber => {
     const {isPending} = this.state

@@ -6,16 +6,16 @@ const AddFirmStructItemModal = ({setModalShow, addDataFromFormToFirmStruct, tabl
     return (
             <Modal
                     {...props}
-                    size="md"
-                    aria-labelledby="contained-modal-title-vcenter"
+                    size='md'
+                    aria-labelledby='contained-modal-title-vcenter'
                     centered
             >
                 <Modal.Header>
-                    <Modal.Title id="contained-modal-title-vcenter" className={'fw-bold fs-4 text-secondary'}>
+                    <Modal.Title id='contained-modal-title-vcenter' className={'fw-bold fs-4 text-secondary'}>
                         Input item to FirmStruct
                     </Modal.Title>
-                    <button onClick={() => setModalShow(false)} type="button" className="btn-close"
-                            data-bs-dismiss="modal" aria-label="Close"/>
+                    <button onClick={() => setModalShow(false)} type='button' className='btn-close'
+                            data-bs-dismiss='modal' aria-label='Close'/>
                 </Modal.Header>
                 <Modal.Body>
                     <AddFirmStructItemForm

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import classNames from 'classnames/bind'
 import s from './common/scss/arrowDirection.module.scss'
 import {firmStruct} from './common/data'
-import uuid from 'react-uuid'
+import  uuid from 'react-uuid'
 import cloneDeep from 'lodash.clonedeep'
 import {
   EMPLOYEES_STYLE,
