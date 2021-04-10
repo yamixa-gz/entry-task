@@ -20,6 +20,7 @@ class FetchedDataTable extends Component {
     pageLimit: 20,
     pagesAmount: 0,
     activePage: 1,
+    pokemonDetails: null,
 
     activeElIndex: -1,
     hotKeyValue: '',
@@ -34,18 +35,53 @@ class FetchedDataTable extends Component {
     })
   }
   setDataFromServer = data => {
-    const fetchedDataArr = data.results.map((item, index) => (
-        {
+    const fetchedDataArr = data.results.map((item, index) =>
+        ({
           id: uuid(),
           hotKey: String.fromCharCode(97 + index),
           ...item
-        }
-    ))
+        })
+    )
     this.setState({
       ...this.state,
       fetchedDataArr,
       pagesAmount: data.count,
     })
+  }
+  setPokemonDetailsData = data => {
+    const abilities = data.abilities.map(item => item.ability?.name)
+    this.setState({
+      ...this.state,
+      pokemonDetails: {
+        ...this.state.pokemonDetails,
+        id: data.id,
+        name: data.species?.name,
+        avatarUrl: data.sprites?.front_default,
+        abilities,
+      }
+    })
+  }
+  getPokemonDetailsRequest = async detailsUrl => {
+    this.setPending(true)
+    try {
+      const response = await fetch(detailsUrl)
+      if (response.ok) {
+        this.setPokemonDetailsData(await response.json())
+        this.setPending(false)
+        return
+      }
+      this.setPending(false)
+      if (response.status === 404) {
+        console.error('Required address don`t exist! :(')
+        return
+      }
+      if (response.status === 500) {
+        console.error('Unexpected server error... :(')
+        return
+      }
+      console.error('Unknown error... :(')
+    } catch (e) {
+    }
   }
   getPageRequest = async pageNumber => {
     const {pageLimit} = this.state
@@ -59,16 +95,18 @@ class FetchedDataTable extends Component {
           activePage: pageNumber,
           isPending: false
         })
-      } else {
-        this.setPending(false)
-        if (response.status === 404) {
-          console.error('Required address don`t exist! :(')
-        } else if (response.status === 500) {
-          console.error('Unexpected server error... :(')
-        } else {
-          console.error('Unknown error... :(')
-        }
+        return
       }
+      this.setPending(false)
+      if (response.status === 404) {
+        console.error('Required address don`t exist! :(')
+        return
+      }
+      if (response.status === 500) {
+        console.error('Unexpected server error... :(')
+        return
+      }
+      console.error('Unknown error... :(')
     } catch (e) {
       this.setPending(false)
       console.error('Something went wrong...', e)
@@ -81,6 +119,7 @@ class FetchedDataTable extends Component {
     document.addEventListener('keypress', this.keyPressHandler)
     this.getPageRequest(activePage)
   }
+
   componentWillUnmount() {
     document.removeEventListener('keypress', this.keyPressHandler)
   }
@@ -138,7 +177,7 @@ class FetchedDataTable extends Component {
   render() {
     const {MainDataListTableHeader} = useTableComponents
     const {
-      fetchedDataArr, activePage, pagesAmount,
+      fetchedDataArr, activePage, pagesAmount, pokemonDetails,
       activeElIndex, hotKeyValue, pageLimit, isPending,
     } = this.state
     const fetchedDataComponents = fetchedDataArr.map((item, index) =>
@@ -149,10 +188,15 @@ class FetchedDataTable extends Component {
             activeElIndex={activeElIndex}
             index={index}
             key={item.id}
+            url={item.url}
+            pokemonDetails={pokemonDetails}
+            isPending={isPending}
+            // resetSelection={this.resetSelection}
             name={item.name ? `${this.nameCapitalize(item.name)}; HotKey: ${item.hotKey}` : 'unknown Name'}
             onClickHandler={this.onClickHandler}
             mouseUpEventHandler={this.mouseUpEventHandler}
             mouseDownEventHandler={this.mouseDownEventHandler}
+            getPokemonDetailsRequest={this.getPokemonDetailsRequest}
         />)
     return (
         <Container fluid className='bg-light mb-3 pt-3 h-100'>

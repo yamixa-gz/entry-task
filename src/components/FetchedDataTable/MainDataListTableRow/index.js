@@ -3,7 +3,8 @@ import PokemonDetailsBtn from './PokemonDetailsBtn'
 
 const MainDataListTableRow = ({
                                 index, isActive, name, mouseDownEventHandler, dragEnterHandler,
-                                mouseUpEventHandler, onClickHandler, hotKey, activeElIndex
+                                mouseUpEventHandler, onClickHandler, hotKey, activeElIndex, url,
+                                getPokemonDetailsRequest, isPending, pokemonDetails
                               }) => {
 
   return (
@@ -39,7 +40,12 @@ const MainDataListTableRow = ({
           }}
       >
         <td>{name}</td>
-        <td colSpan='1'><PokemonDetailsBtn/></td>
+        <td colSpan='1'><PokemonDetailsBtn
+            getPokemonDetailsRequest={getPokemonDetailsRequest}
+            url={url}
+            isPending={isPending}
+            pokemonDetails={pokemonDetails}
+        /></td>
       </tr>
   )
 }

@@ -13,8 +13,8 @@ class App extends Component {
           <Header/>
           <div className='content'>
             <div className='app-container'>
-              <FirmStructureContainer/>
-              {/*<FetchedDataTable/>*/}
+              {/*<FirmStructureContainer/>*/}
+              <FetchedDataTable/>
             </div>
           </div>
           <Footer/>
