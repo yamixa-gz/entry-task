@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import './scss/App.scss'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
 // eslint-disable-next-line
-import FetchedDataTable from './components/FetchedDataTable'
+import FetchedDataTable from './components/FetchedDataTable/FetchedDataTable'
 // eslint-disable-next-line
-import FirmStructureContainer from './components/FirmStructure/FirmStructureContainer'
+import FirmStructure from './components/FirmStructure/FirmStructure'
 class App extends Component {
   render() {
     return (
@@ -13,8 +13,8 @@ class App extends Component {
           <Header/>
           <div className='content'>
             <div className='app-container'>
-              {/*<FirmStructureContainer/>*/}
-              <FetchedDataTable/>
+              <FirmStructure/>
+              {/*<FetchedDataTable/>*/}
             </div>
           </div>
           <Footer/>
