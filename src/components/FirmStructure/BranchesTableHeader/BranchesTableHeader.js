@@ -1,11 +1,26 @@
 import s from './scss/BranchesTableHeader.module.scss'
-import {TITLE} from '../../../constants/firmStructureSections'
+import {TITLE} from '../../../constants/firmStructureElements'
 import React from 'react'
+import PropTypes from 'prop-types'
+import withTranslation from '../../../HOC/withTranslation'
 
-const BranchesTableHeader = ({setColumnStyle, sortClickHandler}) =>
+const BranchesTableHeader = ({appLanguage, setColumnStyle, sortClickHandler}) =>
     <tr>
       <th>#</th>
-      <th className={s.titleCell} onClick={() => sortClickHandler(TITLE)}><span className={setColumnStyle(TITLE)}>Name</span></th>
+      <th className={s.titleCell} onClick={() => sortClickHandler(TITLE)}><span
+          className={setColumnStyle(TITLE)}>{appLanguage.title}</span></th>
     </tr>
+BranchesTableHeader.propTypes = {
+  appLanguage: PropTypes.shape({
+    title: PropTypes.string,
+  }),
+  setColumnStyle: PropTypes.func,
+  sortClickHandler: PropTypes.func
+}
+BranchesTableHeader.defaultProps = {
+  appLanguage: {
+    title: 'Title',
+  }
+}
 
-export default BranchesTableHeader
+export default withTranslation(BranchesTableHeader)

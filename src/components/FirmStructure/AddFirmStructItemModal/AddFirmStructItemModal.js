@@ -1,8 +1,10 @@
 import {Modal} from 'react-bootstrap'
 import React from 'react'
 import AddFirmStructItemForm from '../AddFirmStructItemForm/AddFirmStructItemForm'
+import PropTypes from 'prop-types'
+import withTranslation from '../../../HOC/withTranslation'
 
-const AddFirmStructItemModal = ({setModalShow, addDataFromFormToFirmStruct, tableStyle, ...props}) => {
+const AddFirmStructItemModal = ({appLanguage, setModalShow, addDataFromFormToFirmStruct, tableStyle, ...props}) => {
     return (
             <Modal
                     {...props}
@@ -12,7 +14,7 @@ const AddFirmStructItemModal = ({setModalShow, addDataFromFormToFirmStruct, tabl
             >
                 <Modal.Header>
                     <Modal.Title id='contained-modal-title-vcenter' className={'fw-bold fs-4 text-secondary'}>
-                        Input item to FirmStruct
+                      {appLanguage.modalTitle}
                     </Modal.Title>
                     <button onClick={() => setModalShow(false)} type='button' className='btn-close'
                             data-bs-dismiss='modal' aria-label='Close'/>
@@ -27,5 +29,18 @@ const AddFirmStructItemModal = ({setModalShow, addDataFromFormToFirmStruct, tabl
             </Modal>
     )
 }
+AddFirmStructItemModal.propTypes = {
+  appLanguage: PropTypes.shape({
+    modalTitle: PropTypes.string,
+  }),
+  tableStyle: PropTypes.string,
+  setModalShow: PropTypes.func,
+  addDataFromFormToFirmStruct: PropTypes.func
+}
+AddFirmStructItemModal.defaultProps = {
+  appLanguage: {
+    modalTitle: 'Input item to FirmStruct',
+  }
+}
 
-export default AddFirmStructItemModal
+export default withTranslation(AddFirmStructItemModal)

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Table} from 'react-bootstrap'
-import {BRANCHES_STYLE, EMPLOYEES_STYLE, EMPTY_STRING} from '../../../constants/firmStructureSections'
+import {BRANCHES_STYLE, EMPLOYEES_STYLE, EMPTY_STRING} from '../../../constants/firmStructureElements'
 import BranchesTableRow from '../BranchesTableRow/BranchesTableRow'
 import EmployeesTableRow from '../EmployeesTableRow/EmployeesTableRow'
 import BranchesTableHeader from '../BranchesTableHeader/BranchesTableHeader'

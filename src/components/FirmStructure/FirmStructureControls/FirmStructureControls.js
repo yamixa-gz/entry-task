@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button} from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import withTranslation from '../../../HOC/withTranslation'
 
 const FirmStructureControls = ({appLanguage, setModalShow, itemsIdForDelete, removeDataFromFirmStructHandler}) => {
   return <div className='d-grid gap-2 d-md-block'>
@@ -30,5 +31,5 @@ FirmStructureControls.defaultProps = {
   }
 }
 
-export default FirmStructureControls
+export default withTranslation(FirmStructureControls)
 

@@ -10,6 +10,7 @@ import MainDataListTableRow from './MainDataListTableRow/MainDataListTableRow'
 import Pagination from 'react-js-pagination'
 import Preloader from '../FetchedDataTable/Preloader/Preloader'
 import MainDataListTableHeader from './MainDataListTableHeader/MainDataListTableHeader'
+import {INTERNAL_SERVER_ERROR, NOT_FOUND} from '../../constants/httpStatusCode'
 
 const BASE_URL = 'https://pokeapi.co/api/v2/'
 
@@ -71,11 +72,11 @@ class FetchedDataTable extends Component {
         return
       }
       this.setPending(false)
-      if (response.status === 404) {
+      if (response.status === NOT_FOUND) {
         console.error('Required address don`t exist! :(')
         return
       }
-      if (response.status === 500) {
+      if (response.status === INTERNAL_SERVER_ERROR) {
         console.error('Unexpected server error... :(')
         return
       }
@@ -98,11 +99,11 @@ class FetchedDataTable extends Component {
         return
       }
       this.setPending(false)
-      if (response.status === 404) {
+      if (response.status === NOT_FOUND) {
         console.error('Required address don`t exist! :(')
         return
       }
-      if (response.status === 500) {
+      if (response.status === INTERNAL_SERVER_ERROR) {
         console.error('Unexpected server error... :(')
         return
       }

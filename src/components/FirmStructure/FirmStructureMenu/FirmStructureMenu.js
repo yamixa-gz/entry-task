@@ -1,9 +1,11 @@
 import {ButtonGroup, Dropdown, DropdownButton} from 'react-bootstrap'
 import React from 'react'
+import PropTypes from 'prop-types'
+import withTranslation from '../../../HOC/withTranslation'
 
 const FirmStructureMenu = ({
                              isCategoryDisabled, isBranchesDisabled, isSubBranchesDisabled, firmStruct,
-                             onMenuItemSelectHandler, branchesIndex, subBranchesIndex, categoryName
+                             onMenuItemSelectHandler, branchesIndex, subBranchesIndex, categoryName, appLanguage
                            }) => {
 
   return <div className='d-grid gap-2 d-md-block'>
@@ -13,7 +15,7 @@ const FirmStructureMenu = ({
         as={ButtonGroup}
         id={`dropdown-variants-primary`}
         variant={'primary'}
-        title={categoryName ? categoryName : 'Category'}
+        title={categoryName ? Object.entries(appLanguage).find(entry => entry[0] === categoryName)[1] : 'Category'}
     >
       {!isCategoryDisabled
       && Object.keys(firmStruct).map(
@@ -34,7 +36,7 @@ const FirmStructureMenu = ({
         id={`dropdown-variants-primary`}
         variant={'primary'}
         title={branchesIndex >= 0
-            ? firmStruct.branches[branchesIndex].title : 'Branches'}
+            ? firmStruct.branches[branchesIndex].title : appLanguage.branches}
     >
       {!isBranchesDisabled
       && firmStruct.branches.map((item, i) =>
@@ -55,7 +57,7 @@ const FirmStructureMenu = ({
         variant={'primary'}
         title={subBranchesIndex >= 0
             ? firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].title
-            : 'Subbranches'}
+            : appLanguage.subBranches}
     >
       {!isSubBranchesDisabled
       && firmStruct.branches[branchesIndex].subBranches.map((item, i) =>
@@ -69,6 +71,28 @@ const FirmStructureMenu = ({
     </DropdownButton>
   </div>
 }
+FirmStructureMenu.propTypes = {
+  appLanguage: PropTypes.shape({
+    branches: PropTypes.string,
+    subBranches: PropTypes.string,
+    directors: PropTypes.string,
+  }),
+  isCategoryDisabled: PropTypes.bool,
+  isBranchesDisabled: PropTypes.bool,
+  isSubBranchesDisabled: PropTypes.bool,
+  firmStruct: PropTypes.object,
+  onMenuItemSelectHandler: PropTypes.func,
+  branchesIndex: PropTypes.number,
+  subBranchesIndex: PropTypes.number,
+  categoryName: PropTypes.string,
+}
+FirmStructureMenu.defaultProps = {
+  appLanguage: {
+    branches: 'Branches',
+    subBranches: 'SubBranches',
+    directors: 'Directors',
+  },
+}
 
-export default FirmStructureMenu
+export default withTranslation(FirmStructureMenu)
 

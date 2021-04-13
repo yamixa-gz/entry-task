@@ -13,7 +13,7 @@ import {
   CATEGORY_NAME,
   SUB_BRANCHES,
   SALARY
-} from '../../constants/firmStructureSections'
+} from '../../constants/firmStructureElements'
 import {ASCENDING, DESCENDING} from '../../constants/sortHeading'
 import FirmStructureView from './FirmStructureView'
 
@@ -384,7 +384,6 @@ class FirmStructure extends Component {
         && (categoryName === BRANCHES))
     const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
         && categoryName === BRANCHES)
-
     return <FirmStructureView isCategoryDisabled={isCategoryDisabled}
                               isBranchesDisabled={isBranchesDisabled}
                               isSubBranchesDisabled={isSubBranchesDisabled}
