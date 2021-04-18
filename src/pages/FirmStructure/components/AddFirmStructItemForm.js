@@ -1,14 +1,20 @@
-import React from 'react'
-import {Button, Form} from 'react-bootstrap'
-import {useFormik} from 'formik'
-import {EMPLOYEES_STYLE, JOB, NAME, SALARY, SURNAME, BRANCH_NAME} from '../../../constants/firmStructureElements'
-import {branchesValidationSchema, employeesValidationSchema} from '../../../validators/firmStructureShemas'
-import PropTypes from 'prop-types'
-import FormField from './FormField'
-import withTranslation from '../../../HOC/withTranslation'
+import React from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
+import {
+  EMPLOYEES_STYLE, JOB, NAME, SALARY, SURNAME, BRANCH_NAME 
+} from '../../../constants/firmStructureElements';
+import { branchesValidationSchema, employeesValidationSchema } from '../../../validators/firmStructureShemas';
+import FormField from './FormField';
+import withTranslation from '../../../HOC/withTranslation';
 
-const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmStruct, appLanguage}) => {
-  const {handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched} = useFormik({
+const AddFirmStructItemForm = ({
+  tableStyle, setModalShow, addDataFromFormToFirmStruct, appLanguage 
+}) => {
+  const {
+    handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched 
+  } = useFormik({
     initialValues: tableStyle === EMPLOYEES_STYLE ? {
       job: '',
       name: '',
@@ -17,78 +23,87 @@ const AddFirmStructItemForm = ({tableStyle, setModalShow, addDataFromFormToFirmS
     } : {
       branchName: ''
     },
-    onSubmit: values => {
-      addDataFromFormToFirmStruct(values)
-      setModalShow(false)
+    onSubmit: (submitValues) => {
+      addDataFromFormToFirmStruct(submitValues);
+      setModalShow(false);
     },
     validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesValidationSchema : branchesValidationSchema,
-  })
+  });
   return (
-      <Form onSubmit={handleSubmit}>
-        {
+    <Form onSubmit={handleSubmit}>
+      {
           tableStyle === EMPLOYEES_STYLE
-              ? <>
-                <FormField groupClass={'mt-2'}
-                           type={'text'}
-                           placeholder={appLanguage.placeholderJob}
-                           nameAndId={JOB}
-                           handleBlur={handleBlur}
-                           handleChange={handleChange}
-                           value={values.job}
-                           label={`${appLanguage.labelJob}:`}
-                           errorText={errors.job && touched.job ? errors.job : ''}
+            ? (
+              <>
+                <FormField
+                  groupClass="mt-2"
+                  type="text"
+                  placeholder={appLanguage.placeholderJob}
+                  nameAndId={JOB}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  value={values.job}
+                  label={`${appLanguage.labelJob}:`}
+                  errorText={errors.job && touched.job ? errors.job : ''}
                 />
-                <FormField groupClass={'mt-2'}
-                           type={'text'}
-                           placeholder={appLanguage.placeholderName}
-                           nameAndId={NAME}
-                           handleBlur={handleBlur}
-                           handleChange={handleChange}
-                           value={values.name}
-                           label={`${appLanguage.labelName}:`}
-                           errorText={errors.name && touched.name ? errors.name : ''}
+                <FormField
+                  groupClass="mt-2"
+                  type="text"
+                  placeholder={appLanguage.placeholderName}
+                  nameAndId={NAME}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  value={values.name}
+                  label={`${appLanguage.labelName}:`}
+                  errorText={errors.name && touched.name ? errors.name : ''}
                 />
-                <FormField groupClass={'mt-2'}
-                           type={'text'}
-                           placeholder={appLanguage.placeholderSurname}
-                           nameAndId={SURNAME}
-                           handleBlur={handleBlur}
-                           handleChange={handleChange}
-                           value={values.surname}
-                           label={`${appLanguage.labelSurname}:`}
-                           errorText={errors.surname && touched.surname ? errors.surname : ''}
+                <FormField
+                  groupClass="mt-2"
+                  type="text"
+                  placeholder={appLanguage.placeholderSurname}
+                  nameAndId={SURNAME}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  value={values.surname}
+                  label={`${appLanguage.labelSurname}:`}
+                  errorText={errors.surname && touched.surname ? errors.surname : ''}
                 />
-                <FormField groupClass={'mt-2 mb-2'}
-                           type={'text'}
-                           placeholder={appLanguage.placeholderSalary}
-                           nameAndId={SALARY}
-                           handleBlur={handleBlur}
-                           handleChange={handleChange}
-                           value={values.salary}
-                           label={`${appLanguage.labelSalary}:`}
-                           errorText={errors.salary && touched.salary ? errors.salary : ''}
+                <FormField
+                  groupClass="mt-2 mb-2"
+                  type="text"
+                  placeholder={appLanguage.placeholderSalary}
+                  nameAndId={SALARY}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  value={values.salary}
+                  label={`${appLanguage.labelSalary}:`}
+                  errorText={errors.salary && touched.salary ? errors.salary : ''}
                 />
               </>
-              : <FormField groupClass={'mt-2 mb-2'}
-                           type={'text'}
-                           placeholder={appLanguage.placeholderBranchName}
-                           nameAndId={BRANCH_NAME}
-                           handleBlur={handleBlur}
-                           handleChange={handleChange}
-                           value={values.branchName}
-                           label={`${appLanguage.labelBranchName}:`}
-                           errorText={errors.branchName && touched.branchName ? errors.branchName : ''}
+            )
+            : (
+              <FormField
+                groupClass="mt-2 mb-2"
+                type="text"
+                placeholder={appLanguage.placeholderBranchName}
+                nameAndId={BRANCH_NAME}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                value={values.branchName}
+                label={`${appLanguage.labelBranchName}:`}
+                errorText={errors.branchName && touched.branchName ? errors.branchName : ''}
               />
+            )
         }
-        <Button className={'mb-2'} variant='primary' type='submit'>
-          {appLanguage.addItem}
-        </Button>
-        <Button onClick={handleReset} className={'mb-2 ms-2'} variant='secondary' type='button'>
-          {appLanguage.resetForm}
-        </Button>
-      </Form>
-  )
-}
+      <Button className="mb-2" variant="primary" type="submit">
+        {appLanguage.addItem}
+      </Button>
+      <Button onClick={handleReset} className="mb-2 ms-2" variant="secondary" type="button">
+        {appLanguage.resetForm}
+      </Button>
+    </Form>
+  );
+};
 AddFirmStructItemForm.propTypes = {
   appLanguage: PropTypes.shape({
     labelJob: PropTypes.string,
@@ -104,10 +119,10 @@ AddFirmStructItemForm.propTypes = {
     addItem: PropTypes.string,
     resetForm: PropTypes.string,
   }),
-  tableStyle: PropTypes.string,
-  setModalShow: PropTypes.func,
-  addDataFromFormToFirmStruct: PropTypes.func
-}
+  tableStyle: PropTypes.string.isRequired,
+  setModalShow: PropTypes.func.isRequired,
+  addDataFromFormToFirmStruct: PropTypes.func.isRequired
+};
 AddFirmStructItemForm.defaultProps = {
   appLanguage: {
     labelJob: 'Job',
@@ -123,6 +138,6 @@ AddFirmStructItemForm.defaultProps = {
     addItem: 'Add',
     resetForm: 'Reset',
   }
-}
+};
 
-export default withTranslation(AddFirmStructItemForm)
+export default withTranslation(AddFirmStructItemForm);

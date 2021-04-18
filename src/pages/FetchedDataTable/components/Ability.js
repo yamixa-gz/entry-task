@@ -1,5 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-const Ability = ({ability}) => <><span className='lh-sm'>{ability}</span><br/></>
+const Ability = ({ ability }) => (
+  <>
+    <span className="lh-sm">{ability}</span>
+    <br />
+  </>
+);
 
-export default Ability
+export default Ability;

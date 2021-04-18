@@ -1,4 +1,4 @@
-export const languages = {
+const languages = {
   en: {
     FirmStructureMenu: {
       branches: 'Branches',
@@ -73,4 +73,6 @@ export const languages = {
       resetForm: 'Сбросить',
     }
   }
-}
+};
+
+export default languages;
