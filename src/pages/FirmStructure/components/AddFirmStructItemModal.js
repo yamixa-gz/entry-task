@@ -1,23 +1,30 @@
 import { Modal } from 'react-bootstrap';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
 import withTranslation from '../../../HOC/withTranslation';
+import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const AddFirmStructItemModal = ({
-  appLanguage, setModalShow, addDataFromFormToFirmStruct, tableStyle, ...props 
+  appLanguage, getTranslation = () => null, setModalShow,
+  addDataFromFormToFirmStruct, tableStyle, onHide, show
 }) => {
+  const defaultAppTranslation = {
+    modalTitle: 'Input item to FirmStruct',
+  };
+  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
   return (
     <Modal
-   /* eslint-disable-next-line react/jsx-props-no-spreading */
-      {...props}
+      onHide={onHide}
+      show={show}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter" className="fw-bold fs-4 text-secondary">
-          {appLanguage.modalTitle}
+          {appTranslation.modalTitle}
         </Modal.Title>
         <button
           onClick={() => setModalShow(false)}
@@ -37,18 +44,18 @@ const AddFirmStructItemModal = ({
     </Modal>
   );
 };
+
 AddFirmStructItemModal.propTypes = {
-  appLanguage: PropTypes.shape({
-    modalTitle: PropTypes.string,
-  }),
+  appLanguage: PropTypes.string.isRequired,
+  getTranslation: PropTypes.func.isRequired,
   tableStyle: PropTypes.string.isRequired,
   setModalShow: PropTypes.func.isRequired,
-  addDataFromFormToFirmStruct: PropTypes.func.isRequired
-};
-AddFirmStructItemModal.defaultProps = {
-  appLanguage: {
-    modalTitle: 'Input item to FirmStruct',
-  }
+  addDataFromFormToFirmStruct: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
 };
 
-export default withTranslation(AddFirmStructItemModal);
+export default compose(
+  withAppLanguageConsumer,
+  withTranslation,
+)(AddFirmStructItemModal);

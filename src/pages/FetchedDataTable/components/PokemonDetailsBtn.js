@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PokemonDetailsModal from './PokemonDetailsModal';
 
 const PokemonDetailsBtn = ({
-  url, getPokemonDetailsRequest, isPending, pokemonDetails 
+  url, getPokemonDetailsRequest, isPending, pokemonDetails
 }) => {
   const [isLoading, setLoading] = useState(false);
   const [isModalShow, setModalShow] = useState(false);

@@ -1,6 +1,6 @@
-import uuid from 'react-uuid'
+import uuid from 'react-uuid';
 
-export let firmStruct = {
+export const firmStruct = {
   branches: [
     {
       id: uuid(),
@@ -242,4 +242,4 @@ export let firmStruct = {
       salary: 6000
     },
   }
-}
+};

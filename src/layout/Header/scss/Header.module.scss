@@ -1,5 +1,12 @@
 .header {
   &Wrapper {
+    position: relative;
+
+    &DropdownLang {
+      position: absolute;
+      top: 11px;
+      right: 15px;
+    }
   }
 
   &Contacts {
@@ -146,6 +153,7 @@
           background-color: #12c4e0;
         }
       }
+
       a {
         position: relative;
         color: #04184d;

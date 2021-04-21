@@ -1,30 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import APP_LANGUAGE from '../translation/appLanguage';
 import languages from '../translation/languages';
+import {EN} from "../constants/firmStructureElements";
 
-const withTranslation = (Component) => {
-  let appLanguage = null;
+const withTranslation = Component => {
   if (!Component.name) {
     throw new Error('Component is not valid!');
   }
-  if (!Object.keys(languages).includes(APP_LANGUAGE)) {
-    throw new Error('Type of language is not valid!');
+  const getTranslation = (lang = EN) => {
+    if (!languages[lang]) return null
+    const currentLanguagePack = languages[lang];
+    if (!currentLanguagePack[Component.name]) return null
+    return currentLanguagePack[Component.name];
   }
-  const currentLanguagePack = Object.entries(languages).find((entry) => entry[0] === APP_LANGUAGE)[1];
-  if (!Object.keys(currentLanguagePack).includes(Component.name)) {
-    // eslint-disable-next-line no-console
-    console.error('Component is not recognized!');
-  } else {
-    [appLanguage] = [Object.entries(currentLanguagePack).find((entry) => entry[0] === Component.name)[1]];
-  }
+
   return (props) => {
     return (
-      <Component
-          /* eslint-disable-next-line react/jsx-props-no-spreading */
-        {...props}
-        appLanguage={appLanguage}
-      />
+        <Component
+            /* eslint-disable-next-line react/jsx-props-no-spreading */
+            {...props}
+            getTranslation={getTranslation}
+        />
     );
   };
 };

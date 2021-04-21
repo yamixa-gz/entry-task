@@ -5,7 +5,7 @@ import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
 
 const PokemonDetailsModal = ({
-  isLoading, pokemonDetails, setModalShow, ...props 
+  isLoading, pokemonDetails, setModalShow, ...props
 }) => {
   const [isLoadedMainImage, setLoadedMainImage] = useState(false);
   const abilities = pokemonDetails && pokemonDetails.abilities.map((ability) => <Ability key={ability} ability={ability} />);

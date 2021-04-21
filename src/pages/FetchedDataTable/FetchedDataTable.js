@@ -11,6 +11,8 @@ import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from '../../constants/httpStatusCode';
+import Header from '../../layout/Header/Header';
+import Footer from '../../layout/Footer/Footer';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
@@ -34,7 +36,7 @@ class FetchedDataTable extends Component {
   setPending = (value) => {
     this.setState({
       ...this.state,
-      isPending: value
+      isPending: value,
     });
   }
 
@@ -215,43 +217,54 @@ class FetchedDataTable extends Component {
       />
     ));
     return (
-      <Container fluid className="bg-light mb-3 pt-3 h-100">
-        <div className="middle-container ">
-          <div className="d-flex justify-content-center mb-3">
-            <Image
-              src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
-              alt='"PokeApi" image could be here...'
-              onLoad={(e) => setTimeout(() => {
-                alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`);
-              }, 1000)}
-              onError={() => setTimeout(() => {
-                alert('"PokeApi" image loading crashed...');
-              }, 1000)}
-            />
-          </div>
-          <Table className="mb-5" striped bordered hover>
-            <thead>
-              <MainDataListTableHeader />
-            </thead>
-            <tbody>
-              {fetchedDataComponents}
-            </tbody>
-          </Table>
-          <div className="position-relative">
-            {isPending && <Preloader />}
-            <Pagination
-              itemClass="page-item"
-              linkClass="page-link"
-              innerClass="pagination justify-content-center"
-              itemsCountPerPage={pageLimit}
-              totalItemsCount={pagesAmount}
-              pageRangeDisplayed={5}
-              activePage={activePage}
-              onChange={this.pageChangeHandler}
-            />
+      <>
+        <Header toggleLanguage={() => {
+        }}
+        />
+        <div className="content">
+          <div className="app-container">
+
+            <Container fluid className="bg-light mb-3 pt-3 h-100">
+              <div className="middle-container ">
+                <div className="d-flex justify-content-center mb-3">
+                  <Image
+                    src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
+                    alt='"PokeApi" image could be here...'
+                    onLoad={(e) => setTimeout(() => {
+                      alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`);
+                    }, 1000)}
+                    onError={() => setTimeout(() => {
+                      alert('"PokeApi" image loading crashed...');
+                    }, 1000)}
+                  />
+                </div>
+                <Table className="mb-5" striped bordered hover>
+                  <thead>
+                    <MainDataListTableHeader />
+                  </thead>
+                  <tbody>
+                    {fetchedDataComponents}
+                  </tbody>
+                </Table>
+                <div className="position-relative">
+                  {isPending && <Preloader />}
+                  <Pagination
+                    itemClass="page-item"
+                    linkClass="page-link"
+                    innerClass="pagination justify-content-center"
+                    itemsCountPerPage={pageLimit}
+                    totalItemsCount={pagesAmount}
+                    pageRangeDisplayed={5}
+                    activePage={activePage}
+                    onChange={this.pageChangeHandler}
+                  />
+                </div>
+              </div>
+            </Container>
           </div>
         </div>
-      </Container>
+        <Footer />
+      </>
     );
   }
 }

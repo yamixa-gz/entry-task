@@ -1,18 +1,27 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import withTranslation from '../../../HOC/withTranslation';
+import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const FirmStructureControls = ({
-  appLanguage, setModalShow, itemsIdForDelete, removeDataFromFirmStructHandler 
+  appLanguage, getTranslation = () => null, setModalShow,
+  itemsIdForDelete, removeDataFromFirmStructHandler
 }) => {
+  const defaultAppTranslation = {
+    addButtonName: 'Add',
+    removeButtonName: 'Remove'
+  };
+  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+
   return (
     <div className="d-grid gap-2 d-md-block">
       <Button
         onClick={() => setModalShow(true)}
         variant="secondary"
       >
-        {appLanguage.addButtonName}
+        {appTranslation.addButtonName}
       </Button>
       <Button
         onClick={removeDataFromFirmStructHandler}
@@ -20,25 +29,20 @@ const FirmStructureControls = ({
         className="ms-md-2"
         disabled={!itemsIdForDelete.length}
       >
-        {appLanguage.removeButtonName}
+        {appTranslation.removeButtonName}
       </Button>
     </div>
   );
 };
 FirmStructureControls.propTypes = {
-  appLanguage: PropTypes.shape({
-    addButtonName: PropTypes.string,
-    removeButtonName: PropTypes.string
-  }),
+  appLanguage: PropTypes.string.isRequired,
+  getTranslation: PropTypes.func.isRequired,
   setModalShow: PropTypes.func.isRequired,
   itemsIdForDelete: PropTypes.array.isRequired,
   removeDataFromFirmStructHandler: PropTypes.func.isRequired
 };
-FirmStructureControls.defaultProps = {
-  appLanguage: {
-    addButtonName: 'Add',
-    removeButtonName: 'Remove'
-  }
-};
 
-export default withTranslation(FirmStructureControls);
+export default compose(
+  withAppLanguageConsumer,
+  withTranslation,
+)(FirmStructureControls);

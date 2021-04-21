@@ -1,13 +1,15 @@
-import React, {Component} from 'react'
-import s from './scss/Description.module.scss'
-import vcs from '../../assets/images/Description/cvs.png'
-import git from '../../assets/images/Description/git.png'
-import nodejs from '../../assets/images/Description/nodejs.png'
-import npm from '../../assets/images/Description/npm.png'
-import html from '../../assets/images/Description/html.png'
-import css from '../../assets/images/Description/css.png'
-import Card from './components/Card'
-import uuid from 'react-uuid'
+import React, {Component} from 'react';
+import uuid from 'react-uuid';
+import s from './scss/Description.module.scss';
+import vcs from '../../assets/images/Description/cvs.png';
+import git from '../../assets/images/Description/git.png';
+import nodejs from '../../assets/images/Description/nodejs.png';
+import npm from '../../assets/images/Description/npm.png';
+import html from '../../assets/images/Description/html.png';
+import css from '../../assets/images/Description/css.png';
+import Card from './components/Card';
+import Header from "../../layout/Header/Header";
+import Footer from "../../layout/Footer/Footer";
 
 class Description extends Component {
   cards = [
@@ -120,20 +122,21 @@ class Description extends Component {
     openCardId: null
   }
 
-  clickHandler = id => {
+  clickHandler = (id) => {
     this.setState({
       openCardId: this.state.openCardId === id ? null : id
-    })
+    });
   }
+
   makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
     return fullText.length < symbolsAmount
         ? fullText
-        : fullText.slice(0, symbolsAmount) + '...'
+        : `${fullText.slice(0, symbolsAmount)}...`;
   }
 
   render() {
-    const {openCardId} = this.state
-    const cardsList = this.cards.map(item =>
+    const {openCardId} = this.state;
+    const cardsList = this.cards.map((item) => (
         <Card
             key={item.id}
             id={item.id}
@@ -142,21 +145,31 @@ class Description extends Component {
             img={item.img}
             isOpen={openCardId === item.id}
             clickHandler={this.clickHandler}
-            makeShortTextForCardContent={this.makeShortTextForCardContent}/>
-    )
+            makeShortTextForCardContent={this.makeShortTextForCardContent}
+        />
+    ));
     return (
-        <div className={s.description}>
-          <div className={s.descriptionTitle}>
-            {this.descriptionTitle}
-          </div>
-          <div className={s.descriptionContent}>
-            <div className={s.descriptionCardWrapper}>
-              {cardsList}
+        <>
+          <Header toggleLanguage={() => {
+          }}/>
+          <div className="content">
+            <div className="app-container">
+              <div className={s.description}>
+                <div className={s.descriptionTitle}>
+                  {this.descriptionTitle}
+                </div>
+                <div className={s.descriptionContent}>
+                  <div className={s.descriptionCardWrapper}>
+                    {cardsList}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-    )
+          <Footer/>
+        </>
+    );
   }
 }
 
-export default Description
+export default Description;

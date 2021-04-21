@@ -1,5 +1,5 @@
 const languages = {
-  en: {
+  EN: {
     FirmStructureMenu: {
       branches: 'Branches',
       subBranches: 'SubBranches',
@@ -36,7 +36,7 @@ const languages = {
       resetForm: 'Reset',
     }
   },
-  ru: {
+  RU: {
     FirmStructureMenu: {
       branches: 'Отделы',
       subBranches: 'Подотделы',

@@ -2,60 +2,63 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from '../scss/TableHeader.module.scss';
 import {
-  JOB, NAME, SALARY, SURNAME 
+  JOB, NAME, SALARY, SURNAME
 } from '../../../constants/firmStructureElements';
 import withTranslation from '../../../HOC/withTranslation';
+import {compose} from 'redux';
+import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
-const EmployeesTableHeader = ({ appLanguage, setColumnStyle, sortClickHandler }) => (
-  <tr>
-    <th>#</th>
-    <th className={s.titleCell} onClick={() => sortClickHandler(JOB)}>
-      <span
-        className={setColumnStyle(JOB)}
-      >
-        {appLanguage.job}
-      </span>
-    </th>
-    <th className={s.titleCell} onClick={() => sortClickHandler(NAME)}>
-      <span
-        className={setColumnStyle(NAME)}
-      >
-        {appLanguage.name}
-      </span>
-    </th>
-    <th className={s.titleCell} onClick={() => sortClickHandler(SURNAME)}>
-      <span
-        className={setColumnStyle(SURNAME)}
-      >
-        {appLanguage.surname}
-      </span>
-    </th>
-    <th className={s.titleCell} onClick={() => sortClickHandler(SALARY)}>
-      <span
-        className={setColumnStyle(SALARY)}
-      >
-        {appLanguage.salary}
-      </span>
-    </th>
-  </tr>
-);
-EmployeesTableHeader.propTypes = {
-  appLanguage: PropTypes.shape({
-    job: PropTypes.string,
-    name: PropTypes.string,
-    surname: PropTypes.string,
-    salary: PropTypes.string,
-  }),
-  setColumnStyle: PropTypes.func,
-  sortClickHandler: PropTypes.func
-};
-EmployeesTableHeader.defaultProps = {
-  appLanguage: {
+const EmployeesTableHeader = ({appLanguage, getTranslation = () => null, setColumnStyle, sortClickHandler}) => {
+  const defaultAppTranslation = {
     job: 'Job',
     name: 'Name',
     surname: 'Surname',
     salary: 'Salary',
   }
+  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation
+
+  return (
+      <tr>
+        <th>#</th>
+        <th className={s.titleCell} onClick={() => sortClickHandler(JOB)}>
+      <span
+          className={setColumnStyle(JOB)}
+      >
+        {appTranslation.job}
+      </span>
+        </th>
+        <th className={s.titleCell} onClick={() => sortClickHandler(NAME)}>
+      <span
+          className={setColumnStyle(NAME)}
+      >
+        {appTranslation.name}
+      </span>
+        </th>
+        <th className={s.titleCell} onClick={() => sortClickHandler(SURNAME)}>
+      <span
+          className={setColumnStyle(SURNAME)}
+      >
+        {appTranslation.surname}
+      </span>
+        </th>
+        <th className={s.titleCell} onClick={() => sortClickHandler(SALARY)}>
+      <span
+          className={setColumnStyle(SALARY)}
+      >
+        {appTranslation.salary}
+      </span>
+        </th>
+      </tr>
+  )
+};
+EmployeesTableHeader.propTypes = {
+  appLanguage: PropTypes.string.isRequired,
+  getTranslation: PropTypes.func.isRequired,
+  setColumnStyle: PropTypes.func.isRequired,
+  sortClickHandler: PropTypes.func.isRequired,
 };
 
-export default withTranslation(EmployeesTableHeader);
+export default compose(
+    withAppLanguageConsumer,
+    withTranslation,
+)(EmployeesTableHeader);
