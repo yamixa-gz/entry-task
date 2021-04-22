@@ -1,5 +1,6 @@
 import { Button } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import PokemonDetailsModal from './PokemonDetailsModal';
 
 const PokemonDetailsBtn = ({
@@ -14,7 +15,7 @@ const PokemonDetailsBtn = ({
         setLoading(false);
       });
     }
-  }, [url, isLoading, setLoading, getPokemonDetailsRequest]);
+  }, [isLoading]);
   const onClickHandler = (e) => {
     e.stopPropagation();
     if (isPending) return;
@@ -41,6 +42,26 @@ const PokemonDetailsBtn = ({
       )}
     </>
   );
+};
+PokemonDetailsBtn.propTypes = {
+  url: PropTypes.string.isRequired,
+  getPokemonDetailsRequest: PropTypes.func.isRequired,
+  isPending: PropTypes.bool.isRequired,
+  pokemonDetails: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+    abilities: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
+
+PokemonDetailsBtn.defaultProps = {
+  pokemonDetails: {
+    id: 0,
+    name: '',
+    avatarUrl: '',
+    abilities: [],
+  }
 };
 
 export default PokemonDetailsBtn;

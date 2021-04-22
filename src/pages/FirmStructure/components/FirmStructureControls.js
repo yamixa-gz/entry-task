@@ -38,7 +38,7 @@ FirmStructureControls.propTypes = {
   appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   setModalShow: PropTypes.func.isRequired,
-  itemsIdForDelete: PropTypes.array.isRequired,
+  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
   removeDataFromFirmStructHandler: PropTypes.func.isRequired
 };
 

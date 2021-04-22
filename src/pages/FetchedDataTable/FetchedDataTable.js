@@ -17,27 +17,40 @@ import Footer from '../../layout/Footer/Footer';
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
 class FetchedDataTable extends Component {
-  state = {
-    isPending: false,
-    fetchedDataArr: [],
-    pageLimit: 20,
-    pagesAmount: 0,
-    activePage: 1,
-    pokemonDetails: null,
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPending: false,
+      fetchedDataArr: [],
+      pageLimit: 20,
+      pagesAmount: 0,
+      activePage: 1,
+      pokemonDetails: null,
 
-    activeElIndex: -1,
-    hotKeyValue: '',
-    newFetchedDataArr: [],
-    movingElement: {},
-    insertingElIndex: -1,
-    mouseDownPressed: false,
+      activeElIndex: -1,
+      hotKeyValue: '',
+      newFetchedDataArr: [],
+      movingElement: {},
+      insertingElIndex: -1,
+      mouseDownPressed: false,
+    };
+  }
+
+  componentDidMount() {
+    const { activePage } = this.state;
+    document.addEventListener('keypress', this.keyPressHandler);
+    this.getPageRequest(activePage);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keypress', this.keyPressHandler);
   }
 
   setPending = (value) => {
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       isPending: value,
-    });
+    }));
   }
 
   setDataFromServer = (data) => {
@@ -46,25 +59,25 @@ class FetchedDataTable extends Component {
       hotKey: String.fromCharCode(97 + index),
       ...item
     }));
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       fetchedDataArr,
       pagesAmount: data.count,
-    });
+    }));
   }
 
   setPokemonDetailsData = (data) => {
     const abilities = data.abilities.map((item) => item.ability?.name);
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       pokemonDetails: {
-        ...this.state.pokemonDetails,
+        ...state.pokemonDetails,
         id: data.id,
         name: data.species?.name,
         avatarUrl: data.sprites?.front_default,
         abilities,
       }
-    });
+    }));
   }
 
   getPokemonDetailsRequest = async (detailsUrl) => {
@@ -78,15 +91,20 @@ class FetchedDataTable extends Component {
       }
       this.setPending(false);
       if (response.status === NOT_FOUND) {
+        // eslint-disable-next-line no-console
         console.error('Required address don`t exist! :(');
         return;
       }
       if (response.status === INTERNAL_SERVER_ERROR) {
+        // eslint-disable-next-line no-console
         console.error('Unexpected server error... :(');
         return;
       }
+      // eslint-disable-next-line no-console
       console.error('Unknown error... :(');
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
     }
   }
 
@@ -107,31 +125,25 @@ class FetchedDataTable extends Component {
       }
       this.setPending(false);
       if (response.status === NOT_FOUND) {
+        // eslint-disable-next-line no-console
         console.error('Required address don`t exist! :(');
         return;
       }
       if (response.status === INTERNAL_SERVER_ERROR) {
+        // eslint-disable-next-line no-console
         console.error('Unexpected server error... :(');
         return;
       }
+      // eslint-disable-next-line no-console
       console.error('Unknown error... :(');
     } catch (e) {
       this.setPending(false);
+      // eslint-disable-next-line no-console
       console.error('Something went wrong...', e);
     }
   }
 
   nameCapitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
-
-  componentDidMount() {
-    const { activePage } = this.state;
-    document.addEventListener('keypress', this.keyPressHandler);
-    this.getPageRequest(activePage);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keypress', this.keyPressHandler);
-  }
 
   pageChangeHandler = (pageNumber) => {
     const { isPending } = this.state;
@@ -141,40 +153,40 @@ class FetchedDataTable extends Component {
 
   keyPressHandler = (e) => {
     const { fetchedDataArr } = this.state;
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       hotKeyValue: e.key,
       activeElIndex: fetchedDataArr.findIndex((el) => el.hotKey === e.key)
-    });
+    }));
   }
 
   onClickHandler = (index, hotKey) => {
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       activeElIndex: index,
       hotKeyValue: hotKey,
-    });
+    }));
   }
 
   dragEnterHandler = (index) => {
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       insertingElIndex: index
-    });
+    }));
   }
 
   mouseDownEventHandler = (index) => {
     const { fetchedDataArr } = this.state;
     const newFetchedDataArr = fetchedDataArr.filter((_, i) => i !== index);
     const movingElement = { ...fetchedDataArr[index] };
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       newFetchedDataArr,
       movingElement,
       activeElIndex: index,
       insertingElIndex: index,
       mouseDownPressed: true,
-    });
+    }));
   }
 
   mouseUpEventHandler = () => {
@@ -182,13 +194,13 @@ class FetchedDataTable extends Component {
     const sortedFetchedDataArr = cloneDeep(newFetchedDataArr);
 
     sortedFetchedDataArr.splice(insertingElIndex, 0, { ...movingElement });
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       fetchedDataArr: sortedFetchedDataArr,
       activeElIndex: -1,
       hotKeyValue: '',
       mouseDownPressed: false,
-    });
+    }));
   }
 
   render() {
@@ -231,9 +243,11 @@ class FetchedDataTable extends Component {
                     src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
                     alt='"PokeApi" image could be here...'
                     onLoad={(e) => setTimeout(() => {
+                      // eslint-disable-next-line no-alert
                       alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`);
                     }, 1000)}
                     onError={() => setTimeout(() => {
+                      // eslint-disable-next-line no-alert
                       alert('"PokeApi" image loading crashed...');
                     }, 1000)}
                   />

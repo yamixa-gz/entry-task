@@ -1,6 +1,6 @@
 import uuid from 'react-uuid';
 
-export const firmStruct = {
+const firmStruct = {
   branches: [
     {
       id: uuid(),
@@ -243,3 +243,5 @@ export const firmStruct = {
     },
   }
 };
+
+export default firmStruct;

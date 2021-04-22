@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
 
 const PokemonDetailsModal = ({
-  isLoading, pokemonDetails, setModalShow, ...props
+  pokemonDetails, setModalShow, show, onHide
 }) => {
   const [isLoadedMainImage, setLoadedMainImage] = useState(false);
-  const abilities = pokemonDetails && pokemonDetails.abilities.map((ability) => <Ability key={ability} ability={ability} />);
-
+  const abilities = pokemonDetails && pokemonDetails
+    .abilities.map((ability) => <Ability key={ability} ability={ability} />);
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       backdrop="static"
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
@@ -67,4 +69,25 @@ const PokemonDetailsModal = ({
     </Modal>
   );
 };
+PokemonDetailsModal.propTypes = {
+  pokemonDetails: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+    abilities: PropTypes.arrayOf(PropTypes.string),
+  }),
+  setModalShow: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired,
+};
+
+PokemonDetailsModal.defaultProps = {
+  pokemonDetails: {
+    id: 0,
+    name: '',
+    avatarUrl: '',
+    abilities: [],
+  }
+};
+
 export default PokemonDetailsModal;

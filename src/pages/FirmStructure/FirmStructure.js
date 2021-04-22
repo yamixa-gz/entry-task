@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import uuid from 'react-uuid';
 import cloneDeep from 'lodash.clonedeep';
 import s from './scss/TableHeader.module.scss';
-import { firmStruct } from '../../data/inputFirmStructData';
+import firmStruct from '../../data/inputFirmStructData';
 import {
   EMPLOYEES_STYLE,
   EMPTY_STRING,
@@ -20,20 +20,23 @@ import FirmStructureView from './FirmStructureView';
 const cx = classNames.bind(s);
 
 class FirmStructure extends Component {
-  // eslint-disable-next-line react/state-in-constructor
-  state = {
-    isModalShow: false,
-    sortDirection: EMPTY_STRING, // one of these -> EMPTY_STRING, ascending, descending
-    sortedColumnName: EMPTY_STRING,
-    firmStructControls: {
-      categoryName: Object.keys(firmStruct).includes(BRANCHES) ? BRANCHES : EMPTY_STRING,
-      branchesIndex: -1,
-      subBranchesIndex: -1,
-      isEmployees: false,
-      showingFirmStructSection: cloneDeep(firmStruct.branches),
-      tableStyle: BRANCHES_STYLE,
-      itemsIdForDelete: [],
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalShow: false,
+      sortDirection: EMPTY_STRING, // one of these -> EMPTY_STRING, ascending, descending
+      sortedColumnName: EMPTY_STRING,
+      firmStructControls: {
+        categoryName: Object.keys(firmStruct)
+          .includes(BRANCHES) ? BRANCHES : EMPTY_STRING,
+        branchesIndex: -1,
+        subBranchesIndex: -1,
+        isEmployees: false,
+        showingFirmStructSection: cloneDeep(firmStruct.branches),
+        tableStyle: BRANCHES_STYLE,
+        itemsIdForDelete: [],
+      }
+    };
   }
 
   sortColumnByName = (columnName, sortDirection) => {
@@ -55,12 +58,13 @@ class FirmStructure extends Component {
       if (prevEl[columnName].toLowerCase() > nextEl[columnName].toLowerCase()) return -1;
       return 0;
     };
-  }
+  };
 
   builtInSort = (sortingArr, sortDirection, columnName) => {
     if (!sortDirection) return cloneDeep(sortingArr);
-    return cloneDeep(sortingArr).sort(this.sortColumnByName(columnName, sortDirection));
-  }
+    return cloneDeep(sortingArr)
+      .sort(this.sortColumnByName(columnName, sortDirection));
+  };
 
   ownSelectionSort = (sortingArr, sortDirection, columnName) => {
     if (!sortDirection) return cloneDeep(sortingArr);
@@ -68,36 +72,47 @@ class FirmStructure extends Component {
     const newSortingArr = cloneDeep(sortingArr);
     for (let i = 0; i < newSortingArr.length - 1; i += 1) {
       for (let j = i + 1; j < newSortingArr.length; j += 1) {
-        if (sortDirection === ASCENDING) {
-          if (isNumberTypeValue) {
-            newSortingArr[j][columnName] < newSortingArr[i][columnName]
-            && ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
-          } else {
-            newSortingArr[j][columnName].toLowerCase() < newSortingArr[i][columnName].toLowerCase()
-            && ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
-          }
-        }
-        if (sortDirection === DESCENDING) {
-          if (isNumberTypeValue) {
-            newSortingArr[j][columnName] > newSortingArr[i][columnName]
-            && ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
-          } else {
-            newSortingArr[j][columnName].toLowerCase() > newSortingArr[i][columnName].toLowerCase()
-            && ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
-          }
+        switch (sortDirection) {
+          case ASCENDING:
+            if (isNumberTypeValue) {
+              if (newSortingArr[j][columnName] < newSortingArr[i][columnName]) {
+                ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
+              }
+            } else if (!isNumberTypeValue) {
+              if (newSortingArr[j][columnName].toLowerCase() < newSortingArr[i][columnName].toLowerCase()) {
+                ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
+              }
+            }
+            break;
+          case DESCENDING:
+            if (isNumberTypeValue) {
+              if (newSortingArr[j][columnName] > newSortingArr[i][columnName]) {
+                ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
+              }
+            } else if (!isNumberTypeValue) {
+              if (newSortingArr[j][columnName].toLowerCase() > newSortingArr[i][columnName].toLowerCase()) {
+                ([newSortingArr[i], newSortingArr[j]] = [newSortingArr[j], newSortingArr[i]]);
+              }
+            }
+            break;
+          default:
         }
       }
     }
     return newSortingArr;
-  }
+  };
 
-  setModalShow = (value) => this.setState({
-    ...this.state, isModalShow: value
-  })
+  setModalShow = (value) => this.setState((state) => ({
+    ...state,
+    isModalShow: value
+  }));
 
   sortClickHandler = (columnName) => {
     let setSortDirection;
-    const { sortDirection, sortedColumnName } = this.state;
+    const {
+      sortDirection,
+      sortedColumnName
+    } = this.state;
     switch (sortDirection) {
       case ASCENDING:
         setSortDirection = DESCENDING;
@@ -114,27 +129,31 @@ class FirmStructure extends Component {
     if (sortedColumnName !== columnName) {
       setSortDirection = ASCENDING;
     }
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       sortDirection: setSortDirection,
       sortedColumnName: columnName,
-    });
-  }
+    }));
+  };
 
   removeDataFromFirmStructHandler = () => {
+    const { firmStructControls } = this.state;
     const {
-      itemsIdForDelete, categoryName, subBranchesIndex, branchesIndex,
+      itemsIdForDelete,
+      categoryName,
+      subBranchesIndex,
+      branchesIndex,
       showingFirmStructSection: stateShowingFirmStructSection
-    } = this.state.firmStructControls;
+    } = firmStructControls;
     let newShowingFirmStructSection = [];
     if (!itemsIdForDelete.length) return;
 
     if (categoryName === DIRECTORS) {
       const newModifiedDirectors = this.removeItemsFromFirmStructSection(firmStruct.directors, itemsIdForDelete);
       // eslint-disable-next-line
-      console.log('Source section \"directors\":', Object.values(firmStruct.directors))
+      console.log('Source section \"directors\":', Object.values(firmStruct.directors));
       // eslint-disable-next-line
-      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors))
+      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors));
       newShowingFirmStructSection = Object.values(newModifiedDirectors);
       firmStruct.directors = newModifiedDirectors;
     } else if (categoryName === BRANCHES) {
@@ -144,9 +163,9 @@ class FirmStructure extends Component {
       switch (stateShowingFirmStructSection[0].id) {
         case firmStruct.branches[0].id:
           // eslint-disable-next-line
-          console.log('Source section \"branches\":', firmStruct.branches)
+          console.log('Source section \"branches\":', firmStruct.branches);
           // eslint-disable-next-line
-          console.log('New modified section \"branches\":', newShowingFirmStructSection)
+          console.log('New modified section \"branches\":', newShowingFirmStructSection);
           firmStruct.branches = newShowingFirmStructSection;
           break;
         case firmStruct.branches[branchesIndex].subBranches[0].id:
@@ -154,7 +173,7 @@ class FirmStructure extends Component {
           console.log('Source section \"subBranches\":',
             firmStruct.branches[branchesIndex].subBranches);
           // eslint-disable-next-line
-          console.log('New modified section \"subBranches\":', newShowingFirmStructSection)
+          console.log('New modified section \"subBranches\":', newShowingFirmStructSection);
           firmStruct.branches[branchesIndex].subBranches = newShowingFirmStructSection;
           break;
         case firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees[0].id:
@@ -162,40 +181,49 @@ class FirmStructure extends Component {
           console.log('Source section \"employees\":', firmStruct.branches[branchesIndex]
             .subBranches[subBranchesIndex].employees);
           // eslint-disable-next-line
-          console.log('New modified section \"employees\":', newShowingFirmStructSection)
+          console.log('New modified section \"employees\":', newShowingFirmStructSection);
           firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees = newShowingFirmStructSection;
           break;
         default:
       }
     }
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       firmStructControls: {
-        ...this.state.firmStructControls,
+        ...state.firmStructControls,
         itemsIdForDelete: [],
         showingFirmStructSection: newShowingFirmStructSection,
       }
-    });
-  }
+    }));
+  };
 
   onClickTableRowHandler = (id) => {
-    const { itemsIdForDelete } = this.state.firmStructControls;
-    const oldArr = itemsIdForDelete;
-    let newArr = [...itemsIdForDelete];
-    oldArr.includes(id) ? newArr = oldArr.filter((el) => el !== id) : newArr.push(id);
-    this.setState({
-      ...this.state,
+    const { firmStructControls } = this.state;
+    const { itemsIdForDelete } = firmStructControls;
+    let newArr = [];
+
+    if (itemsIdForDelete.includes(id)) {
+      newArr = itemsIdForDelete.filter((el) => el !== id);
+    } else {
+      newArr.push(id);
+    }
+    this.setState((state) => ({
+      ...state,
       firmStructControls: {
-        ...this.state.firmStructControls,
+        ...state.firmStructControls,
         itemsIdForDelete: newArr,
       }
-    });
-  }
+    }));
+  };
 
   onMenuItemSelectHandler = (selectedMenuItem) => {
     const section = selectedMenuItem.split('-*-')[0];
     const selectedIndex = +selectedMenuItem.split('-*-')[1];
-    const { branchesIndex, categoryName: stateCategoryName } = this.state.firmStructControls;
+    const { firmStructControls } = this.state;
+    const {
+      branchesIndex,
+      categoryName: stateCategoryName
+    } = firmStructControls;
     let categoryName = EMPTY_STRING;
     let setSectionIndex;
     let tableStyle;
@@ -203,13 +231,14 @@ class FirmStructure extends Component {
     let setSectionValues = {};
 
     if (section === CATEGORY_NAME) {
-      categoryName = selectedMenuItem.split('-*-')[2];
+      [categoryName] = [selectedMenuItem.split('-*-')[2]];
       if (categoryName === BRANCHES) {
         showingFirmStructSection = cloneDeep(firmStruct[categoryName]);
       } else if (categoryName === DIRECTORS) {
-        Object.keys(firmStruct.directors).forEach((key) => {
-          showingFirmStructSection.push({ ...firmStruct.directors[key] });
-        });
+        Object.keys(firmStruct.directors)
+          .forEach((key) => {
+            showingFirmStructSection.push({ ...firmStruct.directors[key] });
+          });
       }
       tableStyle = categoryName === DIRECTORS ? EMPLOYEES_STYLE : BRANCHES_STYLE;
       if (categoryName === DIRECTORS) {
@@ -243,12 +272,12 @@ class FirmStructure extends Component {
         isEmployees: true,
       };
     }
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       sortDirection: EMPTY_STRING,
       sortedColumnName: EMPTY_STRING,
       firmStructControls: {
-        ...this.state.firmStructControls,
+        ...state.firmStructControls,
         [`${section}Index`]: setSectionIndex,
         categoryName: categoryName || stateCategoryName,
         ...setSectionValues,
@@ -256,8 +285,8 @@ class FirmStructure extends Component {
         tableStyle,
         showingFirmStructSection,
       }
-    });
-  }
+    }));
+  };
 
   addItemToFirmStructSection = (section, data) => {
     let modifiedSection;
@@ -269,16 +298,23 @@ class FirmStructure extends Component {
       modifiedSection[uuid()] = { ...data };
     }
     return modifiedSection;
-  }
+  };
 
   addDataFromFormToFirmStruct = (data) => {
+    const { firmStructControls } = this.state;
     const {
-      categoryName, branchesIndex, subBranchesIndex, isEmployees
-    } = this.state.firmStructControls;
+      categoryName,
+      branchesIndex,
+      subBranchesIndex,
+      isEmployees
+    } = firmStructControls;
     let showingFirmStructSection;
     if (categoryName === DIRECTORS) {
       const {
-        job, name, surname, salary
+        job,
+        name,
+        surname,
+        salary
       } = data;
       const newModifiedDirectors = this.addItemToFirmStructSection(firmStruct.directors,
         {
@@ -289,9 +325,9 @@ class FirmStructure extends Component {
           salary,
         });
       // eslint-disable-next-line
-      console.log('Source section \"directors\":', Object.values(firmStruct.directors))
+      console.log('Source section \"directors\":', Object.values(firmStruct.directors));
       // eslint-disable-next-line
-      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors))
+      console.log('New modified section \"directors\":', Object.values(newModifiedDirectors));
       firmStruct.directors = newModifiedDirectors;
       showingFirmStructSection = Object.values(firmStruct.directors);
     }
@@ -304,9 +340,9 @@ class FirmStructure extends Component {
           subBranches: []
         });
       // eslint-disable-next-line
-      console.log('Source section \"branches\":', firmStruct.branches)
+      console.log('Source section \"branches\":', firmStruct.branches);
       // eslint-disable-next-line
-      console.log('New modified section \"branches\":', newModifiedBranches)
+      console.log('New modified section \"branches\":', newModifiedBranches);
       firmStruct.branches = newModifiedBranches;
       showingFirmStructSection = cloneDeep(newModifiedBranches);
     }
@@ -321,15 +357,18 @@ class FirmStructure extends Component {
         }
       );
       // eslint-disable-next-line
-      console.log('Source section \"subBranches\":', firmStruct.branches[branchesIndex].subBranches)
+      console.log('Source section \"subBranches\":', firmStruct.branches[branchesIndex].subBranches);
       // eslint-disable-next-line
-      console.log('New modified section \"subBranches\":', newModifiedSubBranches)
+      console.log('New modified section \"subBranches\":', newModifiedSubBranches);
       firmStruct.branches[branchesIndex].subBranches = newModifiedSubBranches;
       showingFirmStructSection = cloneDeep(newModifiedSubBranches);
     }
     if (categoryName === BRANCHES && branchesIndex >= 0 && subBranchesIndex >= 0) {
       const {
-        job, name, surname, salary
+        job,
+        name,
+        surname,
+        salary
       } = data;
       const newModifiedEmployees = this.addItemToFirmStructSection(
         firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees,
@@ -345,25 +384,25 @@ class FirmStructure extends Component {
       console.log('Source section \"employees\":',
         firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees);
       // eslint-disable-next-line
-      console.log('New modified section \"employees\":', newModifiedEmployees)
+      console.log('New modified section \"employees\":', newModifiedEmployees);
       firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees = newModifiedEmployees;
       showingFirmStructSection = cloneDeep(newModifiedEmployees);
     }
 
-    this.setState({
-      ...this.state,
+    this.setState((state) => ({
+      ...state,
       firmStructControls: {
-        ...this.state.firmStructControls,
+        ...state.firmStructControls,
         showingFirmStructSection,
       }
-    });
-  }
+    }));
+  };
 
   removeItemsFromFirmStructSection = (currentSection, itemsIdForDelete) => {
     let newModifiedSection;
     if (Array.isArray(currentSection)) {
       newModifiedSection = cloneDeep(currentSection.filter((el) => {
-        for (let i = 0; i < itemsIdForDelete.length; i++) {
+        for (let i = 0; i < itemsIdForDelete.length; i += 1) {
           if (itemsIdForDelete[i] === el.id) return false;
         }
         return true;
@@ -373,19 +412,27 @@ class FirmStructure extends Component {
         .filter((entry) => !itemsIdForDelete.includes(entry[1].id)));
     }
     return newModifiedSection;
-  }
+  };
 
   setColumnStyle = (columnName) => {
-    const { sortedColumnName, sortDirection } = this.state;
+    const {
+      sortedColumnName,
+      sortDirection
+    } = this.state;
     return cx({
       arrowDirection: sortedColumnName === columnName,
       arrowDirectionDown: sortDirection === ASCENDING,
       arrowDirectionUp: sortDirection === DESCENDING
     });
-  }
+  };
 
   render() {
-    const { isModalShow, sortDirection, sortedColumnName: columnName } = this.state;
+    const {
+      isModalShow,
+      sortDirection,
+      sortedColumnName: columnName,
+      firmStructControls
+    } = this.state;
     const {
       showingFirmStructSection: oldShowingFirmStructSection,
       branchesIndex,
@@ -393,21 +440,23 @@ class FirmStructure extends Component {
       categoryName,
       tableStyle,
       itemsIdForDelete
-    } = this.state.firmStructControls;
+    } = firmStructControls;
 
     // sort functions
     const showingFirmStructSection = this.builtInSort(oldShowingFirmStructSection, sortDirection, columnName);
-    //     const showingFirmStructSection = this.ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
+    // const showingFirmStructSection = this.ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
 
     if (sortDirection) {
+      // eslint-disable-next-line no-console
       console.log('Source object array to show: ', oldShowingFirmStructSection);
+      // eslint-disable-next-line no-console
       console.log('New sorted object array to show: ', showingFirmStructSection);
     }
     const isCategoryDisabled = !categoryName;
     const isBranchesDisabled = !(firmStruct.branches.length > 0
-        && (categoryName === BRANCHES));
+      && (categoryName === BRANCHES));
     const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
-        && categoryName === BRANCHES);
+      && categoryName === BRANCHES);
     return (
       <FirmStructureView
         isCategoryDisabled={isCategoryDisabled}

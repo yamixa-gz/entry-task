@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import uuid from 'react-uuid';
 import s from './scss/Description.module.scss';
 import vcs from '../../assets/images/Description/cvs.png';
@@ -8,8 +8,8 @@ import npm from '../../assets/images/Description/npm.png';
 import html from '../../assets/images/Description/html.png';
 import css from '../../assets/images/Description/css.png';
 import Card from './components/Card';
-import Header from "../../layout/Header/Header";
-import Footer from "../../layout/Footer/Footer";
+import Header from '../../layout/Header/Header';
+import Footer from '../../layout/Footer/Footer';
 
 class Description extends Component {
   cards = [
@@ -118,56 +118,60 @@ class Description extends Component {
 
   descriptionTitle = 'Данный проект раскрывает основные понятия git, node.js, а также затрагивает основы html и css.'
 
-  state = {
-    openCardId: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      openCardId: null
+    };
   }
 
   clickHandler = (id) => {
-    this.setState({
-      openCardId: this.state.openCardId === id ? null : id
-    });
+    this.setState((state) => ({
+      openCardId: state.openCardId === id ? null : id
+    }));
   }
 
   makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
     return fullText.length < symbolsAmount
-        ? fullText
-        : `${fullText.slice(0, symbolsAmount)}...`;
+      ? fullText
+      : `${fullText.slice(0, symbolsAmount)}...`;
   }
 
   render() {
-    const {openCardId} = this.state;
+    const { openCardId } = this.state;
     const cardsList = this.cards.map((item) => (
-        <Card
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            img={item.img}
-            isOpen={openCardId === item.id}
-            clickHandler={this.clickHandler}
-            makeShortTextForCardContent={this.makeShortTextForCardContent}
-        />
+      <Card
+        key={item.id}
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        img={item.img}
+        isOpen={openCardId === item.id}
+        clickHandler={this.clickHandler}
+        makeShortTextForCardContent={this.makeShortTextForCardContent}
+      />
     ));
     return (
-        <>
-          <Header toggleLanguage={() => {
-          }}/>
-          <div className="content">
-            <div className="app-container">
-              <div className={s.description}>
-                <div className={s.descriptionTitle}>
-                  {this.descriptionTitle}
-                </div>
-                <div className={s.descriptionContent}>
-                  <div className={s.descriptionCardWrapper}>
-                    {cardsList}
-                  </div>
+      <>
+        <Header toggleLanguage={() => {
+        }}
+        />
+        <div className="content">
+          <div className="app-container">
+            <div className={s.description}>
+              <div className={s.descriptionTitle}>
+                {this.descriptionTitle}
+              </div>
+              <div className={s.descriptionContent}>
+                <div className={s.descriptionCardWrapper}>
+                  {cardsList}
                 </div>
               </div>
             </div>
           </div>
-          <Footer/>
-        </>
+        </div>
+        <Footer />
+      </>
     );
   }
 }

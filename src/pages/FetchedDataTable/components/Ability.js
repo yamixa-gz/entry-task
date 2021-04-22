@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Ability = ({ ability }) => (
   <>
@@ -6,5 +7,8 @@ const Ability = ({ ability }) => (
     <br />
   </>
 );
+Ability.propTypes = {
+  ability: PropTypes.string.isRequired,
+};
 
 export default Ability;
