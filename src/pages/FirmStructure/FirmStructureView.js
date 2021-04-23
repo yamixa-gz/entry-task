@@ -5,8 +5,7 @@ import AddFirmStructItemModal from './components/AddFirmStructItemModal';
 import FirmStructureMenu from './components/FirmStructureMenu';
 import FirmStructureTable from './components/FirmStructureTable';
 import FirmStructureControls from './components/FirmStructureControls';
-import Header from '../../layout/Header/Header';
-import Footer from '../../layout/Footer/Footer';
+import Layout from '../../layout/Layout';
 
 const FirmStructureView = ({
   isCategoryDisabled, categoryName, isBranchesDisabled, isSubBranchesDisabled,
@@ -15,6 +14,7 @@ const FirmStructureView = ({
   onMenuItemSelectHandler, isModalShow, branchesIndex, subBranchesIndex, setColumnStyle,
   sortClickHandler, firmStruct
 }) => {
+  const { Header, Footer } = Layout();
   return (
     <>
       <Header />

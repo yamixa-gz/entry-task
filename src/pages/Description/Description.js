@@ -8,8 +8,7 @@ import npm from '../../assets/images/Description/npm.png';
 import html from '../../assets/images/Description/html.png';
 import css from '../../assets/images/Description/css.png';
 import Card from './components/Card';
-import Header from '../../layout/Header/Header';
-import Footer from '../../layout/Footer/Footer';
+import Layout from '../../layout/Layout';
 
 class Description extends Component {
   cards = [
@@ -139,6 +138,7 @@ class Description extends Component {
 
   render() {
     const { openCardId } = this.state;
+    const { Header, Footer } = Layout();
     const cardsList = this.cards.map((item) => (
       <Card
         key={item.id}

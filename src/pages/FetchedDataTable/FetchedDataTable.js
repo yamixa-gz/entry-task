@@ -11,8 +11,7 @@ import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from '../../constants/httpStatusCode';
-import Header from '../../layout/Header/Header';
-import Footer from '../../layout/Footer/Footer';
+import Layout from '../../layout/Layout';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
@@ -208,6 +207,7 @@ class FetchedDataTable extends Component {
       fetchedDataArr, activePage, pagesAmount, pokemonDetails,
       activeElIndex, hotKeyValue, pageLimit, isPending, insertingElIndex, mouseDownPressed
     } = this.state;
+    const { Header, Footer } = Layout();
     const fetchedDataComponents = fetchedDataArr.map((item, index) => (
       <MainDataListTableRow
         dragEnterHandler={this.dragEnterHandler}
