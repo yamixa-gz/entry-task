@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
 import s from '../scss/TableHeader.module.scss';
 import { TITLE } from '../../../constants/firmStructureElements';
 import withTranslation from '../../../HOC/withTranslation';
-import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const BranchesTableHeader = ({
-  appLanguage, getTranslation = () => null, setColumnStyle, sortClickHandler
+  getTranslation = () => null, setColumnStyle, sortClickHandler
 }) => {
   const defaultAppTranslation = {
     title: 'Title'
   };
-  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+  const appTranslation = getTranslation() || defaultAppTranslation;
 
   return (
     <tr>
@@ -29,13 +27,9 @@ const BranchesTableHeader = ({
 };
 
 BranchesTableHeader.propTypes = {
-  appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   setColumnStyle: PropTypes.func.isRequired,
   sortClickHandler: PropTypes.func.isRequired
 };
 
-export default compose(
-  withAppLanguageConsumer,
-  withTranslation,
-)(BranchesTableHeader);
+export default withTranslation(BranchesTableHeader);

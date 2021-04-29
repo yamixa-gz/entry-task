@@ -1,19 +1,17 @@
 import { Modal } from 'react-bootstrap';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
 import withTranslation from '../../../HOC/withTranslation';
-import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const AddFirmStructItemModal = ({
-  appLanguage, getTranslation = () => null, setModalShow,
+  getTranslation = () => null, setModalShow,
   addDataFromFormToFirmStruct, tableStyle, onHide, show
 }) => {
   const defaultAppTranslation = {
     modalTitle: 'Input item to FirmStruct',
   };
-  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+  const appTranslation = getTranslation() || defaultAppTranslation;
   return (
     <Modal
       onHide={onHide}
@@ -46,7 +44,6 @@ const AddFirmStructItemModal = ({
 };
 
 AddFirmStructItemModal.propTypes = {
-  appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   tableStyle: PropTypes.string.isRequired,
   setModalShow: PropTypes.func.isRequired,
@@ -55,7 +52,4 @@ AddFirmStructItemModal.propTypes = {
   show: PropTypes.bool.isRequired
 };
 
-export default compose(
-  withAppLanguageConsumer,
-  withTranslation,
-)(AddFirmStructItemModal);
+export default withTranslation(AddFirmStructItemModal);

@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
+import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
 
 const MainDataListTableRow = ({
-  index, isActive, name, mouseDownEventHandler, dragEnterHandler,
-  mouseUpEventHandler, onClickHandler, hotKey, activeElIndex, url,
-  getPokemonDetailsRequest, isPending, pokemonDetails, insertingElIndex,
-  mouseDownPressed
+  isActive, hotKey, index, url, name, handlers, callbacks
 }) => {
+  const { state } = useContext(FetchedDataTableContext);
+
+  const {
+    mouseDownEventHandler, dragEnterHandler,
+    mouseUpEventHandler, onClickHandler,
+  } = handlers;
+  const {
+    mouseDownPressed, insertingElIndex, activeElIndex
+  } = state;
+
   const className = cn({
     'border border-2 border-danger': isActive,
     'border border-2 border-info': (insertingElIndex === index) && mouseDownPressed,
@@ -41,10 +49,8 @@ const MainDataListTableRow = ({
       <td>{name}</td>
       <td colSpan="1">
         <PokemonDetailsBtn
-          getPokemonDetailsRequest={getPokemonDetailsRequest}
+          callbacks={callbacks}
           url={url}
-          isPending={isPending}
-          pokemonDetails={pokemonDetails}
         />
       </td>
     </tr>
@@ -54,32 +60,20 @@ MainDataListTableRow.propTypes = {
   index: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  mouseDownEventHandler: PropTypes.func.isRequired,
-  dragEnterHandler: PropTypes.func.isRequired,
-  mouseUpEventHandler: PropTypes.func.isRequired,
-  onClickHandler: PropTypes.func.isRequired,
   hotKey: PropTypes.string.isRequired,
-  activeElIndex: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
-  getPokemonDetailsRequest: PropTypes.func.isRequired,
-  isPending: PropTypes.bool.isRequired,
-  insertingElIndex: PropTypes.number.isRequired,
-  mouseDownPressed: PropTypes.bool.isRequired,
-  pokemonDetails: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
-    abilities: PropTypes.arrayOf(PropTypes.string),
-  }),
-};
-
-MainDataListTableRow.defaultProps = {
-  pokemonDetails: {
-    id: 0,
-    name: '',
-    avatarUrl: '',
-    abilities: [],
-  }
+  handlers: PropTypes.shape({
+    pageChangeHandler: PropTypes.func.isRequired,
+    onClickHandler: PropTypes.func.isRequired,
+    keyPressHandler: PropTypes.func.isRequired,
+    dragEnterHandler: PropTypes.func.isRequired,
+    mouseDownEventHandler: PropTypes.func.isRequired,
+    mouseUpEventHandler: PropTypes.func.isRequired,
+  }).isRequired,
+  callbacks: PropTypes.shape({
+    nameCapitalize: PropTypes.func.isRequired,
+    getPokemonDetailsRequest: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default MainDataListTableRow;

@@ -2,17 +2,15 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
 import {
   EMPLOYEES_STYLE, JOB, NAME, SALARY, SURNAME, BRANCH_NAME
 } from '../../../constants/firmStructureElements';
 import { branchesValidationSchema, employeesValidationSchema } from '../../../validators/firmStructureShemas';
 import FormField from './FormField';
 import withTranslation from '../../../HOC/withTranslation';
-import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const AddFirmStructItemForm = ({
-  tableStyle, setModalShow, addDataFromFormToFirmStruct, appLanguage, getTranslation = () => null
+  tableStyle, setModalShow, addDataFromFormToFirmStruct, getTranslation = () => null
 }) => {
   const {
     handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched
@@ -26,7 +24,7 @@ const AddFirmStructItemForm = ({
       branchName: ''
     },
     onSubmit: (submitValues) => {
-      addDataFromFormToFirmStruct(submitValues);
+      addDataFromFormToFirmStruct({ ...submitValues, salary: +submitValues.salary });
       setModalShow(false);
     },
     validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesValidationSchema : branchesValidationSchema,
@@ -45,7 +43,7 @@ const AddFirmStructItemForm = ({
     addItem: 'Add',
     resetForm: 'Reset',
   };
-  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+  const appTranslation = getTranslation() || defaultAppTranslation;
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -123,14 +121,10 @@ const AddFirmStructItemForm = ({
   );
 };
 AddFirmStructItemForm.propTypes = {
-  appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   tableStyle: PropTypes.string.isRequired,
   setModalShow: PropTypes.func.isRequired,
   addDataFromFormToFirmStruct: PropTypes.func.isRequired
 };
 
-export default compose(
-  withAppLanguageConsumer,
-  withTranslation,
-)(AddFirmStructItemForm);
+export default withTranslation(AddFirmStructItemForm);

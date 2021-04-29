@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import languages from '../translation/languages';
 import { EN } from '../constants/firmStructureElements';
+import { AppLanguageContext } from '../cotexts/AppLanguageProvider';
 
 const withTranslation = (Component) => {
   if (!Component.name) {
@@ -15,11 +16,12 @@ const withTranslation = (Component) => {
   };
 
   return (props) => {
+    const { language } = useContext(AppLanguageContext);
     return (
       <Component
             /* eslint-disable-next-line react/jsx-props-no-spreading */
         {...props}
-        getTranslation={getTranslation}
+        getTranslation={() => getTranslation(language)}
       />
     );
   };

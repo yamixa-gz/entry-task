@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
 import s from '../scss/TableHeader.module.scss';
 import {
   JOB, NAME, SALARY, SURNAME
 } from '../../../constants/firmStructureElements';
 import withTranslation from '../../../HOC/withTranslation';
-import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const EmployeesTableHeader = ({
-  appLanguage, getTranslation = () => null, setColumnStyle, sortClickHandler
+  getTranslation = () => null, setColumnStyle, sortClickHandler
 }) => {
   const defaultAppTranslation = {
     job: 'Job',
@@ -17,7 +15,7 @@ const EmployeesTableHeader = ({
     surname: 'Surname',
     salary: 'Salary',
   };
-  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+  const appTranslation = getTranslation() || defaultAppTranslation;
 
   return (
     <tr>
@@ -54,13 +52,9 @@ const EmployeesTableHeader = ({
   );
 };
 EmployeesTableHeader.propTypes = {
-  appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   setColumnStyle: PropTypes.func.isRequired,
   sortClickHandler: PropTypes.func.isRequired,
 };
 
-export default compose(
-  withAppLanguageConsumer,
-  withTranslation,
-)(EmployeesTableHeader);
+export default withTranslation(EmployeesTableHeader);

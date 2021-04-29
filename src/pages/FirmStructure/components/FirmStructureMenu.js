@@ -1,20 +1,18 @@
 import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
 import withTranslation from '../../../HOC/withTranslation';
-import withAppLanguageConsumer from '../../../HOC/withAppLanguageConsumer';
 
 const FirmStructureMenu = ({
   isCategoryDisabled, isBranchesDisabled, isSubBranchesDisabled, firmStruct, getTranslation = () => null,
-  onMenuItemSelectHandler, branchesIndex, subBranchesIndex, categoryName, appLanguage
+  onMenuItemSelectHandler, branchesIndex, subBranchesIndex, categoryName
 }) => {
   const defaultAppTranslation = {
     branches: 'Branches',
     subBranches: 'SubBranches',
     directors: 'Directors',
   };
-  const appTranslation = getTranslation(appLanguage) || defaultAppTranslation;
+  const appTranslation = getTranslation() || defaultAppTranslation;
   return (
     <div className="d-grid gap-2 d-md-block">
       <DropdownButton
@@ -88,7 +86,6 @@ const FirmStructureMenu = ({
   );
 };
 FirmStructureMenu.propTypes = {
-  appLanguage: PropTypes.string.isRequired,
   getTranslation: PropTypes.func.isRequired,
   isCategoryDisabled: PropTypes.bool.isRequired,
   isBranchesDisabled: PropTypes.bool.isRequired,
@@ -103,7 +100,4 @@ FirmStructureMenu.propTypes = {
   }).isRequired
 };
 
-export default compose(
-  withAppLanguageConsumer,
-  withTranslation,
-)(FirmStructureMenu);
+export default withTranslation(FirmStructureMenu);

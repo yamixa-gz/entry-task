@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
+import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
+import { ShowPokemonDetailsContext } from '../../../cotexts/ShowPokemonDetailsProvider';
 
-const PokemonDetailsModal = ({
-  pokemonDetails, setModalShow, show, onHide
-}) => {
-  const [isLoadedMainImage, setLoadedMainImage] = useState(false);
+const PokemonDetailsModal = () => {
+  const {
+    setPokemonDetailsModalShow,
+    setLoadedPokemonDetailsImage,
+    isPokemonDetailsModalShow,
+    isLoadedPokemonDetailsImage,
+  } = useContext(ShowPokemonDetailsContext);
+  const { state } = useContext(FetchedDataTableContext);
+  const { pokemonDetails } = state;
+
   const abilities = pokemonDetails && pokemonDetails
     .abilities.map((ability) => <Ability key={ability} ability={ability} />);
   return (
     <Modal
-      show={show}
-      onHide={onHide}
+      show={isPokemonDetailsModalShow}
+      onHide={() => setPokemonDetailsModalShow(false)}
       backdrop="static"
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
@@ -27,7 +34,7 @@ const PokemonDetailsModal = ({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setModalShow(false);
+            setPokemonDetailsModalShow(false);
           }}
           type="button"
           className="btn-close"
@@ -37,13 +44,13 @@ const PokemonDetailsModal = ({
       </Modal.Header>
       <Modal.Body>
         <Card>
-          <AvatarHolder visibility={!isLoadedMainImage} />
+          <AvatarHolder visibility={!isLoadedPokemonDetailsImage} />
           <Card.Img
             src={pokemonDetails && pokemonDetails.avatarUrl}
             alt="Avatar"
-            className={!isLoadedMainImage ? `${s.size} invisible d-none` : s.size}
+            className={!isLoadedPokemonDetailsImage ? `${s.size} invisible d-none` : s.size}
             onLoad={() => {
-              setLoadedMainImage(true);
+              setLoadedPokemonDetailsImage(true);
             }}
           />
           <Card.Body>
@@ -60,7 +67,7 @@ const PokemonDetailsModal = ({
       <Modal.Footer>
         <Button onClick={(e) => {
           e.stopPropagation();
-          setModalShow(false);
+          setPokemonDetailsModalShow(false);
         }}
         >
           Close
@@ -68,26 +75,6 @@ const PokemonDetailsModal = ({
       </Modal.Footer>
     </Modal>
   );
-};
-PokemonDetailsModal.propTypes = {
-  pokemonDetails: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
-    abilities: PropTypes.arrayOf(PropTypes.string),
-  }),
-  setModalShow: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired,
-};
-
-PokemonDetailsModal.defaultProps = {
-  pokemonDetails: {
-    id: 0,
-    name: '',
-    avatarUrl: '',
-    abilities: [],
-  }
 };
 
 export default PokemonDetailsModal;

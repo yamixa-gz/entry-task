@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames/bind';
 import uuid from 'react-uuid';
 import cloneDeep from 'lodash.clonedeep';
 import s from './scss/TableHeader.module.scss';
-import firmStruct from '../../data/inputFirmStructData';
 import {
   EMPLOYEES_STYLE,
   EMPTY_STRING,
@@ -16,30 +15,22 @@ import {
 } from '../../constants/firmStructureElements';
 import { ASCENDING, DESCENDING } from '../../constants/sortHeading';
 import FirmStructureView from './FirmStructureView';
+import { FirmStructContext, FirmStructContextProvider } from '../../cotexts/FirmStructureProvider';
 
 const cx = classNames.bind(s);
+const FirmStructure = () => {
+  const {
+    state,
+    setModalShow,
+    setSortDirectionByColumn,
+    removeDataFromFirmStruct,
+    setItemsForDelete,
+    setSelectedMenuItem,
+    addDataToFirmStruct,
+    firmStruct,
+  } = useContext(FirmStructContext);
 
-class FirmStructure extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalShow: false,
-      sortDirection: EMPTY_STRING, // one of these -> EMPTY_STRING, ascending, descending
-      sortedColumnName: EMPTY_STRING,
-      firmStructControls: {
-        categoryName: Object.keys(firmStruct)
-          .includes(BRANCHES) ? BRANCHES : EMPTY_STRING,
-        branchesIndex: -1,
-        subBranchesIndex: -1,
-        isEmployees: false,
-        showingFirmStructSection: cloneDeep(firmStruct.branches),
-        tableStyle: BRANCHES_STYLE,
-        itemsIdForDelete: [],
-      }
-    };
-  }
-
-  sortColumnByName = (columnName, sortDirection) => {
+  const sortColumnByName = (columnName, sortDirection) => {
     if (columnName === SALARY) {
       if (sortDirection === ASCENDING) {
         return (prevEl, nextEl) => prevEl.salary - nextEl.salary;
@@ -60,13 +51,15 @@ class FirmStructure extends Component {
     };
   };
 
-  builtInSort = (sortingArr, sortDirection, columnName) => {
+  // eslint-disable-next-line no-unused-vars
+  const builtInSort = (sortingArr, sortDirection, columnName) => {
     if (!sortDirection) return cloneDeep(sortingArr);
     return cloneDeep(sortingArr)
-      .sort(this.sortColumnByName(columnName, sortDirection));
+      .sort(sortColumnByName(columnName, sortDirection));
   };
 
-  ownSelectionSort = (sortingArr, sortDirection, columnName) => {
+  // eslint-disable-next-line no-unused-vars
+  const ownSelectionSort = (sortingArr, sortDirection, columnName) => {
     if (!sortDirection) return cloneDeep(sortingArr);
     const isNumberTypeValue = columnName === SALARY;
     const newSortingArr = cloneDeep(sortingArr);
@@ -101,55 +94,59 @@ class FirmStructure extends Component {
     }
     return newSortingArr;
   };
-
-  setModalShow = (value) => this.setState((state) => ({
-    ...state,
-    isModalShow: value
-  }));
-
-  sortClickHandler = (columnName) => {
-    let setSortDirection;
+  const removeItemsFromFirmStructSection = (currentSection, itemsIdForDelete) => {
+    let newModifiedSection;
+    if (Array.isArray(currentSection)) {
+      newModifiedSection = cloneDeep(currentSection.filter((el) => {
+        for (let i = 0; i < itemsIdForDelete.length; i += 1) {
+          if (itemsIdForDelete[i] === el.id) return false;
+        }
+        return true;
+      }));
+    } else {
+      newModifiedSection = Object.fromEntries(Object.entries(firmStruct.directors)
+        .filter((entry) => !itemsIdForDelete.includes(entry[1].id)));
+    }
+    return newModifiedSection;
+  };
+  const sortClickHandler = (columnName) => {
+    let newSortDirection;
     const {
       sortDirection,
       sortedColumnName
-    } = this.state;
+    } = state;
     switch (sortDirection) {
       case ASCENDING:
-        setSortDirection = DESCENDING;
+        newSortDirection = DESCENDING;
         break;
       case DESCENDING:
-        setSortDirection = EMPTY_STRING;
+        newSortDirection = EMPTY_STRING;
         break;
       case EMPTY_STRING:
-        setSortDirection = ASCENDING;
+        newSortDirection = ASCENDING;
         break;
       default:
-        setSortDirection = EMPTY_STRING;
+        newSortDirection = EMPTY_STRING;
     }
     if (sortedColumnName !== columnName) {
-      setSortDirection = ASCENDING;
+      newSortDirection = ASCENDING;
     }
-    this.setState((state) => ({
-      ...state,
-      sortDirection: setSortDirection,
-      sortedColumnName: columnName,
-    }));
+    setSortDirectionByColumn(newSortDirection, columnName);
   };
 
-  removeDataFromFirmStructHandler = () => {
-    const { firmStructControls } = this.state;
+  const removeDataFromFirmStructHandler = () => {
     const {
       itemsIdForDelete,
       categoryName,
       subBranchesIndex,
       branchesIndex,
       showingFirmStructSection: stateShowingFirmStructSection
-    } = firmStructControls;
+    } = state;
     let newShowingFirmStructSection = [];
     if (!itemsIdForDelete.length) return;
 
     if (categoryName === DIRECTORS) {
-      const newModifiedDirectors = this.removeItemsFromFirmStructSection(firmStruct.directors, itemsIdForDelete);
+      const newModifiedDirectors = removeItemsFromFirmStructSection(firmStruct.directors, itemsIdForDelete);
       // eslint-disable-next-line
       console.log('Source section \"directors\":', Object.values(firmStruct.directors));
       // eslint-disable-next-line
@@ -157,7 +154,7 @@ class FirmStructure extends Component {
       newShowingFirmStructSection = Object.values(newModifiedDirectors);
       firmStruct.directors = newModifiedDirectors;
     } else if (categoryName === BRANCHES) {
-      newShowingFirmStructSection = this.removeItemsFromFirmStructSection(
+      newShowingFirmStructSection = removeItemsFromFirmStructSection(
         stateShowingFirmStructSection, itemsIdForDelete
       );
       switch (stateShowingFirmStructSection[0].id) {
@@ -187,43 +184,28 @@ class FirmStructure extends Component {
         default:
       }
     }
-    this.setState((state) => ({
-      ...state,
-      firmStructControls: {
-        ...state.firmStructControls,
-        itemsIdForDelete: [],
-        showingFirmStructSection: newShowingFirmStructSection,
-      }
-    }));
+    removeDataFromFirmStruct(newShowingFirmStructSection);
   };
 
-  onClickTableRowHandler = (id) => {
-    const { firmStructControls } = this.state;
-    const { itemsIdForDelete } = firmStructControls;
-    let newArr = [];
+  const onClickTableRowHandler = (id) => {
+    const { itemsIdForDelete } = state;
+    let newArr = [...itemsIdForDelete];
 
     if (itemsIdForDelete.includes(id)) {
       newArr = itemsIdForDelete.filter((el) => el !== id);
     } else {
       newArr.push(id);
     }
-    this.setState((state) => ({
-      ...state,
-      firmStructControls: {
-        ...state.firmStructControls,
-        itemsIdForDelete: newArr,
-      }
-    }));
+    setItemsForDelete(newArr);
   };
 
-  onMenuItemSelectHandler = (selectedMenuItem) => {
+  const onMenuItemSelectHandler = (selectedMenuItem) => {
     const section = selectedMenuItem.split('-*-')[0];
     const selectedIndex = +selectedMenuItem.split('-*-')[1];
-    const { firmStructControls } = this.state;
     const {
       branchesIndex,
       categoryName: stateCategoryName
-    } = firmStructControls;
+    } = state;
     let categoryName = EMPTY_STRING;
     let setSectionIndex;
     let tableStyle;
@@ -272,23 +254,13 @@ class FirmStructure extends Component {
         isEmployees: true,
       };
     }
-    this.setState((state) => ({
-      ...state,
-      sortDirection: EMPTY_STRING,
-      sortedColumnName: EMPTY_STRING,
-      firmStructControls: {
-        ...state.firmStructControls,
-        [`${section}Index`]: setSectionIndex,
-        categoryName: categoryName || stateCategoryName,
-        ...setSectionValues,
-        itemsIdForDelete: [],
-        tableStyle,
-        showingFirmStructSection,
-      }
-    }));
+    setSelectedMenuItem(
+      section, setSectionIndex, categoryName || stateCategoryName,
+      tableStyle, showingFirmStructSection, setSectionValues
+    );
   };
 
-  addItemToFirmStructSection = (section, data) => {
+  const addItemToFirmStructSection = (section, data) => {
     let modifiedSection;
     if (Array.isArray(section)) {
       modifiedSection = cloneDeep(section);
@@ -300,14 +272,13 @@ class FirmStructure extends Component {
     return modifiedSection;
   };
 
-  addDataFromFormToFirmStruct = (data) => {
-    const { firmStructControls } = this.state;
+  const addDataFromFormToFirmStruct = (data) => {
     const {
       categoryName,
       branchesIndex,
       subBranchesIndex,
       isEmployees
-    } = firmStructControls;
+    } = state;
     let showingFirmStructSection;
     if (categoryName === DIRECTORS) {
       const {
@@ -316,7 +287,7 @@ class FirmStructure extends Component {
         surname,
         salary
       } = data;
-      const newModifiedDirectors = this.addItemToFirmStructSection(firmStruct.directors,
+      const newModifiedDirectors = addItemToFirmStructSection(firmStruct.directors,
         {
           id: uuid(),
           job,
@@ -333,7 +304,7 @@ class FirmStructure extends Component {
     }
     if (categoryName === BRANCHES && branchesIndex === -1) {
       const { branchName } = data;
-      const newModifiedBranches = this.addItemToFirmStructSection(firmStruct.branches,
+      const newModifiedBranches = addItemToFirmStructSection(firmStruct.branches,
         {
           id: uuid(),
           title: branchName,
@@ -348,7 +319,7 @@ class FirmStructure extends Component {
     }
     if (categoryName === BRANCHES && branchesIndex >= 0 && !isEmployees) {
       const { branchName } = data;
-      const newModifiedSubBranches = this.addItemToFirmStructSection(
+      const newModifiedSubBranches = addItemToFirmStructSection(
         firmStruct.branches[branchesIndex].subBranches,
         {
           id: uuid(),
@@ -370,7 +341,7 @@ class FirmStructure extends Component {
         surname,
         salary
       } = data;
-      const newModifiedEmployees = this.addItemToFirmStructSection(
+      const newModifiedEmployees = addItemToFirmStructSection(
         firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees,
         {
           id: uuid(),
@@ -389,36 +360,14 @@ class FirmStructure extends Component {
       showingFirmStructSection = cloneDeep(newModifiedEmployees);
     }
 
-    this.setState((state) => ({
-      ...state,
-      firmStructControls: {
-        ...state.firmStructControls,
-        showingFirmStructSection,
-      }
-    }));
+    addDataToFirmStruct(showingFirmStructSection);
   };
 
-  removeItemsFromFirmStructSection = (currentSection, itemsIdForDelete) => {
-    let newModifiedSection;
-    if (Array.isArray(currentSection)) {
-      newModifiedSection = cloneDeep(currentSection.filter((el) => {
-        for (let i = 0; i < itemsIdForDelete.length; i += 1) {
-          if (itemsIdForDelete[i] === el.id) return false;
-        }
-        return true;
-      }));
-    } else {
-      newModifiedSection = Object.fromEntries(Object.entries(firmStruct.directors)
-        .filter((entry) => !itemsIdForDelete.includes(entry[1].id)));
-    }
-    return newModifiedSection;
-  };
-
-  setColumnStyle = (columnName) => {
+  const setColumnStyle = (columnName) => {
     const {
       sortedColumnName,
       sortDirection
-    } = this.state;
+    } = state;
     return cx({
       arrowDirection: sortedColumnName === columnName,
       arrowDirectionDown: sortDirection === ASCENDING,
@@ -426,60 +375,59 @@ class FirmStructure extends Component {
     });
   };
 
-  render() {
-    const {
-      isModalShow,
-      sortDirection,
-      sortedColumnName: columnName,
-      firmStructControls
-    } = this.state;
-    const {
-      showingFirmStructSection: oldShowingFirmStructSection,
-      branchesIndex,
-      subBranchesIndex,
-      categoryName,
-      tableStyle,
-      itemsIdForDelete
-    } = firmStructControls;
+  const {
+    isModalShow,
+    sortDirection,
+    sortedColumnName: columnName,
+    showingFirmStructSection: oldShowingFirmStructSection,
+    branchesIndex,
+    subBranchesIndex,
+    categoryName,
+    tableStyle,
+    itemsIdForDelete
+  } = state;
 
-    // sort functions
-    const showingFirmStructSection = this.builtInSort(oldShowingFirmStructSection, sortDirection, columnName);
-    // const showingFirmStructSection = this.ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
+  // sort functions
+  const showingFirmStructSection = builtInSort(oldShowingFirmStructSection, sortDirection, columnName);
+  // const showingFirmStructSection = ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
 
-    if (sortDirection) {
-      // eslint-disable-next-line no-console
-      console.log('Source object array to show: ', oldShowingFirmStructSection);
-      // eslint-disable-next-line no-console
-      console.log('New sorted object array to show: ', showingFirmStructSection);
-    }
-    const isCategoryDisabled = !categoryName;
-    const isBranchesDisabled = !(firmStruct.branches.length > 0
-      && (categoryName === BRANCHES));
-    const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
-      && categoryName === BRANCHES);
-    return (
-      <FirmStructureView
-        isCategoryDisabled={isCategoryDisabled}
-        isBranchesDisabled={isBranchesDisabled}
-        isSubBranchesDisabled={isSubBranchesDisabled}
-        isModalShow={isModalShow}
-        setModalShow={this.setModalShow}
-        setColumnStyle={this.setColumnStyle}
-        sortClickHandler={this.sortClickHandler}
-        onMenuItemSelectHandler={this.onMenuItemSelectHandler}
-        removeDataFromFirmStructHandler={this.removeDataFromFirmStructHandler}
-        onClickTableRowHandler={this.onClickTableRowHandler}
-        addDataFromFormToFirmStruct={this.addDataFromFormToFirmStruct}
-        itemsIdForDelete={itemsIdForDelete}
-        categoryName={categoryName}
-        tableStyle={tableStyle}
-        branchesIndex={branchesIndex}
-        subBranchesIndex={subBranchesIndex}
-        showingFirmStructSection={showingFirmStructSection}
-        firmStruct={firmStruct}
-      />
-    );
+  if (sortDirection) {
+    // eslint-disable-next-line no-console
+    console.log('Source object array to show: ', oldShowingFirmStructSection);
+    // eslint-disable-next-line no-console
+    console.log('New sorted object array to show: ', showingFirmStructSection);
   }
-}
+  const isCategoryDisabled = !categoryName;
+  const isBranchesDisabled = !(firmStruct.branches.length > 0
+    && (categoryName === BRANCHES));
+  const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
+    && categoryName === BRANCHES);
+  return (
+    <FirmStructureView
+      isCategoryDisabled={isCategoryDisabled}
+      isBranchesDisabled={isBranchesDisabled}
+      isSubBranchesDisabled={isSubBranchesDisabled}
+      isModalShow={isModalShow}
+      setModalShow={setModalShow}
+      setColumnStyle={setColumnStyle}
+      sortClickHandler={sortClickHandler}
+      onMenuItemSelectHandler={onMenuItemSelectHandler}
+      removeDataFromFirmStructHandler={removeDataFromFirmStructHandler}
+      onClickTableRowHandler={onClickTableRowHandler}
+      addDataFromFormToFirmStruct={addDataFromFormToFirmStruct}
+      itemsIdForDelete={itemsIdForDelete}
+      categoryName={categoryName}
+      tableStyle={tableStyle}
+      branchesIndex={branchesIndex}
+      subBranchesIndex={subBranchesIndex}
+      showingFirmStructSection={showingFirmStructSection}
+      firmStruct={firmStruct}
+    />
+  );
+};
 
-export default FirmStructure;
+export default () => (
+  <FirmStructContextProvider>
+    <FirmStructure />
+  </FirmStructContextProvider>
+);
