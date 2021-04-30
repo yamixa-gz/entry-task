@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import { EN } from '../constants/firmStructureElements';
+import React from 'react';
+import useAppLanguage from '../hooks/useAppLanguage';
 
 export const AppLanguageContext = React.createContext(null);
 
 // eslint-disable-next-line react/prop-types
 export const AppLanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(EN);
-
-  const toggleLanguage = (currentLanguage) => {
-    setLanguage(() => currentLanguage);
-  };
-
+  const {
+    language,
+    toggleLanguage,
+  } = useAppLanguage();
   return (
     <AppLanguageContext.Provider value={{
       language,

@@ -15,7 +15,7 @@ import {
 } from '../../constants/firmStructureElements';
 import { ASCENDING, DESCENDING } from '../../constants/sortHeading';
 import FirmStructureView from './FirmStructureView';
-import { FirmStructContext, FirmStructContextProvider } from '../../cotexts/FirmStructureProvider';
+import { FirmStructureContext, FirmStructContextProvider } from '../../cotexts/FirmStructureProvider';
 
 const cx = classNames.bind(s);
 const FirmStructure = () => {
@@ -28,7 +28,7 @@ const FirmStructure = () => {
     setSelectedMenuItem,
     addDataToFirmStruct,
     firmStruct,
-  } = useContext(FirmStructContext);
+  } = useContext(FirmStructureContext);
 
   const sortColumnByName = (columnName, sortDirection) => {
     if (columnName === SALARY) {

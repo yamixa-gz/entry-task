@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import descriptionCards from '../data/descriptionCards';
+import React from 'react';
+import useDescription from '../hooks/useDescription';
 
 export const DescriptionContext = React.createContext();
 
 // eslint-disable-next-line react/prop-types
 export const DescriptionProvider = ({ children }) => {
-  const [openCardId, setId] = useState(null);
-  const setOpenCardId = (id) => setId(() => (openCardId === id ? null : id));
+  const {
+    openCardId,
+    setOpenCardId,
+    descriptionCards,
+  } = useDescription();
+
   return (
     <DescriptionContext.Provider value={{
       openCardId,

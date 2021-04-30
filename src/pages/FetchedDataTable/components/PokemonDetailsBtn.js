@@ -3,18 +3,22 @@ import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PokemonDetailsModal from './PokemonDetailsModal';
 import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
-import { ShowPokemonDetailsContext, ShowPokemonDetailsProvider } from '../../../cotexts/ShowPokemonDetailsProvider';
+import useShowPokemonDetails from '../../../hooks/useShowPokemonDetails';
 
 const PokemonDetailsBtn = ({ url, callbacks }) => {
   const { state } = useContext(FetchedDataTableContext);
+  const { isPending } = state;
+  const { getPokemonDetailsRequest } = callbacks;
+
   const {
     setPokemonDetailsLoading,
     setPokemonDetailsModalShow,
+    setLoadedPokemonDetailsImage,
     isPokemonDetailsLoading,
-  } = useContext(ShowPokemonDetailsContext);
+    isPokemonDetailsModalShow,
+    isLoadedPokemonDetailsImage,
+  } = useShowPokemonDetails();
 
-  const { isPending } = state;
-  const { getPokemonDetailsRequest } = callbacks;
   useEffect(() => {
     if (isPokemonDetailsLoading) {
       getPokemonDetailsRequest(url).then(() => {
@@ -39,7 +43,12 @@ const PokemonDetailsBtn = ({ url, callbacks }) => {
         {isPokemonDetailsLoading ? 'Loading…' : 'See details'}
       </Button>
       {!isPokemonDetailsLoading && (
-        <PokemonDetailsModal />
+        <PokemonDetailsModal
+          isPokemonDetailsModalShow={isPokemonDetailsModalShow}
+          isLoadedPokemonDetailsImage={isLoadedPokemonDetailsImage}
+          setPokemonDetailsModalShow={setPokemonDetailsModalShow}
+          setLoadedPokemonDetailsImage={setLoadedPokemonDetailsImage}
+        />
       )}
     </>
   );
@@ -53,9 +62,4 @@ PokemonDetailsBtn.propTypes = {
   }).isRequired,
 };
 
-export default (props) => (
-  <ShowPokemonDetailsProvider>
-    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-    <PokemonDetailsBtn {...props} />
-  </ShowPokemonDetailsProvider>
-);
+export default PokemonDetailsBtn;

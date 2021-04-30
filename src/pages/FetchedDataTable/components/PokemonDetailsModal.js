@@ -1,18 +1,14 @@
 import React, { useContext } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
 import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
-import { ShowPokemonDetailsContext } from '../../../cotexts/ShowPokemonDetailsProvider';
 
-const PokemonDetailsModal = () => {
-  const {
-    setPokemonDetailsModalShow,
-    setLoadedPokemonDetailsImage,
-    isPokemonDetailsModalShow,
-    isLoadedPokemonDetailsImage,
-  } = useContext(ShowPokemonDetailsContext);
+const PokemonDetailsModal = ({
+  isPokemonDetailsModalShow, isLoadedPokemonDetailsImage, setPokemonDetailsModalShow, setLoadedPokemonDetailsImage
+}) => {
   const { state } = useContext(FetchedDataTableContext);
   const { pokemonDetails } = state;
 
@@ -75,6 +71,13 @@ const PokemonDetailsModal = () => {
       </Modal.Footer>
     </Modal>
   );
+};
+
+PokemonDetailsModal.propTypes = {
+  isPokemonDetailsModalShow: PropTypes.bool.isRequired,
+  isLoadedPokemonDetailsImage: PropTypes.bool.isRequired,
+  setPokemonDetailsModalShow: PropTypes.func.isRequired,
+  setLoadedPokemonDetailsImage: PropTypes.func.isRequired,
 };
 
 export default PokemonDetailsModal;
