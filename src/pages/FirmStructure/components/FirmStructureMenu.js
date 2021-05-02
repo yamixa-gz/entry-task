@@ -1,18 +1,36 @@
 import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import withTranslation from '../../../HOC/withTranslation';
+import { BRANCHES } from '../../../constants/firmStructureElements';
+import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureMenu = ({
-  isCategoryDisabled, isBranchesDisabled, isSubBranchesDisabled, firmStruct, getTranslation = () => null,
-  onMenuItemSelectHandler, branchesIndex, subBranchesIndex, categoryName
-}) => {
+const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
+  const {
+    state,
+    firmStruct,
+  } = useContext(FirmStructureContext);
+
+  const {
+    branchesIndex,
+    subBranchesIndex,
+    categoryName,
+  } = state;
+
+  const { onMenuItemSelectHandler } = handlers;
+
   const defaultAppTranslation = {
     branches: 'Branches',
     subBranches: 'SubBranches',
     directors: 'Directors',
   };
   const appTranslation = getTranslation() || defaultAppTranslation;
+  const isCategoryDisabled = !categoryName;
+  const isBranchesDisabled = !(firmStruct.branches.length > 0
+    && (categoryName === BRANCHES));
+  const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
+    && categoryName === BRANCHES);
+
   return (
     <div className="d-grid gap-2 d-md-block">
       <DropdownButton
@@ -87,17 +105,12 @@ const FirmStructureMenu = ({
 };
 FirmStructureMenu.propTypes = {
   getTranslation: PropTypes.func.isRequired,
-  isCategoryDisabled: PropTypes.bool.isRequired,
-  isBranchesDisabled: PropTypes.bool.isRequired,
-  isSubBranchesDisabled: PropTypes.bool.isRequired,
-  onMenuItemSelectHandler: PropTypes.func.isRequired,
-  branchesIndex: PropTypes.number.isRequired,
-  subBranchesIndex: PropTypes.number.isRequired,
-  categoryName: PropTypes.string.isRequired,
-  firmStruct: PropTypes.shape({
-    branches: PropTypes.arrayOf(PropTypes.object),
-    directors: PropTypes.objectOf(PropTypes.object)
-  }).isRequired
+  handlers: PropTypes.shape({
+    sortClickHandler: PropTypes.func.isRequired,
+    onMenuItemSelectHandler: PropTypes.func.isRequired,
+    removeDataFromFirmStructHandler: PropTypes.func.isRequired,
+    onClickTableRowHandler: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default withTranslation(FirmStructureMenu);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import descriptionCards from '../data/descriptionCards';
+import cardDescription from '../data/cardDescription';
 
 const useDescription = () => {
   const [openCardId, setId] = useState(null);
@@ -7,7 +7,7 @@ const useDescription = () => {
   return {
     openCardId,
     setOpenCardId,
-    descriptionCards,
+    descriptionCards: cardDescription,
   };
 };
 

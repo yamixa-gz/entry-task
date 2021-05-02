@@ -21,7 +21,6 @@ const cx = classNames.bind(s);
 const FirmStructure = () => {
   const {
     state,
-    setModalShow,
     setSortDirectionByColumn,
     removeDataFromFirmStruct,
     setItemsForDelete,
@@ -376,52 +375,37 @@ const FirmStructure = () => {
   };
 
   const {
-    isModalShow,
     sortDirection,
     sortedColumnName: columnName,
     showingFirmStructSection: oldShowingFirmStructSection,
-    branchesIndex,
-    subBranchesIndex,
-    categoryName,
-    tableStyle,
-    itemsIdForDelete
   } = state;
 
-  // sort functions
-  const showingFirmStructSection = builtInSort(oldShowingFirmStructSection, sortDirection, columnName);
-  // const showingFirmStructSection = ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
-
+  let showingFirmStructSection = oldShowingFirmStructSection;
   if (sortDirection) {
-    // eslint-disable-next-line no-console
-    console.log('Source object array to show: ', oldShowingFirmStructSection);
-    // eslint-disable-next-line no-console
-    console.log('New sorted object array to show: ', showingFirmStructSection);
+    // sort functions
+    showingFirmStructSection = builtInSort(oldShowingFirmStructSection, sortDirection, columnName);
+    // showingFirmStructSection = ownSelectionSort(oldShowingFirmStructSection, sortDirection, columnName)
   }
-  const isCategoryDisabled = !categoryName;
-  const isBranchesDisabled = !(firmStruct.branches.length > 0
-    && (categoryName === BRANCHES));
-  const isSubBranchesDisabled = !(firmStruct.branches[branchesIndex]?.subBranches?.length > 0
-    && categoryName === BRANCHES);
+  // eslint-disable-next-line no-console
+  console.log('Source object array to show: ', oldShowingFirmStructSection);
+  // eslint-disable-next-line no-console
+  console.log('New sorted object array to show: ', showingFirmStructSection);
+
+  const handlers = {
+    sortClickHandler,
+    onMenuItemSelectHandler,
+    removeDataFromFirmStructHandler,
+    onClickTableRowHandler,
+  };
+  const callbacks = {
+    setColumnStyle,
+    addDataFromFormToFirmStruct,
+  };
   return (
     <FirmStructureView
-      isCategoryDisabled={isCategoryDisabled}
-      isBranchesDisabled={isBranchesDisabled}
-      isSubBranchesDisabled={isSubBranchesDisabled}
-      isModalShow={isModalShow}
-      setModalShow={setModalShow}
-      setColumnStyle={setColumnStyle}
-      sortClickHandler={sortClickHandler}
-      onMenuItemSelectHandler={onMenuItemSelectHandler}
-      removeDataFromFirmStructHandler={removeDataFromFirmStructHandler}
-      onClickTableRowHandler={onClickTableRowHandler}
-      addDataFromFormToFirmStruct={addDataFromFormToFirmStruct}
-      itemsIdForDelete={itemsIdForDelete}
-      categoryName={categoryName}
-      tableStyle={tableStyle}
-      branchesIndex={branchesIndex}
-      subBranchesIndex={subBranchesIndex}
+      handlers={handlers}
+      callbacks={callbacks}
       showingFirmStructSection={showingFirmStructSection}
-      firmStruct={firmStruct}
     />
   );
 };

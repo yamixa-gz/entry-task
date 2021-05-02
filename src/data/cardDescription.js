@@ -6,7 +6,7 @@ import html from '../assets/images/Description/html.png';
 import nodejs from '../assets/images/Description/nodejs.png';
 import npm from '../assets/images/Description/npm.png';
 
-const descriptionCards = [
+const cardDescription = [
   {
     id: uuid(),
     title: 'Что такое система контроля версий и зачем она нужна',
@@ -110,4 +110,4 @@ const descriptionCards = [
   },
 ];
 
-export default descriptionCards;
+export default cardDescription;

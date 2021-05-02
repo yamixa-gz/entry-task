@@ -7,13 +7,7 @@ import FirmStructureTable from './components/FirmStructureTable';
 import FirmStructureControls from './components/FirmStructureControls';
 import Layout from '../../layout/Layout';
 
-const FirmStructureView = ({
-  isCategoryDisabled, categoryName, isBranchesDisabled, isSubBranchesDisabled,
-  itemsIdForDelete, setModalShow, showingFirmStructSection, tableStyle,
-  onClickTableRowHandler, addDataFromFormToFirmStruct, removeDataFromFirmStructHandler,
-  onMenuItemSelectHandler, isModalShow, branchesIndex, subBranchesIndex, setColumnStyle,
-  sortClickHandler, firmStruct
-}) => {
+const FirmStructureView = ({ handlers, callbacks, showingFirmStructSection }) => {
   const { Header, Footer } = Layout();
   return (
     <>
@@ -24,36 +18,20 @@ const FirmStructureView = ({
             <div className="middle-container ">
 
               <FirmStructureMenu
-                isCategoryDisabled={isCategoryDisabled}
-                isBranchesDisabled={isBranchesDisabled}
-                isSubBranchesDisabled={isSubBranchesDisabled}
-                onMenuItemSelectHandler={onMenuItemSelectHandler}
-                branchesIndex={branchesIndex}
-                subBranchesIndex={subBranchesIndex}
-                categoryName={categoryName}
-                firmStruct={firmStruct}
+                handlers={handlers}
               />
               <FirmStructureTable
-                sortClickHandler={sortClickHandler}
-                onClickTableRowHandler={onClickTableRowHandler}
-                setColumnStyle={setColumnStyle}
-                tableStyle={tableStyle}
-                itemsIdForDelete={itemsIdForDelete}
+                handlers={handlers}
+                callbacks={callbacks}
                 showingFirmStructSection={showingFirmStructSection}
               />
               <FirmStructureControls
-                setModalShow={setModalShow}
-                itemsIdForDelete={itemsIdForDelete}
-                removeDataFromFirmStructHandler={removeDataFromFirmStructHandler}
+                handlers={handlers}
               />
 
             </div>
             <AddFirmStructItemModal
-              show={isModalShow}
-              setModalShow={setModalShow}
-              onHide={() => setModalShow(false)}
-              addDataFromFormToFirmStruct={addDataFromFormToFirmStruct}
-              tableStyle={tableStyle}
+              callbacks={callbacks}
             />
           </Container>
         </div>
@@ -63,26 +41,16 @@ const FirmStructureView = ({
   );
 };
 FirmStructureView.propTypes = {
-  isCategoryDisabled: PropTypes.bool.isRequired,
-  categoryName: PropTypes.string.isRequired,
-  isBranchesDisabled: PropTypes.bool.isRequired,
-  isSubBranchesDisabled: PropTypes.bool.isRequired,
-  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setModalShow: PropTypes.func.isRequired,
-  tableStyle: PropTypes.string.isRequired,
-  onClickTableRowHandler: PropTypes.func.isRequired,
-  addDataFromFormToFirmStruct: PropTypes.func.isRequired,
-  removeDataFromFirmStructHandler: PropTypes.func.isRequired,
-  onMenuItemSelectHandler: PropTypes.func.isRequired,
-  isModalShow: PropTypes.bool.isRequired,
-  branchesIndex: PropTypes.number.isRequired,
-  subBranchesIndex: PropTypes.number.isRequired,
-  setColumnStyle: PropTypes.func.isRequired,
-  sortClickHandler: PropTypes.func.isRequired,
+  handlers: PropTypes.shape({
+    sortClickHandler: PropTypes.func.isRequired,
+    onMenuItemSelectHandler: PropTypes.func.isRequired,
+    removeDataFromFirmStructHandler: PropTypes.func.isRequired,
+    onClickTableRowHandler: PropTypes.func.isRequired,
+  }).isRequired,
+  callbacks: PropTypes.shape({
+    setColumnStyle: PropTypes.func.isRequired,
+    addDataFromFormToFirmStruct: PropTypes.func.isRequired,
+  }).isRequired,
   showingFirmStructSection: PropTypes.arrayOf(PropTypes.object).isRequired,
-  firmStruct: PropTypes.shape({
-    branches: PropTypes.arrayOf(PropTypes.object),
-    directors: PropTypes.objectOf(PropTypes.object)
-  }).isRequired
 };
 export default FirmStructureView;

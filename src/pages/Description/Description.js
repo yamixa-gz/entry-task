@@ -13,11 +13,12 @@ const Description = () => {
 
   const clickHandler = (id) => setOpenCardId(id);
 
-  const makeShortTextForCardContent = (fullText, symbolsAmount = 140) => {
-    return fullText.length < symbolsAmount
+  const makeShortTextForCardContent = (fullText, symbolsAmount = 140) => (
+    fullText.length < symbolsAmount
       ? fullText
-      : `${fullText.slice(0, symbolsAmount)}...`;
-  };
+      : `${fullText.slice(0, symbolsAmount)}...`
+  );
+
   const cardsList = descriptionCards.map((item) => (
     <Card
       key={item.id}

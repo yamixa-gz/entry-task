@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { BRANCHES_STYLE, EMPLOYEES_STYLE } from '../../../constants/firmStructureElements';
@@ -6,11 +6,19 @@ import BranchesTableRow from './BranchesTableRow';
 import EmployeesTableRow from './EmployeesTableRow';
 import BranchesTableHeader from './BranchesTableHeader';
 import EmployeesTableHeader from './EmployeesTableHeader';
+import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureTable = ({
-  sortClickHandler, onClickTableRowHandler, setColumnStyle,
-  tableStyle, itemsIdForDelete, showingFirmStructSection
-}) => {
+const FirmStructureTable = ({ handlers, callbacks, showingFirmStructSection }) => {
+  const { state } = useContext(FirmStructureContext);
+
+  const {
+    tableStyle,
+    itemsIdForDelete
+  } = state;
+
+  const { sortClickHandler, onClickTableRowHandler } = handlers;
+  const { setColumnStyle } = callbacks;
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -58,11 +66,16 @@ const FirmStructureTable = ({
   );
 };
 FirmStructureTable.propTypes = {
-  sortClickHandler: PropTypes.func.isRequired,
-  onClickTableRowHandler: PropTypes.func.isRequired,
-  setColumnStyle: PropTypes.func.isRequired,
-  tableStyle: PropTypes.string.isRequired,
-  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handlers: PropTypes.shape({
+    sortClickHandler: PropTypes.func.isRequired,
+    onMenuItemSelectHandler: PropTypes.func.isRequired,
+    removeDataFromFirmStructHandler: PropTypes.func.isRequired,
+    onClickTableRowHandler: PropTypes.func.isRequired,
+  }).isRequired,
+  callbacks: PropTypes.shape({
+    setColumnStyle: PropTypes.func.isRequired,
+    addDataFromFormToFirmStruct: PropTypes.func.isRequired,
+  }).isRequired,
   showingFirmStructSection: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default FirmStructureTable;

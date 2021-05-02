@@ -26,25 +26,11 @@ const MainDataListTableRow = ({
     <tr
       className={className}
       draggable
-      onDragEnter={() => {
-        if (activeElIndex === -1) return;
-        dragEnterHandler(index);
-      }}
-      onDragEnd={() => {
-        if (!isActive) return;
-        mouseUpEventHandler(index);
-      }}
-      onClick={() => {
-        onClickHandler(index, hotKey);
-      }}
-      onMouseDown={() => {
-        if (!isActive) return;
-        mouseDownEventHandler(index);
-      }}
-      onMouseUp={() => {
-        if (!isActive) return;
-        mouseUpEventHandler();
-      }}
+      onDragEnter={() => (activeElIndex !== -1) && dragEnterHandler(index)}
+      onDragEnd={() => isActive && mouseUpEventHandler(index)}
+      onClick={() => onClickHandler(index, hotKey)}
+      onMouseDown={() => isActive && mouseDownEventHandler(index)}
+      onMouseUp={() => isActive && mouseUpEventHandler()}
     >
       <td>{name}</td>
       <td colSpan="1">

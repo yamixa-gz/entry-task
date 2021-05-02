@@ -45,9 +45,7 @@ const PokemonDetailsModal = ({
             src={pokemonDetails && pokemonDetails.avatarUrl}
             alt="Avatar"
             className={!isLoadedPokemonDetailsImage ? `${s.size} invisible d-none` : s.size}
-            onLoad={() => {
-              setLoadedPokemonDetailsImage(true);
-            }}
+            onLoad={() => setLoadedPokemonDetailsImage(true)}
           />
           <Card.Body>
             <Card.Title className="text-capitalize fw-bold fs-5">

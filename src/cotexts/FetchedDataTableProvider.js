@@ -1,7 +1,7 @@
 import React from 'react';
 import useFetchedDataTable from '../hooks/useFetchedDataTable';
 
-export const FetchedDataTableContext = React.createContext(null);
+export const FetchedDataTableContext = React.createContext();
 
 // eslint-disable-next-line react/prop-types
 export const FetchedDataTableProvider = ({ children }) => {

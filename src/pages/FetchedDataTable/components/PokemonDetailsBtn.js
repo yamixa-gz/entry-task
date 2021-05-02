@@ -21,9 +21,7 @@ const PokemonDetailsBtn = ({ url, callbacks }) => {
 
   useEffect(() => {
     if (isPokemonDetailsLoading) {
-      getPokemonDetailsRequest(url).then(() => {
-        setPokemonDetailsLoading(false);
-      });
+      getPokemonDetailsRequest(url).then(() => setPokemonDetailsLoading(false));
     }
   }, [isPokemonDetailsLoading]);
   const onClickHandler = (e) => {

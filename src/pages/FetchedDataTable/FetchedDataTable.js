@@ -118,9 +118,7 @@ const FetchedDataTable = () => {
     setHotKeyAndActiveIndex(hotKey, index);
   };
 
-  const dragEnterHandler = (index) => {
-    setInsertingElIndex(index);
-  };
+  const dragEnterHandler = (index) => setInsertingElIndex(index);
 
   const mouseDownEventHandler = (index) => {
     const { fetchedDataArr } = state;

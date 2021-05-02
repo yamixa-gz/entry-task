@@ -45,14 +45,12 @@ const FetchedDataTableView = ({ callbacks, handlers }) => {
                 <Image
                   src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
                   alt='"PokeApi" image could be here...'
-                  onLoad={(e) => setTimeout(() => {
+                  onLoad={(e) => setTimeout(
                     // eslint-disable-next-line no-alert
-                    alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`);
-                  }, 1000)}
-                  onError={() => setTimeout(() => {
-                    // eslint-disable-next-line no-alert
-                    alert('"PokeApi" image loading crashed...');
-                  }, 1000)}
+                    () => alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`), 1000
+                  )}
+                  // eslint-disable-next-line no-alert
+                  onError={() => setTimeout(() => alert('"PokeApi" image loading crashed...'), 1000)}
                 />
               </div>
               <Table className="mb-5" striped bordered hover>

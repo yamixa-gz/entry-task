@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import withTranslation from '../../../HOC/withTranslation';
+import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureControls = ({
-  getTranslation = () => null, setModalShow,
-  itemsIdForDelete, removeDataFromFirmStructHandler
-}) => {
+const FirmStructureControls = ({ getTranslation = () => null, handlers }) => {
+  const {
+    state,
+    setModalShow,
+  } = useContext(FirmStructureContext);
+
+  const {
+    itemsIdForDelete
+  } = state;
+  const { removeDataFromFirmStructHandler } = handlers;
+
   const defaultAppTranslation = {
     addButtonName: 'Add',
     removeButtonName: 'Remove'
@@ -34,9 +42,12 @@ const FirmStructureControls = ({
 };
 FirmStructureControls.propTypes = {
   getTranslation: PropTypes.func.isRequired,
-  setModalShow: PropTypes.func.isRequired,
-  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
-  removeDataFromFirmStructHandler: PropTypes.func.isRequired
+  handlers: PropTypes.shape({
+    sortClickHandler: PropTypes.func.isRequired,
+    onMenuItemSelectHandler: PropTypes.func.isRequired,
+    removeDataFromFirmStructHandler: PropTypes.func.isRequired,
+    onClickTableRowHandler: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default withTranslation(FirmStructureControls);

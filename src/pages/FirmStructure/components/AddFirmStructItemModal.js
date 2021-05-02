@@ -1,21 +1,30 @@
 import { Modal } from 'react-bootstrap';
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
 import withTranslation from '../../../HOC/withTranslation';
+import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const AddFirmStructItemModal = ({
-  getTranslation = () => null, setModalShow,
-  addDataFromFormToFirmStruct, tableStyle, onHide, show
-}) => {
+const AddFirmStructItemModal = ({ getTranslation = () => null, callbacks }) => {
+  const {
+    state,
+    setModalShow,
+  } = useContext(FirmStructureContext);
+
+  const {
+    isModalShow,
+    tableStyle,
+  } = state;
+
+  const { addDataFromFormToFirmStruct } = callbacks;
   const defaultAppTranslation = {
     modalTitle: 'Input item to FirmStruct',
   };
   const appTranslation = getTranslation() || defaultAppTranslation;
   return (
     <Modal
-      onHide={onHide}
-      show={show}
+      onHide={() => setModalShow(false)}
+      show={isModalShow}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -34,9 +43,9 @@ const AddFirmStructItemModal = ({
       </Modal.Header>
       <Modal.Body>
         <AddFirmStructItemForm
+          tableStyle={tableStyle}
           setModalShow={setModalShow}
           addDataFromFormToFirmStruct={addDataFromFormToFirmStruct}
-          tableStyle={tableStyle}
         />
       </Modal.Body>
     </Modal>
@@ -45,11 +54,10 @@ const AddFirmStructItemModal = ({
 
 AddFirmStructItemModal.propTypes = {
   getTranslation: PropTypes.func.isRequired,
-  tableStyle: PropTypes.string.isRequired,
-  setModalShow: PropTypes.func.isRequired,
-  addDataFromFormToFirmStruct: PropTypes.func.isRequired,
-  onHide: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired
+  callbacks: PropTypes.shape({
+    setColumnStyle: PropTypes.func.isRequired,
+    addDataFromFormToFirmStruct: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default withTranslation(AddFirmStructItemModal);
