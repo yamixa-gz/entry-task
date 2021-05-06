@@ -7,7 +7,7 @@ const useDescription = () => {
   return {
     openCardId,
     setOpenCardId,
-    descriptionCards: cardDescription,
+    cardDescription,
   };
 };
 

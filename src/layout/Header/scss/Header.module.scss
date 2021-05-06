@@ -1,16 +1,26 @@
 .header {
   &Wrapper {
     position: relative;
+    margin-top: 49px;
+    @media (max-width: 768px) {
+    }
 
     &DropdownLang {
-      position: absolute;
+      position: fixed;
       top: 11px;
-      right: 15px;
+      right: 27px;
+      z-index: 20;
     }
   }
 
   &Contacts {
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 30px);
+    justify-content: flex-end;
     height: 49px;
+    z-index: 10;
     background-color: #283a6a;
     color: #edf6ff;
     text-align: center;
@@ -18,6 +28,18 @@
     line-height: 49px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+
+    &Address {
+      margin-right: 66px;
+      @media (max-width: 767px) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      justify-content: space-between;
+
+    }
   }
 
   &MenuRow {
@@ -179,3 +201,8 @@
 
   }
 }
+
+
+
+
+

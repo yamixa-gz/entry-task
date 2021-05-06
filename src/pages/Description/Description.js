@@ -5,7 +5,7 @@ import Layout from '../../layout/Layout';
 import { DescriptionContext, DescriptionProvider } from '../../cotexts/DescriptionProvider';
 
 const Description = () => {
-  const { openCardId, setOpenCardId, descriptionCards } = useContext(DescriptionContext);
+  const { openCardId, setOpenCardId, cardDescription } = useContext(DescriptionContext);
   const { Header, Footer } = Layout();
 
   const descriptionTitle = `Данный проект раскрывает основные понятия git, 
@@ -19,7 +19,7 @@ const Description = () => {
       : `${fullText.slice(0, symbolsAmount)}...`
   );
 
-  const cardsList = descriptionCards.map((item) => (
+  const cardsList = cardDescription.map((item) => (
     <Card
       key={item.id}
       id={item.id}

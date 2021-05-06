@@ -8,14 +8,14 @@ export const DescriptionProvider = ({ children }) => {
   const {
     openCardId,
     setOpenCardId,
-    descriptionCards,
+    cardDescription,
   } = useDescription();
 
   return (
     <DescriptionContext.Provider value={{
       openCardId,
       setOpenCardId,
-      descriptionCards,
+      cardDescription,
     }}
     >
       {children}
