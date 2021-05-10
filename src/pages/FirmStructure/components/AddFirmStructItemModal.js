@@ -1,11 +1,11 @@
 import { Modal } from 'react-bootstrap';
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
-import withTranslation from '../../../HOC/withTranslation';
 import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const AddFirmStructItemModal = ({ getTranslation = () => null, callbacks }) => {
+const AddFirmStructItemModal = ({ callbacks }) => {
   const {
     state,
     setModalShow,
@@ -17,10 +17,8 @@ const AddFirmStructItemModal = ({ getTranslation = () => null, callbacks }) => {
   } = state;
 
   const { addDataFromFormToFirmStruct } = callbacks;
-  const defaultAppTranslation = {
-    modalTitle: 'Input item to FirmStruct',
-  };
-  const appTranslation = getTranslation() || defaultAppTranslation;
+  const { t } = useTranslation('FirmStructure');
+
   return (
     <Modal
       onHide={() => setModalShow(false)}
@@ -31,7 +29,7 @@ const AddFirmStructItemModal = ({ getTranslation = () => null, callbacks }) => {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter" className="fw-bold fs-4 text-secondary">
-          {appTranslation.modalTitle}
+          {t('Input item to FirmStruct')}
         </Modal.Title>
         <button
           onClick={() => setModalShow(false)}
@@ -53,11 +51,10 @@ const AddFirmStructItemModal = ({ getTranslation = () => null, callbacks }) => {
 };
 
 AddFirmStructItemModal.propTypes = {
-  getTranslation: PropTypes.func.isRequired,
   callbacks: PropTypes.shape({
     setColumnStyle: PropTypes.func.isRequired,
     addDataFromFormToFirmStruct: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default withTranslation(AddFirmStructItemModal);
+export default AddFirmStructItemModal;

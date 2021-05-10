@@ -11,5 +11,3 @@ export const BRANCHES_STYLE = 'branchesStyle';
 export const BRANCH_NAME = 'branchName';
 export const EMPTY_STRING = '';
 export const TITLE = 'title';
-export const EN = 'EN';
-export const RU = 'RU';

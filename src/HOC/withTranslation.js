@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import languages from '../translation/languages';
-import { EN } from '../constants/firmStructureElements';
+import { EN } from '../constants/languages';
 import { AppLanguageContext } from '../cotexts/AppLanguageProvider';
 
 const withTranslation = (Component) => {

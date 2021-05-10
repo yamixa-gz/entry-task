@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import s from './scss/Description.module.scss';
 import Card from './components/Card';
 import Layout from '../../layout/Layout';
@@ -7,9 +8,7 @@ import { DescriptionContext, DescriptionProvider } from '../../cotexts/Descripti
 const Description = () => {
   const { openCardId, setOpenCardId, cardDescription } = useContext(DescriptionContext);
   const { Header, Footer } = Layout();
-
-  const descriptionTitle = `Данный проект раскрывает основные понятия git, 
-  node.js, а также затрагивает основы html и css.`;
+  const { t } = useTranslation('Description');
 
   const clickHandler = (id) => setOpenCardId(id);
 
@@ -23,8 +22,8 @@ const Description = () => {
     <Card
       key={item.id}
       id={item.id}
-      title={item.title}
-      description={item.description}
+      title={t(item.title)}
+      description={t(item.description)}
       img={item.img}
       isOpen={openCardId === item.id}
       clickHandler={clickHandler}
@@ -38,7 +37,7 @@ const Description = () => {
         <div className="app-container">
           <div className={s.description}>
             <div className={s.descriptionTitle}>
-              {descriptionTitle}
+              {t('descriptionTitle')}
             </div>
             <div className={s.descriptionContent}>
               <div className={s.descriptionCardWrapper}>

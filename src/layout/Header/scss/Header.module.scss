@@ -1,23 +1,25 @@
 .header {
   &Wrapper {
     position: relative;
-    margin-top: 49px;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
+      margin-top: 0;
     }
 
     &DropdownLang {
-      position: fixed;
+      position: absolute;
       top: 11px;
       right: 27px;
       z-index: 20;
+      @media (max-width: 767px) {
+        position: fixed;
+      }
     }
   }
 
   &Contacts {
     display: flex;
-    position: fixed;
     top: 0;
-    width: calc(100% - 30px);
+    width: 100%;
     justify-content: flex-end;
     height: 49px;
     z-index: 10;
@@ -28,9 +30,14 @@
     line-height: 49px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    @media (max-width: 767px) {
+      position: fixed;
+      width: calc(100% - 30px);
+
+    }
 
     &Address {
-      margin-right: 66px;
+      margin-right: 80px;
       @media (max-width: 767px) {
         display: none;
       }
@@ -38,7 +45,6 @@
 
     @media (max-width: 767px) {
       justify-content: space-between;
-
     }
   }
 
@@ -50,6 +56,7 @@
 
     @media (max-width: 767px) {
       height: 50px;
+      margin-top: 49px;
     }
   }
 
@@ -196,9 +203,7 @@
           color: #12c4e0;
         }
       }
-
     }
-
   }
 }
 

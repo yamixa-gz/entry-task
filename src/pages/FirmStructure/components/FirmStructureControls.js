@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import withTranslation from '../../../HOC/withTranslation';
+import { useTranslation } from 'react-i18next';
 import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureControls = ({ getTranslation = () => null, handlers }) => {
+const FirmStructureControls = ({ handlers }) => {
   const {
     state,
     setModalShow,
@@ -14,12 +14,7 @@ const FirmStructureControls = ({ getTranslation = () => null, handlers }) => {
     itemsIdForDelete
   } = state;
   const { removeDataFromFirmStructHandler } = handlers;
-
-  const defaultAppTranslation = {
-    addButtonName: 'Add',
-    removeButtonName: 'Remove'
-  };
-  const appTranslation = getTranslation() || defaultAppTranslation;
+  const { t } = useTranslation('FirmStructure');
 
   return (
     <div className="d-grid gap-2 d-md-block">
@@ -27,7 +22,7 @@ const FirmStructureControls = ({ getTranslation = () => null, handlers }) => {
         onClick={() => setModalShow(true)}
         variant="secondary"
       >
-        {appTranslation.addButtonName}
+        {t('Add')}
       </Button>
       <Button
         onClick={removeDataFromFirmStructHandler}
@@ -35,13 +30,12 @@ const FirmStructureControls = ({ getTranslation = () => null, handlers }) => {
         className="ms-md-2"
         disabled={!itemsIdForDelete.length}
       >
-        {appTranslation.removeButtonName}
+        {t('Remove')}
       </Button>
     </div>
   );
 };
 FirmStructureControls.propTypes = {
-  getTranslation: PropTypes.func.isRequired,
   handlers: PropTypes.shape({
     sortClickHandler: PropTypes.func.isRequired,
     onMenuItemSelectHandler: PropTypes.func.isRequired,
@@ -50,4 +44,4 @@ FirmStructureControls.propTypes = {
   }).isRequired,
 };
 
-export default withTranslation(FirmStructureControls);
+export default FirmStructureControls;

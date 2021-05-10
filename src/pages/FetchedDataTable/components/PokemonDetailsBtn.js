@@ -1,12 +1,14 @@
 import { Button } from 'react-bootstrap';
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import PokemonDetailsModal from './PokemonDetailsModal';
 import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
 import useShowPokemonDetails from '../../../hooks/useShowPokemonDetails';
 
 const PokemonDetailsBtn = ({ url, callbacks }) => {
   const { state } = useContext(FetchedDataTableContext);
+  const { t } = useTranslation('PokeApi');
   const { isPending } = state;
   const { getPokemonDetailsRequest } = callbacks;
 
@@ -38,7 +40,7 @@ const PokemonDetailsBtn = ({ url, callbacks }) => {
         disabled={isPokemonDetailsLoading}
         onClick={!isPokemonDetailsLoading ? onClickHandler : null}
       >
-        {isPokemonDetailsLoading ? 'Loading…' : 'See details'}
+        {isPokemonDetailsLoading ? `${t('Loading')}…` : `${t('See details')}`}
       </Button>
       {!isPokemonDetailsLoading && (
         <PokemonDetailsModal

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
@@ -11,6 +12,7 @@ const PokemonDetailsModal = ({
 }) => {
   const { state } = useContext(FetchedDataTableContext);
   const { pokemonDetails } = state;
+  const { t } = useTranslation('PokeApi');
 
   const abilities = pokemonDetails && pokemonDetails
     .abilities.map((ability) => <Ability key={ability} ability={ability} />);
@@ -25,7 +27,7 @@ const PokemonDetailsModal = ({
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          Pokemon Details:
+          {`${t('Pokemon Details')}:`}
         </Modal.Title>
         <button
           onClick={(e) => {
@@ -51,7 +53,7 @@ const PokemonDetailsModal = ({
             <Card.Title className="text-capitalize fw-bold fs-5">
               {pokemonDetails && pokemonDetails.name}
             </Card.Title>
-            <Card.Title className="fw-bold">Abilities:</Card.Title>
+            <Card.Title className="fw-bold">{`${t('Abilities')}:`}</Card.Title>
             <Card.Text className="text-capitalize">
               {abilities}
             </Card.Text>
@@ -64,7 +66,7 @@ const PokemonDetailsModal = ({
           setPokemonDetailsModalShow(false);
         }}
         >
-          Close
+          {`${t('Close')}`}
         </Button>
       </Modal.Footer>
     </Modal>

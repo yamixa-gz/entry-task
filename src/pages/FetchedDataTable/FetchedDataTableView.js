@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
@@ -14,6 +15,7 @@ import { FetchedDataTableContext } from '../../cotexts/FetchedDataTableProvider'
 
 const FetchedDataTableView = ({ callbacks, handlers }) => {
   const { Header, Footer } = Layout();
+  const { t } = useTranslation(['PokeApi', 'common']);
   const { nameCapitalize } = callbacks;
   const { pageChangeHandler } = handlers;
   const { state } = useContext(FetchedDataTableContext);
@@ -29,7 +31,7 @@ const FetchedDataTableView = ({ callbacks, handlers }) => {
       index={index}
       key={item.id}
       url={item.url}
-      name={item.name ? `${nameCapitalize(item.name)}; HotKey: ${item.hotKey}` : 'unknown Name'}
+      name={item.name ? `${nameCapitalize(item.name)}; ${t('Hot key')}: ${item.hotKey}` : 'unknown Name'}
     />
   ));
 

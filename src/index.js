@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppLanguageProvider } from './cotexts/AppLanguageProvider';
+import './i18n';
 
 ReactDOM.render(
   <BrowserRouter>

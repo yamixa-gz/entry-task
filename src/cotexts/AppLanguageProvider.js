@@ -7,12 +7,12 @@ export const AppLanguageContext = React.createContext(null);
 export const AppLanguageProvider = ({ children }) => {
   const {
     language,
-    toggleLanguage,
+    changeLanguage,
   } = useAppLanguage();
   return (
     <AppLanguageContext.Provider value={{
       language,
-      toggleLanguage,
+      changeLanguage,
     }}
     >
       {children}

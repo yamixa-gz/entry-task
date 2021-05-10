@@ -1,11 +1,11 @@
 import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import withTranslation from '../../../HOC/withTranslation';
+import { useTranslation } from 'react-i18next';
 import { BRANCHES } from '../../../constants/firmStructureElements';
 import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
+const FirmStructureMenu = ({ handlers }) => {
   const {
     state,
     firmStruct,
@@ -18,13 +18,8 @@ const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
   } = state;
 
   const { onMenuItemSelectHandler } = handlers;
+  const { t } = useTranslation('FirmStructure');
 
-  const defaultAppTranslation = {
-    branches: 'Branches',
-    subBranches: 'SubBranches',
-    directors: 'Directors',
-  };
-  const appTranslation = getTranslation() || defaultAppTranslation;
   const isCategoryDisabled = !categoryName;
   const isBranchesDisabled = !(firmStruct.branches.length > 0
     && (categoryName === BRANCHES));
@@ -39,7 +34,7 @@ const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
         as={ButtonGroup}
         id="dropdown-variants-primary"
         variant="primary"
-        title={appTranslation[categoryName] || 'Category'}
+        title={t(categoryName)}
       >
         {!isCategoryDisabled
           && Object.keys(firmStruct).map(
@@ -63,7 +58,7 @@ const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
         id="dropdown-variants-primary"
         variant="primary"
         title={branchesIndex >= 0
-          ? firmStruct.branches[branchesIndex].title : appTranslation.branches}
+          ? firmStruct.branches[branchesIndex].title : t('branches')}
       >
         {!isBranchesDisabled
           && firmStruct.branches.map((item, i) => (
@@ -86,7 +81,7 @@ const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
         variant="primary"
         title={subBranchesIndex >= 0
           ? firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].title
-          : appTranslation.subBranches}
+          : t('subBranches')}
       >
         {!isSubBranchesDisabled
           && firmStruct.branches[branchesIndex].subBranches.map((item, i) => (
@@ -104,7 +99,6 @@ const FirmStructureMenu = ({ getTranslation = () => null, handlers }) => {
   );
 };
 FirmStructureMenu.propTypes = {
-  getTranslation: PropTypes.func.isRequired,
   handlers: PropTypes.shape({
     sortClickHandler: PropTypes.func.isRequired,
     onMenuItemSelectHandler: PropTypes.func.isRequired,
@@ -113,4 +107,4 @@ FirmStructureMenu.propTypes = {
   }).isRequired,
 };
 
-export default withTranslation(FirmStructureMenu);
+export default FirmStructureMenu;

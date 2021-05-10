@@ -1,21 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import s from '../scss/TableHeader.module.scss';
 import {
   JOB, NAME, SALARY, SURNAME
 } from '../../../constants/firmStructureElements';
-import withTranslation from '../../../HOC/withTranslation';
 
-const EmployeesTableHeader = ({
-  getTranslation = () => null, setColumnStyle, sortClickHandler
-}) => {
-  const defaultAppTranslation = {
-    job: 'Job',
-    name: 'Name',
-    surname: 'Surname',
-    salary: 'Salary',
-  };
-  const appTranslation = getTranslation() || defaultAppTranslation;
+const EmployeesTableHeader = ({ setColumnStyle, sortClickHandler }) => {
+  const { t } = useTranslation(['FirmStructure', 'common']);
 
   return (
     <tr>
@@ -24,37 +16,36 @@ const EmployeesTableHeader = ({
         <span
           className={setColumnStyle(JOB)}
         >
-          {appTranslation.job}
+          {t('Job')}
         </span>
       </th>
       <th className={s.titleCell} onClick={() => sortClickHandler(NAME)}>
         <span
           className={setColumnStyle(NAME)}
         >
-          {appTranslation.name}
+          {t('common:Name')}
         </span>
       </th>
       <th className={s.titleCell} onClick={() => sortClickHandler(SURNAME)}>
         <span
           className={setColumnStyle(SURNAME)}
         >
-          {appTranslation.surname}
+          {t('Surname')}
         </span>
       </th>
       <th className={s.titleCell} onClick={() => sortClickHandler(SALARY)}>
         <span
           className={setColumnStyle(SALARY)}
         >
-          {appTranslation.salary}
+          {t('Salary')}
         </span>
       </th>
     </tr>
   );
 };
 EmployeesTableHeader.propTypes = {
-  getTranslation: PropTypes.func.isRequired,
   setColumnStyle: PropTypes.func.isRequired,
   sortClickHandler: PropTypes.func.isRequired,
 };
 
-export default withTranslation(EmployeesTableHeader);
+export default EmployeesTableHeader;

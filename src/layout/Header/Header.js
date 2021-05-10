@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import logo from '../../assets/images/Header/logo.png';
 import s from './scss/Header.module.scss';
 import LanguageSwitcher from './components/LanguageSwitcher';
@@ -6,13 +7,14 @@ import MenuItem from '../BurgerMenu/components/MenuItem';
 import menuItems from '../../data/menuItems';
 
 const Header = () => {
+  const { t } = useTranslation('Header');
   return (
     <header className={s.header}>
       <div className="app-container">
         <div className={s.headerWrapper}>
           <LanguageSwitcher />
           <div className={s.headerContacts}>
-            <div className={s.headerContactsAddress}>address, location and stuff</div>
+            <div className={s.headerContactsAddress}>{t('HeaderContactsText')}</div>
           </div>
           <div className={s.headerMenuRow}>
             <div className={s.headerLogo}>
