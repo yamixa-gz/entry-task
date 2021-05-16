@@ -17,10 +17,10 @@ const Card = ({
           <img src={img} alt="cvs" />
         </div>
         <div className={s.cardTitle}>
-          {title}
+          {t(title)}
         </div>
         <div className={s.cardDescription}>
-          {isOpen ? description : makeShortTextForCardContent(description)}
+          {isOpen ? t(description) : makeShortTextForCardContent(t(description))}
         </div>
         <button
           type="button"

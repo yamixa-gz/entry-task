@@ -22,8 +22,8 @@ const Description = () => {
     <Card
       key={item.id}
       id={item.id}
-      title={t(item.title)}
-      description={t(item.description)}
+      title={item.title}
+      description={item.description}
       img={item.img}
       isOpen={openCardId === item.id}
       clickHandler={clickHandler}
