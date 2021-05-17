@@ -3,11 +3,11 @@ import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import PokemonDetailsModal from './PokemonDetailsModal';
-import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
+import { PokeApiContext } from '../../../cotexts/PokeApiProvider';
 import useShowPokemonDetails from '../../../hooks/useShowPokemonDetails';
 
 const PokemonDetailsBtn = ({ url, callbacks }) => {
-  const { state } = useContext(FetchedDataTableContext);
+  const { state } = useContext(PokeApiContext);
   const { t } = useTranslation('PokeApi');
   const { isPending } = state;
   const { getPokemonDetailsRequest } = callbacks;

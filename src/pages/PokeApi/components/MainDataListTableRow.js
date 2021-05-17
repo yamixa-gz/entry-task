@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
-import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
+import { PokeApiContext } from '../../../cotexts/PokeApiProvider';
 
 const MainDataListTableRow = ({
   isActive, hotKey, index, url, name, handlers, callbacks
 }) => {
-  const { state } = useContext(FetchedDataTableContext);
+  const { state } = useContext(PokeApiContext);
 
   const {
     mouseDownEventHandler, dragEnterHandler,

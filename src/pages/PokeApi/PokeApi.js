@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import uuid from 'react-uuid';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from '../../constants/httpStatusCode';
-import FetchedDataTableView from './FetchedDataTableView';
-import { FetchedDataTableContext, FetchedDataTableProvider } from '../../cotexts/FetchedDataTableProvider';
+import PokeApiView from './PokeApiView';
+import { PokeApiContext, PokeApiProvider } from '../../cotexts/PokeApiProvider';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
-const FetchedDataTable = () => {
+const PokeApi = () => {
   const {
     state,
     setPending,
@@ -18,7 +18,7 @@ const FetchedDataTable = () => {
     setDataFromMouseDownEvent,
     setDataFromMouseUpEvent,
     setActivePage,
-  } = useContext(FetchedDataTableContext);
+  } = useContext(PokeApiContext);
 
   const setDataFromServer = (data) => {
     const fetchedDataArr = data.results.map((item, index) => ({
@@ -157,7 +157,7 @@ const FetchedDataTable = () => {
   }, []);
 
   return (
-    <FetchedDataTableView
+    <PokeApiView
       handlers={handlers}
       callbacks={callbacks}
     />
@@ -165,7 +165,7 @@ const FetchedDataTable = () => {
 };
 
 export default () => (
-  <FetchedDataTableProvider>
-    <FetchedDataTable />
-  </FetchedDataTableProvider>
+  <PokeApiProvider>
+    <PokeApi />
+  </PokeApiProvider>
 );

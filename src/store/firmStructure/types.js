@@ -1,0 +1,9 @@
+export const SET_IS_MODAL_SHOW = 'firmStructure/SET_IS_MODAL_SHOW';
+export const SET_SORTING = 'firmStructure/SET_SORTING';
+export const REMOVE_DATA_FROM_FIRM_STRUCT = 'REMOVE_DATA_FROM_FIRM_STRUCT';
+export const SET_ITEMS_FOR_DELETE = 'firmStructure/SET_ITEMS_FOR_DELETE';
+export const SET_ITEMS_SELECTED_MENU_ITEM = 'firmStructure/SET_ITEMS_SELECTED_MENU_ITEM';
+export const ADD_DATA_TO_FIRM_STRUCT = 'firmStructure/ADD_DATA_TO_FIRM_STRUCT';
+export const MODIFY_BRANCHES = 'firmStructure/MODIFY_BRANCHES';
+export const MODIFY_SUB_BRANCHES = 'firmStructure/MODIFY_SUB_BRANCHES';
+export const MODIFY_EMPLOYEES = 'firmStructure/MODIFY_EMPLOYEES';

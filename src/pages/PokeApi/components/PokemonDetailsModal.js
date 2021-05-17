@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
-import { FetchedDataTableContext } from '../../../cotexts/FetchedDataTableProvider';
+import { PokeApiContext } from '../../../cotexts/PokeApiProvider';
 
 const PokemonDetailsModal = ({
   isPokemonDetailsModalShow, isLoadedPokemonDetailsImage, setPokemonDetailsModalShow, setLoadedPokemonDetailsImage
 }) => {
-  const { state } = useContext(FetchedDataTableContext);
+  const { state } = useContext(PokeApiContext);
   const { pokemonDetails } = state;
   const { t } = useTranslation('PokeApi');
 

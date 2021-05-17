@@ -22,7 +22,7 @@ export const initialState = {
   mouseDownPressed: false,
 };
 
-export const fetchedDataTableReducer = (state, action) => {
+export const pokeApi = (state, action) => {
   switch (action.type) {
     case SET_PENDING:
       return { ...state, ...action.payload };

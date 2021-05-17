@@ -1,21 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { BRANCHES_STYLE, EMPLOYEES_STYLE } from '../../../constants/firmStructureElements';
 import BranchesTableRow from './BranchesTableRow';
 import EmployeesTableRow from './EmployeesTableRow';
 import BranchesTableHeader from './BranchesTableHeader';
 import EmployeesTableHeader from './EmployeesTableHeader';
-import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureTable = ({ handlers, callbacks, showingFirmStructSection }) => {
-  const { state } = useContext(FirmStructureContext);
-
-  const {
-    tableStyle,
-    itemsIdForDelete
-  } = state;
-
+const FirmStructureTable = ({
+  handlers, callbacks, showingFirmStructSection, tableStyle, itemsIdForDelete
+}) => {
   const { sortClickHandler, onClickTableRowHandler } = handlers;
   const { setColumnStyle } = callbacks;
 
@@ -77,5 +72,13 @@ FirmStructureTable.propTypes = {
     addDataFromFormToFirmStruct: PropTypes.func.isRequired,
   }).isRequired,
   showingFirmStructSection: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tableStyle: PropTypes.string.isRequired,
+  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-export default FirmStructureTable;
+
+const mapStateToProps = (state) => ({
+  tableStyle: state.firmStructure.tableStyle,
+  itemsIdForDelete: state.firmStructure.itemsIdForDelete,
+});
+
+export default connect(mapStateToProps)(FirmStructureTable);

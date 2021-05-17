@@ -1,10 +1,10 @@
 import React from 'react';
-import useFetchedDataTable from '../hooks/useFetchedDataTable';
+import usePokeApi from '../hooks/usePokeApi';
 
-export const FetchedDataTableContext = React.createContext();
+export const PokeApiContext = React.createContext();
 
 // eslint-disable-next-line react/prop-types
-export const FetchedDataTableProvider = ({ children }) => {
+export const PokeApiProvider = ({ children }) => {
   const {
     state,
     setPending,
@@ -15,10 +15,10 @@ export const FetchedDataTableProvider = ({ children }) => {
     setDataFromMouseDownEvent,
     setDataFromMouseUpEvent,
     setActivePage,
-  } = useFetchedDataTable();
+  } = usePokeApi();
 
   return (
-    <FetchedDataTableContext.Provider value={{
+    <PokeApiContext.Provider value={{
       state,
       setPending,
       setReceivedDataFromServer,
@@ -31,6 +31,6 @@ export const FetchedDataTableProvider = ({ children }) => {
     }}
     >
       {children}
-    </FetchedDataTableContext.Provider>
+    </PokeApiContext.Provider>
   );
 };

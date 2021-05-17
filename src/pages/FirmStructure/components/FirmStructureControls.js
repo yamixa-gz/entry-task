@@ -1,18 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
+import { connect } from 'react-redux';
+import { setModalShowActionCreator } from '../../../store/firmStructure/actions';
 
-const FirmStructureControls = ({ handlers }) => {
-  const {
-    state,
-    setModalShow,
-  } = useContext(FirmStructureContext);
-
-  const {
-    itemsIdForDelete
-  } = state;
+const FirmStructureControls = ({ handlers, itemsIdForDelete, setModalShow }) => {
   const { removeDataFromFirmStructHandler } = handlers;
   const { t } = useTranslation('FirmStructure');
 
@@ -42,6 +35,13 @@ FirmStructureControls.propTypes = {
     removeDataFromFirmStructHandler: PropTypes.func.isRequired,
     onClickTableRowHandler: PropTypes.func.isRequired,
   }).isRequired,
+  itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setModalShow: PropTypes.func.isRequired,
 };
 
-export default FirmStructureControls;
+const mapStateToProps = (state) => ({
+  itemsIdForDelete: state.firmStructure.itemsIdForDelete,
+});
+export default connect(mapStateToProps, {
+  setModalShow: setModalShowActionCreator,
+})(FirmStructureControls);

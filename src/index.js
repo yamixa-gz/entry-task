@@ -2,15 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './scss/index.scss';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppLanguageProvider } from './cotexts/AppLanguageProvider';
 import './i18n';
+import store from './store/store';
 
 ReactDOM.render(
   <BrowserRouter>
     <AppLanguageProvider>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </AppLanguageProvider>
   </BrowserRouter>,
   document.getElementById('root')

@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import classNames from 'classnames/bind';
 import uuid from 'react-uuid';
 import cloneDeep from 'lodash.clonedeep';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import s from './scss/TableHeader.module.scss';
 import {
   EMPLOYEES_STYLE,
@@ -15,20 +17,30 @@ import {
 } from '../../constants/firmStructureElements';
 import { ASCENDING, DESCENDING } from '../../constants/sortHeading';
 import FirmStructureView from './FirmStructureView';
-import { FirmStructureContext, FirmStructContextProvider } from '../../cotexts/FirmStructureProvider';
+import {
+  addDataToFirmStructActionCreator,
+  modifyBranchesActionCreator,
+  modifyEmployeesActionCreator,
+  modifySubBranchesActionCreator,
+  removeDataFromFirmStructActionCreator,
+  setItemsForDeleteActionCreator,
+  setSelectedMenuItemActionCreator,
+  setSortDirectionByColumnActionCreator,
+} from '../../store/firmStructure/actions';
 
 const cx = classNames.bind(s);
-const FirmStructure = () => {
-  const {
-    state,
-    setSortDirectionByColumn,
-    removeDataFromFirmStruct,
-    setItemsForDelete,
-    setSelectedMenuItem,
-    addDataToFirmStruct,
-    firmStruct,
-  } = useContext(FirmStructureContext);
-
+const FirmStructure = ({
+  setSortDirectionByColumn,
+  removeDataFromFirmStruct,
+  setItemsForDelete,
+  setSelectedMenuItem,
+  addDataToFirmStruct,
+  modifyBranches,
+  modifySubBranches,
+  modifyEmployees,
+  state,
+}) => {
+  const { firmStruct } = state;
   const sortColumnByName = (columnName, sortDirection) => {
     if (columnName === SALARY) {
       if (sortDirection === ASCENDING) {
@@ -109,11 +121,11 @@ const FirmStructure = () => {
     return newModifiedSection;
   };
   const sortClickHandler = (columnName) => {
-    let newSortDirection;
     const {
       sortDirection,
       sortedColumnName
     } = state;
+    let newSortDirection;
     switch (sortDirection) {
       case ASCENDING:
         newSortDirection = DESCENDING;
@@ -162,7 +174,7 @@ const FirmStructure = () => {
           console.log('Source section \"branches\":', firmStruct.branches);
           // eslint-disable-next-line
           console.log('New modified section \"branches\":', newShowingFirmStructSection);
-          firmStruct.branches = newShowingFirmStructSection;
+          modifyBranches(newShowingFirmStructSection);
           break;
         case firmStruct.branches[branchesIndex].subBranches[0].id:
           // eslint-disable-next-line
@@ -170,7 +182,7 @@ const FirmStructure = () => {
             firmStruct.branches[branchesIndex].subBranches);
           // eslint-disable-next-line
           console.log('New modified section \"subBranches\":', newShowingFirmStructSection);
-          firmStruct.branches[branchesIndex].subBranches = newShowingFirmStructSection;
+          modifySubBranches(branchesIndex, newShowingFirmStructSection);
           break;
         case firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees[0].id:
           // eslint-disable-next-line
@@ -178,7 +190,7 @@ const FirmStructure = () => {
             .subBranches[subBranchesIndex].employees);
           // eslint-disable-next-line
           console.log('New modified section \"employees\":', newShowingFirmStructSection);
-          firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees = newShowingFirmStructSection;
+          modifyEmployees(branchesIndex, subBranchesIndex, newShowingFirmStructSection);
           break;
         default:
       }
@@ -410,8 +422,53 @@ const FirmStructure = () => {
   );
 };
 
-export default () => (
-  <FirmStructContextProvider>
-    <FirmStructure />
-  </FirmStructContextProvider>
-);
+FirmStructure.propTypes = {
+  setSortDirectionByColumn: PropTypes.func.isRequired,
+  removeDataFromFirmStruct: PropTypes.func.isRequired,
+  setItemsForDelete: PropTypes.func.isRequired,
+  setSelectedMenuItem: PropTypes.func.isRequired,
+  addDataToFirmStruct: PropTypes.func.isRequired,
+  modifyBranches: PropTypes.func.isRequired,
+  modifySubBranches: PropTypes.func.isRequired,
+  modifyEmployees: PropTypes.func.isRequired,
+  state: PropTypes.shape({
+    sortDirection: PropTypes.string.isRequired,
+    sortedColumnName: PropTypes.string.isRequired,
+    categoryName: PropTypes.string.isRequired,
+    branchesIndex: PropTypes.number.isRequired,
+    subBranchesIndex: PropTypes.number.isRequired,
+    isEmployees: PropTypes.bool.isRequired,
+    showingFirmStructSection: PropTypes.arrayOf(PropTypes.object),
+    tableStyle: PropTypes.string.isRequired,
+    itemsIdForDelete: PropTypes.arrayOf(PropTypes.string),
+    firmStruct: PropTypes.shape({
+      branches: PropTypes.arrayOf(PropTypes.object).isRequired,
+      directors: PropTypes.objectOf(PropTypes.object).isRequired,
+    }),
+  }).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  state: {
+    sortDirection: state.firmStructure.sortDirection,
+    sortedColumnName: state.firmStructure.sortedColumnName,
+    categoryName: state.firmStructure.categoryName,
+    branchesIndex: state.firmStructure.branchesIndex,
+    subBranchesIndex: state.firmStructure.subBranchesIndex,
+    isEmployees: state.firmStructure.isEmployees,
+    showingFirmStructSection: state.firmStructure.showingFirmStructSection,
+    tableStyle: state.firmStructure.tableStyle,
+    itemsIdForDelete: state.firmStructure.itemsIdForDelete,
+    firmStruct: state.firmStructure.firmStruct,
+  },
+});
+export default connect(mapStateToProps, {
+  setSortDirectionByColumn: setSortDirectionByColumnActionCreator,
+  removeDataFromFirmStruct: removeDataFromFirmStructActionCreator,
+  setItemsForDelete: setItemsForDeleteActionCreator,
+  setSelectedMenuItem: setSelectedMenuItemActionCreator,
+  addDataToFirmStruct: addDataToFirmStructActionCreator,
+  modifyBranches: modifyBranchesActionCreator,
+  modifySubBranches: modifySubBranchesActionCreator,
+  modifyEmployees: modifyEmployeesActionCreator,
+})(FirmStructure);

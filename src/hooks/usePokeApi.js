@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import {
-  fetchedDataTableReducer,
+  pokeApi,
   initialState,
   SET_ACTIVE_PAGE,
   SET_HOT_KEY_AND_ACTIVE_INDEX,
@@ -10,10 +10,10 @@ import {
   SET_PENDING,
   SET_POKEMON_DETAILS_DATA,
   SET_RECEIVED_DATA
-} from '../reducers/fetchedDataTableReducer';
+} from '../reducers/pokeApi';
 
-const useFetchedDataTable = () => {
-  const [state, dispatch] = useReducer(fetchedDataTableReducer, initialState);
+const usePokeApi = () => {
+  const [state, dispatch] = useReducer(pokeApi, initialState);
 
   const setPending = (value) => dispatch({
     type: SET_PENDING,
@@ -100,4 +100,4 @@ const useFetchedDataTable = () => {
   };
 };
 
-export default useFetchedDataTable;
+export default usePokeApi;

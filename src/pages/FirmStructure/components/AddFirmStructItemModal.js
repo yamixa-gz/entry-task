@@ -1,21 +1,14 @@
 import { Modal } from 'react-bootstrap';
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
-import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
+import { setModalShowActionCreator } from '../../../store/firmStructure/actions';
 
-const AddFirmStructItemModal = ({ callbacks }) => {
-  const {
-    state,
-    setModalShow,
-  } = useContext(FirmStructureContext);
-
-  const {
-    isModalShow,
-    tableStyle,
-  } = state;
-
+const AddFirmStructItemModal = ({
+  callbacks, isModalShow, tableStyle, setModalShow 
+}) => {
   const { addDataFromFormToFirmStruct } = callbacks;
   const { t } = useTranslation('FirmStructure');
 
@@ -55,6 +48,15 @@ AddFirmStructItemModal.propTypes = {
     setColumnStyle: PropTypes.func.isRequired,
     addDataFromFormToFirmStruct: PropTypes.func.isRequired,
   }).isRequired,
+  isModalShow: PropTypes.bool.isRequired,
+  tableStyle: PropTypes.string.isRequired,
+  setModalShow: PropTypes.func.isRequired,
 };
 
-export default AddFirmStructItemModal;
+const mapStateToProps = (state) => ({
+  isModalShow: state.firmStructure.isModalShow,
+  tableStyle: state.firmStructure.tableStyle,
+});
+export default connect(mapStateToProps, {
+  setModalShow: setModalShowActionCreator,
+})(AddFirmStructItemModal);

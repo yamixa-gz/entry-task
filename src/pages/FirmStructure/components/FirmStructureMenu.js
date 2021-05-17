@@ -1,22 +1,13 @@
 import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { BRANCHES } from '../../../constants/firmStructureElements';
-import { FirmStructureContext } from '../../../cotexts/FirmStructureProvider';
 
-const FirmStructureMenu = ({ handlers }) => {
-  const {
-    state,
-    firmStruct,
-  } = useContext(FirmStructureContext);
-
-  const {
-    branchesIndex,
-    subBranchesIndex,
-    categoryName,
-  } = state;
-
+const FirmStructureMenu = ({
+  handlers, branchesIndex, subBranchesIndex, categoryName, firmStruct, 
+}) => {
   const { onMenuItemSelectHandler } = handlers;
   const { t } = useTranslation('FirmStructure');
 
@@ -105,6 +96,19 @@ FirmStructureMenu.propTypes = {
     removeDataFromFirmStructHandler: PropTypes.func.isRequired,
     onClickTableRowHandler: PropTypes.func.isRequired,
   }).isRequired,
+  categoryName: PropTypes.string.isRequired,
+  branchesIndex: PropTypes.number.isRequired,
+  subBranchesIndex: PropTypes.number.isRequired,
+  firmStruct: PropTypes.shape({
+    branches: PropTypes.arrayOf(PropTypes.object).isRequired,
+    directors: PropTypes.objectOf(PropTypes.object).isRequired,
+  }).isRequired,
 };
+const mapStateToProps = (state) => ({
+  branchesIndex: state.firmStructure.branchesIndex,
+  subBranchesIndex: state.firmStructure.subBranchesIndex,
+  categoryName: state.firmStructure.categoryName,
+  firmStruct: state.firmStructure.firmStruct,
+});
 
-export default FirmStructureMenu;
+export default connect(mapStateToProps)(FirmStructureMenu);

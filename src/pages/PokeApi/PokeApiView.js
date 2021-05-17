@@ -11,14 +11,14 @@ import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
 import Layout from '../../layout/Layout';
-import { FetchedDataTableContext } from '../../cotexts/FetchedDataTableProvider';
+import { PokeApiContext } from '../../cotexts/PokeApiProvider';
 
-const FetchedDataTableView = ({ callbacks, handlers }) => {
+const PokeApiView = ({ callbacks, handlers }) => {
   const { Header, Footer } = Layout();
   const { t } = useTranslation(['PokeApi', 'common']);
   const { nameCapitalize } = callbacks;
   const { pageChangeHandler } = handlers;
-  const { state } = useContext(FetchedDataTableContext);
+  const { state } = useContext(PokeApiContext);
   const {
     fetchedDataArr, hotKeyValue, isPending, pageLimit, pagesAmount, activePage
   } = state;
@@ -85,7 +85,7 @@ const FetchedDataTableView = ({ callbacks, handlers }) => {
   );
 };
 
-FetchedDataTableView.propTypes = {
+PokeApiView.propTypes = {
   handlers: PropTypes.shape({
     pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
@@ -100,4 +100,4 @@ FetchedDataTableView.propTypes = {
   }).isRequired,
 };
 
-export default FetchedDataTableView;
+export default PokeApiView;
