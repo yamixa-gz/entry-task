@@ -1,21 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
-import { PokeApiContext } from '../../../cotexts/PokeApiProvider';
 
 const MainDataListTableRow = ({
-  isActive, hotKey, index, url, name, handlers, callbacks
+  isActive, hotKey, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed, isPending
 }) => {
-  const { state } = useContext(PokeApiContext);
-
   const {
     mouseDownEventHandler, dragEnterHandler,
     mouseUpEventHandler, onClickHandler,
   } = handlers;
-  const {
-    mouseDownPressed, insertingElIndex, activeElIndex
-  } = state;
 
   const className = cn({
     'border border-2 border-danger': isActive,
@@ -37,6 +32,8 @@ const MainDataListTableRow = ({
         <PokemonDetailsBtn
           callbacks={callbacks}
           url={url}
+          isPending={isPending}
+          index={index}
         />
       </td>
     </tr>
@@ -48,6 +45,10 @@ MainDataListTableRow.propTypes = {
   name: PropTypes.string.isRequired,
   hotKey: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  isPending: PropTypes.bool.isRequired,
+  mouseDownPressed: PropTypes.bool.isRequired,
+  insertingElIndex: PropTypes.number.isRequired,
+  activeElIndex: PropTypes.number.isRequired,
   handlers: PropTypes.shape({
     pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
@@ -62,4 +63,11 @@ MainDataListTableRow.propTypes = {
   }).isRequired,
 };
 
-export default MainDataListTableRow;
+const mapStateToProps = (state) => ({
+  mouseDownPressed: state.pokeApi.mouseDownPressed,
+  insertingElIndex: state.pokeApi.insertingElIndex,
+  activeElIndex: state.pokeApi.activeElIndex,
+  isPending: state.pokeApi.isPending,
+});
+
+export default connect(mapStateToProps)(MainDataListTableRow);

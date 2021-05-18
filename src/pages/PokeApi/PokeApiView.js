@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Table,
   Container,
@@ -7,21 +7,19 @@ import {
 import Pagination from 'react-js-pagination';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
 import Layout from '../../layout/Layout';
-import { PokeApiContext } from '../../cotexts/PokeApiProvider';
 
-const PokeApiView = ({ callbacks, handlers }) => {
+const PokeApiView = ({
+  callbacks, handlers, activePage, fetchedDataArr, pagesAmount, hotKeyValue, isPending, pageLimit
+}) => {
   const { Header, Footer } = Layout();
   const { t } = useTranslation(['PokeApi', 'common']);
   const { nameCapitalize } = callbacks;
   const { pageChangeHandler } = handlers;
-  const { state } = useContext(PokeApiContext);
-  const {
-    fetchedDataArr, hotKeyValue, isPending, pageLimit, pagesAmount, activePage
-  } = state;
   const fetchedDataComponents = fetchedDataArr.map((item, index) => (
     <MainDataListTableRow
       handlers={handlers}
@@ -98,6 +96,20 @@ PokeApiView.propTypes = {
     nameCapitalize: PropTypes.func.isRequired,
     getPokemonDetailsRequest: PropTypes.func.isRequired,
   }).isRequired,
+  isPending: PropTypes.bool.isRequired,
+  fetchedDataArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pageLimit: PropTypes.number.isRequired,
+  pagesAmount: PropTypes.number.isRequired,
+  activePage: PropTypes.number.isRequired,
+  hotKeyValue: PropTypes.string.isRequired,
 };
+const mapStateToProps = (state) => ({
+  isPending: state.pokeApi.isPending,
+  fetchedDataArr: state.pokeApi.fetchedDataArr,
+  pageLimit: state.pokeApi.pageLimit,
+  pagesAmount: state.pokeApi.pagesAmount,
+  activePage: state.pokeApi.activePage,
+  hotKeyValue: state.pokeApi.hotKeyValue,
+});
 
-export default PokeApiView;
+export default connect(mapStateToProps)(PokeApiView);

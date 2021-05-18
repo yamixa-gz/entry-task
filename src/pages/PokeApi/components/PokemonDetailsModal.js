@@ -1,25 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button, Card, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
-import { PokeApiContext } from '../../../cotexts/PokeApiProvider';
 
 const PokemonDetailsModal = ({
-  isPokemonDetailsModalShow, isLoadedPokemonDetailsImage, setPokemonDetailsModalShow, setLoadedPokemonDetailsImage
-}) => {
-  const { state } = useContext(PokeApiContext);
-  const { pokemonDetails } = state;
-  const { t } = useTranslation('PokeApi');
 
+  isPokemonDetailsModalShow, isLoadedPokemonDetailsImage,
+  setPokemonDetailsModalShow, setLoadedPokemonDetailsImage,
+  pokemonDetails,
+}) => {
+  const { t } = useTranslation('PokeApi');
   const abilities = pokemonDetails && pokemonDetails
     .abilities.map((ability) => <Ability key={ability} ability={ability} />);
+
+  const onCloseHandler = (e) => {
+    e.stopPropagation();
+    setPokemonDetailsModalShow(false);
+  };
   return (
     <Modal
       show={isPokemonDetailsModalShow}
-      onHide={() => setPokemonDetailsModalShow(false)}
       backdrop="static"
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
@@ -30,10 +34,7 @@ const PokemonDetailsModal = ({
           {`${t('Pokemon Details')}:`}
         </Modal.Title>
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setPokemonDetailsModalShow(false);
-          }}
+          onClick={onCloseHandler}
           type="button"
           className="btn-close"
           data-bs-dismiss="modal"
@@ -61,11 +62,7 @@ const PokemonDetailsModal = ({
         </Card>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(e) => {
-          e.stopPropagation();
-          setPokemonDetailsModalShow(false);
-        }}
-        >
+        <Button onClick={onCloseHandler}>
           {`${t('Close')}`}
         </Button>
       </Modal.Footer>
@@ -78,6 +75,15 @@ PokemonDetailsModal.propTypes = {
   isLoadedPokemonDetailsImage: PropTypes.bool.isRequired,
   setPokemonDetailsModalShow: PropTypes.func.isRequired,
   setLoadedPokemonDetailsImage: PropTypes.func.isRequired,
+  pokemonDetails: PropTypes.oneOfType([PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+    abilities: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }), PropTypes.bool]).isRequired,
 };
 
-export default PokemonDetailsModal;
+const mapStateToProps = (state) => ({
+  pokemonDetails: state.pokeApi.pokemonDetails,
+});
+export default connect(mapStateToProps)(PokemonDetailsModal);
