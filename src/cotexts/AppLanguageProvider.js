@@ -1,14 +1,13 @@
 import React from 'react';
-import useAppLanguage from '../hooks/useAppLanguage';
+import i18n from 'i18next';
 
 export const AppLanguageContext = React.createContext(null);
 
 // eslint-disable-next-line react/prop-types
 export const AppLanguageProvider = ({ children }) => {
-  const changeLanguage = useAppLanguage();
   return (
     <AppLanguageContext.Provider value={{
-      changeLanguage,
+      changeLanguage: (lng) => i18n.changeLanguage(lng),
     }}
     >
       {children}

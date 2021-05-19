@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import s from './scss/Description.module.scss';
 import Card from './components/Card';
 import Layout from '../../layout/Layout';
-import { DescriptionContext, DescriptionProvider } from '../../cotexts/DescriptionProvider';
+import cardDescription from '../../data/cardDescription';
+import setOpenCardIdActionCreator from '../../store/descriptions/actions';
 
-const Description = () => {
-  const { openCardId, setOpenCardId, cardDescription } = useContext(DescriptionContext);
+const Description = ({ openCardId, setOpenCardId }) => {
   const { Header, Footer } = Layout();
   const { t } = useTranslation('Description');
 
@@ -52,8 +54,15 @@ const Description = () => {
   );
 };
 
-export default () => (
-  <DescriptionProvider>
-    <Description />
-  </DescriptionProvider>
-);
+Description.propTypes = {
+  openCardId: PropTypes.string.isRequired,
+  setOpenCardId: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  openCardId: state.description.openCardId,
+});
+
+export default connect(mapStateToProps, {
+  setOpenCardId: setOpenCardIdActionCreator,
+})(Description);
