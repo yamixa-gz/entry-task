@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
+import {
+  setLoadedPokemonDetailsImageActionCreator,
+  setPokemonDetailsModalShowActionCreator
+} from '../../../store/pokeApi/actions';
 
 const PokemonDetailsModal = ({
 
@@ -85,5 +89,10 @@ PokemonDetailsModal.propTypes = {
 
 const mapStateToProps = (state) => ({
   pokemonDetails: state.pokeApi.pokemonDetails,
+  isPokemonDetailsModalShow: state.pokemonDetails.isPokemonDetailsModalShow,
+  isLoadedPokemonDetailsImage: state.pokemonDetails.isLoadedPokemonDetailsImage,
 });
-export default connect(mapStateToProps)(PokemonDetailsModal);
+export default connect(mapStateToProps, {
+  setPokemonDetailsModalShow: setPokemonDetailsModalShowActionCreator,
+  setLoadedPokemonDetailsImage: setLoadedPokemonDetailsImageActionCreator,
+})(PokemonDetailsModal);

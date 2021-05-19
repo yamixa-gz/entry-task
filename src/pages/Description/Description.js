@@ -6,7 +6,7 @@ import s from './scss/Description.module.scss';
 import Card from './components/Card';
 import Layout from '../../layout/Layout';
 import cardDescription from '../../data/cardDescription';
-import setOpenCardIdActionCreator from '../../store/descriptions/actions';
+import setOpenCardIdActionCreator from '../../store/description/actions';
 
 const Description = ({ openCardId, setOpenCardId }) => {
   const { Header, Footer } = Layout();

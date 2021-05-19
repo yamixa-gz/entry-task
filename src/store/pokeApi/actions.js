@@ -57,13 +57,13 @@ export const setInsertingElIndexActionCreator = (insertingElIndex) => (dispatch)
 });
 
 export const setDataFromMouseDownEventActionCreator = (
-  newFetchedDataArr, movingElement, activeElIndex, insertingElIndex
+  newFetchedDataArr, movingElement, index
 ) => (dispatch) => dispatch({
   type: SET_MOUSE_DOWN_EVENT_DATA,
   newFetchedDataArr,
   movingElement,
-  activeElIndex,
-  insertingElIndex,
+  activeElIndex: index,
+  insertingElIndex: index,
 });
 
 export const setDataFromMouseUpEventActionCreator = (fetchedDataArr) => (dispatch) => dispatch({

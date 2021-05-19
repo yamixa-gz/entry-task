@@ -5,15 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PokemonDetailsModal from './PokemonDetailsModal';
 import {
-  setClickedButtonIndexActionCreator,
-  setLoadedPokemonDetailsImageActionCreator,
-  setPokemonDetailsLoadingActionCreator,
-  setPokemonDetailsModalShowActionCreator
+  setClickedButtonIndexActionCreator, setLoadedPokemonDetailsImageActionCreator,
+  setPokemonDetailsLoadingActionCreator, setPokemonDetailsModalShowActionCreator,
 } from '../../../store/pokeApi/actions';
 
 const PokemonDetailsBtn = ({
-  url, isPending, callbacks, isLoadedPokemonDetailsImage,
-  isPokemonDetailsLoading, isPokemonDetailsModalShow,
+  url, isPending, callbacks, isPokemonDetailsLoading,
   setLoadedPokemonDetailsImage, setPokemonDetailsLoading,
   setPokemonDetailsModalShow, index, setClickedButtonIndex,
   clickedButtonIndex,
@@ -44,14 +41,7 @@ const PokemonDetailsBtn = ({
       >
         {isPokemonDetailsLoading && (clickedButtonIndex === index) ? `${t('Loading')}…` : `${t('See details')}`}
       </Button>
-      {(clickedButtonIndex === index) && !isPokemonDetailsLoading && (
-        <PokemonDetailsModal
-          isPokemonDetailsModalShow={isPokemonDetailsModalShow}
-          isLoadedPokemonDetailsImage={isLoadedPokemonDetailsImage}
-          setPokemonDetailsModalShow={setPokemonDetailsModalShow}
-          setLoadedPokemonDetailsImage={setLoadedPokemonDetailsImage}
-        />
-      )}
+      {(clickedButtonIndex === index) && !isPokemonDetailsLoading && <PokemonDetailsModal /> }
     </>
   );
 };
@@ -60,8 +50,6 @@ PokemonDetailsBtn.propTypes = {
   index: PropTypes.number.isRequired,
   clickedButtonIndex: PropTypes.number.isRequired,
   isPokemonDetailsLoading: PropTypes.bool.isRequired,
-  isPokemonDetailsModalShow: PropTypes.bool.isRequired,
-  isLoadedPokemonDetailsImage: PropTypes.bool.isRequired,
   setPokemonDetailsLoading: PropTypes.func.isRequired,
   setPokemonDetailsModalShow: PropTypes.func.isRequired,
   setLoadedPokemonDetailsImage: PropTypes.func.isRequired,
@@ -76,15 +64,13 @@ PokemonDetailsBtn.propTypes = {
 
 const mapStateToProps = (state) => ({
   isPokemonDetailsLoading: state.pokemonDetails.isPokemonDetailsLoading,
-  isPokemonDetailsModalShow: state.pokemonDetails.isPokemonDetailsModalShow,
-  isLoadedPokemonDetailsImage: state.pokemonDetails.isLoadedPokemonDetailsImage,
   clickedButtonIndex: state.pokemonDetails.clickedButtonIndex,
-  resetPokemonDetailsObject: PropTypes.func.isRequired,
+  isPending: state.pokeApi.isPending,
 });
 
 export default connect(mapStateToProps, {
   setPokemonDetailsLoading: setPokemonDetailsLoadingActionCreator,
+  setClickedButtonIndex: setClickedButtonIndexActionCreator,
   setPokemonDetailsModalShow: setPokemonDetailsModalShowActionCreator,
   setLoadedPokemonDetailsImage: setLoadedPokemonDetailsImageActionCreator,
-  setClickedButtonIndex: setClickedButtonIndexActionCreator,
 })(PokemonDetailsBtn);

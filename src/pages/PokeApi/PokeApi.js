@@ -141,7 +141,7 @@ const PokeApi = ({
     const { fetchedDataArr } = state;
     const newFetchedDataArr = fetchedDataArr.filter((_, i) => i !== index);
     const movingElement = { ...fetchedDataArr[index] };
-    setDataFromMouseDownEvent(newFetchedDataArr, movingElement, index, index);
+    setDataFromMouseDownEvent(newFetchedDataArr, movingElement, index);
   };
 
   const mouseUpEventHandler = () => {

@@ -4,7 +4,7 @@ import {
   Container,
   Image
 } from 'react-bootstrap';
-// import Pagination from 'react-js-pagination';
+
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MainDataListTableRow from './components/MainDataListTableRow';
@@ -13,13 +13,10 @@ import MainDataListTableHeader from './components/MainDataListTableHeader';
 import Layout from '../../layout/Layout';
 
 const PokeApiView = ({
-  // eslint-disable-next-line no-unused-vars
-  callbacks, handlers, activePage, fetchedDataArr, pagesAmount, isPending, pageLimit, activeElIndex
+  callbacks, handlers, fetchedDataArr, isPending, activeElIndex
 }) => {
   const { Header, Footer } = Layout();
   const { nameCapitalize } = callbacks;
-  // const { pageChangeHandler } = handlers;
-  // const { pokeApiWheelHandler } = handlers;
   const fetchedDataComponents = fetchedDataArr.map((item, index) => (
     <MainDataListTableRow
       handlers={handlers}
@@ -37,7 +34,6 @@ const PokeApiView = ({
       <Header />
       <div className="content">
         <div className="app-container">
-
           <Container fluid className="bg-light mb-3 pt-3 h-100">
             <div className="middle-container ">
               <div className="d-flex justify-content-center mb-3">
@@ -86,17 +82,11 @@ PokeApiView.propTypes = {
   }).isRequired,
   isPending: PropTypes.bool.isRequired,
   fetchedDataArr: PropTypes.arrayOf(PropTypes.object).isRequired,
-  pageLimit: PropTypes.number.isRequired,
-  pagesAmount: PropTypes.number.isRequired,
-  activePage: PropTypes.number.isRequired,
   activeElIndex: PropTypes.number.isRequired,
 };
 const mapStateToProps = (state) => ({
   isPending: state.pokeApi.isPending,
   fetchedDataArr: state.pokeApi.fetchedDataArr,
-  pageLimit: state.pokeApi.pageLimit,
-  pagesAmount: state.pokeApi.pagesAmount,
-  activePage: state.pokeApi.activePage,
   activeElIndex: state.pokeApi.activeElIndex,
 });
 

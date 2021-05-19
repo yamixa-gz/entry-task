@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
 
 const MainDataListTableRow = ({
-  isActive, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed, isPending
+  isActive, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed,
 }) => {
   const {
     mouseDownEventHandler, dragEnterHandler,
@@ -32,7 +32,6 @@ const MainDataListTableRow = ({
         <PokemonDetailsBtn
           callbacks={callbacks}
           url={url}
-          isPending={isPending}
           index={index}
         />
       </td>
@@ -44,7 +43,6 @@ MainDataListTableRow.propTypes = {
   isActive: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
-  isPending: PropTypes.bool.isRequired,
   mouseDownPressed: PropTypes.bool.isRequired,
   insertingElIndex: PropTypes.number.isRequired,
   activeElIndex: PropTypes.number.isRequired,
@@ -65,7 +63,6 @@ const mapStateToProps = (state) => ({
   mouseDownPressed: state.pokeApi.mouseDownPressed,
   insertingElIndex: state.pokeApi.insertingElIndex,
   activeElIndex: state.pokeApi.activeElIndex,
-  isPending: state.pokeApi.isPending,
 });
 
 export default connect(mapStateToProps)(MainDataListTableRow);

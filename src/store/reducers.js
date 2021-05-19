@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import firmStructure from './firmStructure/reducers';
 import { pokeApi, pokemonDetails } from './pokeApi/reducers';
-import description from './descriptions/reducers';
+import description from './description/reducers';
 
 const rootReducer = combineReducers({
   firmStructure,
