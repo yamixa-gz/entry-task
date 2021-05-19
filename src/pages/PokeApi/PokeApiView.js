@@ -4,9 +4,8 @@ import {
   Container,
   Image
 } from 'react-bootstrap';
-import Pagination from 'react-js-pagination';
+// import Pagination from 'react-js-pagination';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import MainDataListTableRow from './components/MainDataListTableRow';
 import Preloader from './components/Preloader';
@@ -14,22 +13,22 @@ import MainDataListTableHeader from './components/MainDataListTableHeader';
 import Layout from '../../layout/Layout';
 
 const PokeApiView = ({
-  callbacks, handlers, activePage, fetchedDataArr, pagesAmount, hotKeyValue, isPending, pageLimit
+  // eslint-disable-next-line no-unused-vars
+  callbacks, handlers, activePage, fetchedDataArr, pagesAmount, isPending, pageLimit, activeElIndex
 }) => {
   const { Header, Footer } = Layout();
-  const { t } = useTranslation(['PokeApi', 'common']);
   const { nameCapitalize } = callbacks;
-  const { pageChangeHandler } = handlers;
+  // const { pageChangeHandler } = handlers;
+  // const { pokeApiWheelHandler } = handlers;
   const fetchedDataComponents = fetchedDataArr.map((item, index) => (
     <MainDataListTableRow
       handlers={handlers}
       callbacks={callbacks}
-      isActive={item.hotKey === hotKeyValue}
-      hotKey={item.hotKey}
+      isActive={index === activeElIndex}
       index={index}
       key={item.id}
       url={item.url}
-      name={item.name ? `${nameCapitalize(item.name)}; ${t('Hot key')}: ${item.hotKey}` : 'unknown Name'}
+      name={item.name ? `${nameCapitalize(item.name)}; ` : 'unknown Name'}
     />
   ));
 
@@ -63,16 +62,6 @@ const PokeApiView = ({
               </Table>
               <div className="position-relative">
                 {isPending && <Preloader />}
-                <Pagination
-                  itemClass="page-item"
-                  linkClass="page-link"
-                  innerClass="pagination justify-content-center"
-                  itemsCountPerPage={pageLimit}
-                  totalItemsCount={pagesAmount}
-                  pageRangeDisplayed={5}
-                  activePage={activePage}
-                  onChange={pageChangeHandler}
-                />
               </div>
             </div>
           </Container>
@@ -87,10 +76,9 @@ PokeApiView.propTypes = {
   handlers: PropTypes.shape({
     pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
-    keyPressHandler: PropTypes.func.isRequired,
     dragEnterHandler: PropTypes.func.isRequired,
-    mouseDownEventHandler: PropTypes.func.isRequired,
     mouseUpEventHandler: PropTypes.func.isRequired,
+    mouseDownEventHandler: PropTypes.func.isRequired,
   }).isRequired,
   callbacks: PropTypes.shape({
     nameCapitalize: PropTypes.func.isRequired,
@@ -101,7 +89,7 @@ PokeApiView.propTypes = {
   pageLimit: PropTypes.number.isRequired,
   pagesAmount: PropTypes.number.isRequired,
   activePage: PropTypes.number.isRequired,
-  hotKeyValue: PropTypes.string.isRequired,
+  activeElIndex: PropTypes.number.isRequired,
 };
 const mapStateToProps = (state) => ({
   isPending: state.pokeApi.isPending,
@@ -109,7 +97,7 @@ const mapStateToProps = (state) => ({
   pageLimit: state.pokeApi.pageLimit,
   pagesAmount: state.pokeApi.pagesAmount,
   activePage: state.pokeApi.activePage,
-  hotKeyValue: state.pokeApi.hotKeyValue,
+  activeElIndex: state.pokeApi.activeElIndex,
 });
 
 export default connect(mapStateToProps)(PokeApiView);

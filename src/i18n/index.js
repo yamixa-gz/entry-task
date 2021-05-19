@@ -5,7 +5,7 @@ import en from './en';
 import ru from './ru';
 import ua from './ua';
 
-const fallbackLng = ['en'];
+const fallbackLng = 'en';
 const availableLanguages = ['en', 'ru', 'ua'];
 
 const options = {

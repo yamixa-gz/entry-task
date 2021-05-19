@@ -9,12 +9,14 @@ import {
   setActivePageActionCreator,
   setDataFromMouseDownEventActionCreator,
   setDataFromMouseUpEventActionCreator,
-  setHotKeyAndActiveIndexActionCreator,
+  setActiveIndexActionCreator,
   setInsertingElIndexActionCreator,
   setPendingActionCreator,
   setPokemonDetailsActionCreator,
-  setReceivedDataFromServerActionCreator
+  setReceivedDataFromServerActionCreator,
+  setNextPageFromServerActionCreator,
 } from '../../store/pokeApi/actions';
+import END_OF_NEXT_PAGE from '../../constants/pokeApiElements';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
@@ -23,19 +25,20 @@ const PokeApi = ({
   setPending,
   setReceivedDataFromServer,
   setPokemonDetails,
-  setHotKeyAndActiveIndex,
+  setActiveIndex,
   setInsertingElIndex,
   setDataFromMouseDownEvent,
   setDataFromMouseUpEvent,
   setActivePage,
+  setNextPageFromServer,
 }) => {
   const setDataFromServer = (data) => {
-    const fetchedDataArr = data.results.map((item, index) => ({
+    const fetchedDataArr = data.results.map((item) => ({
       id: uuid(),
-      hotKey: String.fromCharCode(97 + index),
       ...item
     }));
     setReceivedDataFromServer(fetchedDataArr, data.count);
+    setNextPageFromServer(data.next);
   };
 
   const setPokemonDetailsData = (data) => {
@@ -77,16 +80,17 @@ const PokeApi = ({
     }
   };
 
-  const getPageRequest = async (pageNumber) => {
-    const { pageLimit } = state;
+  const getPageRequest = async () => {
+    const { pageLimit, activePage, nextPage } = state;
+    if (nextPage === END_OF_NEXT_PAGE) return;
     setPending(true);
     try {
       const response = await fetch(
-        `${BASE_URL}pokemon?limit=${pageLimit}&offset=${pageNumber * pageLimit - pageLimit}`
+        `${BASE_URL}pokemon?limit=${pageLimit}&offset=${activePage * pageLimit - pageLimit}`
       );
       if (response.ok) {
-        setDataFromServer(await response.json());
-        setActivePage(pageNumber);
+        const receivedData = await response.json();
+        setDataFromServer(receivedData);
         setPending(false);
         return;
       }
@@ -118,13 +122,17 @@ const PokeApi = ({
     getPageRequest(pageNumber);
   };
 
-  const keyPressHandler = (e) => {
-    const { fetchedDataArr } = state;
-    setHotKeyAndActiveIndex(e.key, fetchedDataArr.findIndex((el) => el.hotKey === e.key));
+  const pokeApiScrollHandler = () => {
+    const { isPending, activePage, nextPage } = state;
+    if (isPending) return;
+    if ((document.documentElement.offsetHeight + 160)
+      + document.documentElement.scrollTop >= document.documentElement.scrollHeight) {
+      if (nextPage !== END_OF_NEXT_PAGE) setActivePage(activePage + 1);
+    }
   };
 
-  const onClickHandler = (index, hotKey) => {
-    setHotKeyAndActiveIndex(hotKey, index);
+  const onClickHandler = (index) => {
+    setActiveIndex(index);
   };
 
   const dragEnterHandler = (index) => setInsertingElIndex(index);
@@ -146,7 +154,6 @@ const PokeApi = ({
   const handlers = {
     pageChangeHandler,
     onClickHandler,
-    keyPressHandler,
     dragEnterHandler,
     mouseDownEventHandler,
     mouseUpEventHandler,
@@ -156,14 +163,17 @@ const PokeApi = ({
     getPokemonDetailsRequest,
   };
 
+  const { activePage, isPending } = state;
   useEffect(() => {
-    const { activePage } = state;
-    document.addEventListener('keypress', keyPressHandler);
-    getPageRequest(activePage);
+    if (!isPending) getPageRequest(activePage);
+  }, [activePage]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', pokeApiScrollHandler);
     return () => {
-      document.removeEventListener('keypress', keyPressHandler);
+      window.removeEventListener('scroll', pokeApiScrollHandler);
     };
-  }, []);
+  });
 
   return (
     <PokeApiView
@@ -182,15 +192,17 @@ PokeApi.propTypes = {
     newFetchedDataArr: PropTypes.arrayOf(PropTypes.object),
     movingElement: PropTypes.objectOf(PropTypes.any).isRequired,
     insertingElIndex: PropTypes.number.isRequired,
+    nextPage: PropTypes.string.isRequired,
   }).isRequired,
   setPending: PropTypes.func.isRequired,
   setReceivedDataFromServer: PropTypes.func.isRequired,
   setPokemonDetails: PropTypes.func.isRequired,
-  setHotKeyAndActiveIndex: PropTypes.func.isRequired,
+  setActiveIndex: PropTypes.func.isRequired,
   setInsertingElIndex: PropTypes.func.isRequired,
   setDataFromMouseDownEvent: PropTypes.func.isRequired,
   setDataFromMouseUpEvent: PropTypes.func.isRequired,
   setActivePage: PropTypes.func.isRequired,
+  setNextPageFromServer: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   state: {
@@ -201,6 +213,7 @@ const mapStateToProps = (state) => ({
     newFetchedDataArr: state.pokeApi.newFetchedDataArr,
     movingElement: state.pokeApi.movingElement,
     insertingElIndex: state.pokeApi.insertingElIndex,
+    nextPage: state.pokeApi.nextPage,
   },
 });
 
@@ -208,9 +221,10 @@ export default connect(mapStateToProps, {
   setPending: setPendingActionCreator,
   setReceivedDataFromServer: setReceivedDataFromServerActionCreator,
   setPokemonDetails: setPokemonDetailsActionCreator,
-  setHotKeyAndActiveIndex: setHotKeyAndActiveIndexActionCreator,
+  setActiveIndex: setActiveIndexActionCreator,
   setInsertingElIndex: setInsertingElIndexActionCreator,
   setDataFromMouseDownEvent: setDataFromMouseDownEventActionCreator,
   setDataFromMouseUpEvent: setDataFromMouseUpEventActionCreator,
   setActivePage: setActivePageActionCreator,
+  setNextPageFromServer: setNextPageFromServerActionCreator,
 })(PokeApi);

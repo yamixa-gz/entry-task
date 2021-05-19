@@ -1,6 +1,6 @@
 import {
   SET_ACTIVE_PAGE, SET_CLICKED_BUTTON_INDEX,
-  SET_HOT_KEY_AND_ACTIVE_INDEX,
+  SET_ACTIVE_INDEX,
   SET_INSERTING_EL_INDEX,
   SET_MOUSE_DOWN_EVENT_DATA,
   SET_MOUSE_UP_EVENT_DATA,
@@ -9,7 +9,8 @@ import {
   SET_POKEMON_DETAILS_LOADED_IMAGE,
   SET_POKEMON_DETAILS_LOADING,
   SET_POKEMON_DETAILS_MODAL_SHOW,
-  SET_RECEIVED_DATA
+  SET_RECEIVED_DATA,
+  SET_NEXT_PAGE,
 } from './types';
 
 export const setPendingActionCreator = (value) => (dispatch) => dispatch({
@@ -21,6 +22,11 @@ export const setReceivedDataFromServerActionCreator = (fetchedDataArr, pagesAmou
   type: SET_RECEIVED_DATA,
   fetchedDataArr,
   pagesAmount,
+});
+
+export const setNextPageFromServerActionCreator = (nextPage) => (dispatch) => dispatch({
+  type: SET_NEXT_PAGE,
+  nextPage,
 });
 
 export const setPokemonDetailsActionCreator = ({
@@ -40,9 +46,8 @@ export const setActivePageActionCreator = (activePage) => (dispatch) => dispatch
   activePage,
 });
 
-export const setHotKeyAndActiveIndexActionCreator = (hotKeyValue, activeElIndex) => (dispatch) => dispatch({
-  type: SET_HOT_KEY_AND_ACTIVE_INDEX,
-  hotKeyValue,
+export const setActiveIndexActionCreator = (activeElIndex) => (dispatch) => dispatch({
+  type: SET_ACTIVE_INDEX,
   activeElIndex,
 });
 

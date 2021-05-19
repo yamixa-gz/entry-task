@@ -83,7 +83,6 @@ const en = {
   PokeApi: {
     'See details': 'See details',
     Description: 'Description',
-    'Hot key': 'Hot key',
     Loading: 'Loading',
     Abilities: 'Abilities',
     'Pokemon Details': 'Pokemon Details',

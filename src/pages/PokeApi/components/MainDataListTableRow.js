@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
 
 const MainDataListTableRow = ({
-  isActive, hotKey, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed, isPending
+  isActive, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed, isPending
 }) => {
   const {
     mouseDownEventHandler, dragEnterHandler,
-    mouseUpEventHandler, onClickHandler,
+    mouseUpEventHandler, onClickHandler
   } = handlers;
 
   const className = cn({
@@ -23,7 +23,7 @@ const MainDataListTableRow = ({
       draggable
       onDragEnter={() => (activeElIndex !== -1) && dragEnterHandler(index)}
       onDragEnd={() => isActive && mouseUpEventHandler(index)}
-      onClick={() => onClickHandler(index, hotKey)}
+      onClick={() => onClickHandler(index)}
       onMouseDown={() => isActive && mouseDownEventHandler(index)}
       onMouseUp={() => isActive && mouseUpEventHandler()}
     >
@@ -43,7 +43,6 @@ MainDataListTableRow.propTypes = {
   index: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  hotKey: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   isPending: PropTypes.bool.isRequired,
   mouseDownPressed: PropTypes.bool.isRequired,
@@ -52,7 +51,6 @@ MainDataListTableRow.propTypes = {
   handlers: PropTypes.shape({
     pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
-    keyPressHandler: PropTypes.func.isRequired,
     dragEnterHandler: PropTypes.func.isRequired,
     mouseDownEventHandler: PropTypes.func.isRequired,
     mouseUpEventHandler: PropTypes.func.isRequired,

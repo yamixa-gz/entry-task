@@ -5,13 +5,9 @@ export const AppLanguageContext = React.createContext(null);
 
 // eslint-disable-next-line react/prop-types
 export const AppLanguageProvider = ({ children }) => {
-  const {
-    language,
-    changeLanguage,
-  } = useAppLanguage();
+  const changeLanguage = useAppLanguage();
   return (
     <AppLanguageContext.Provider value={{
-      language,
       changeLanguage,
     }}
     >

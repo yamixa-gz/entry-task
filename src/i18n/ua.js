@@ -95,7 +95,6 @@ const ua = {
   PokeApi: {
     'See details': 'Детальніше',
     Description: 'Опис',
-    'Hot key': 'Гаряча клавіша',
     Loading: 'Загрузка',
     Abilities: 'Можливості',
     'Pokemon Details': 'Детальніше про Покемона',

@@ -99,7 +99,6 @@ const ru = {
   PokeApi: {
     'See details': 'Детальнее',
     Description: 'Описание',
-    'Hot key': 'Горячая клавиша',
     Loading: 'Загрузка',
     Abilities: 'Возможности',
     'Pokemon Details': 'Подробнее о Покемоне',
