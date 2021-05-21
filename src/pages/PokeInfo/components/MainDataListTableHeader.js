@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const MainDataListTableHeader = () => {
-  const { t } = useTranslation(['PokeApi', 'common']);
+  const { t } = useTranslation(['PokeInfo', 'common']);
 
   return (
     <tr>

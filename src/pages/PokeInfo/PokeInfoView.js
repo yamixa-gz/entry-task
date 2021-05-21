@@ -12,7 +12,7 @@ import Preloader from './components/Preloader';
 import MainDataListTableHeader from './components/MainDataListTableHeader';
 import Layout from '../../layout/Layout';
 
-const PokeApiView = ({
+const PokeInfoView = ({
   callbacks, handlers, fetchedDataArr, isPending, activeElIndex
 }) => {
   const { Header, Footer } = Layout();
@@ -39,13 +39,13 @@ const PokeApiView = ({
               <div className="d-flex justify-content-center mb-3">
                 <Image
                   src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
-                  alt='"PokeApi" image could be here...'
+                  alt='"PokeInfo" image could be here...'
                   onLoad={(e) => setTimeout(
                     // eslint-disable-next-line no-alert
-                    () => alert(`"PokeApi" image loaded successfully, size ${e.target.width}x${e.target.height}`), 1000
+                    () => alert(`"PokeInfo" image loaded successfully, size ${e.target.width}x${e.target.height}`), 1000
                   )}
                   // eslint-disable-next-line no-alert
-                  onError={() => setTimeout(() => alert('"PokeApi" image loading crashed...'), 1000)}
+                  onError={() => setTimeout(() => alert('"PokeInfo" image loading crashed...'), 1000)}
                 />
               </div>
               <Table className="mb-5" striped bordered hover>
@@ -68,7 +68,7 @@ const PokeApiView = ({
   );
 };
 
-PokeApiView.propTypes = {
+PokeInfoView.propTypes = {
   handlers: PropTypes.shape({
     pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
@@ -85,9 +85,9 @@ PokeApiView.propTypes = {
   activeElIndex: PropTypes.number.isRequired,
 };
 const mapStateToProps = (state) => ({
-  isPending: state.pokeApi.isPending,
-  fetchedDataArr: state.pokeApi.fetchedDataArr,
-  activeElIndex: state.pokeApi.activeElIndex,
+  isPending: state.pokeInfo.isPending,
+  fetchedDataArr: state.pokeInfo.fetchedDataArr,
+  activeElIndex: state.pokeInfo.activeElIndex,
 });
 
-export default connect(mapStateToProps)(PokeApiView);
+export default connect(mapStateToProps)(PokeInfoView);

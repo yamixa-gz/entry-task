@@ -7,7 +7,7 @@ import PokemonDetailsModal from './PokemonDetailsModal';
 import {
   setClickedButtonIndexActionCreator, setLoadedPokemonDetailsImageActionCreator,
   setPokemonDetailsLoadingActionCreator, setPokemonDetailsModalShowActionCreator,
-} from '../../../store/pokeApi/actions';
+} from '../../../store/pokeInfo/actions';
 
 const PokemonDetailsBtn = ({
   url, isPending, callbacks, isPokemonDetailsLoading,
@@ -15,7 +15,7 @@ const PokemonDetailsBtn = ({
   setPokemonDetailsModalShow, index, setClickedButtonIndex,
   clickedButtonIndex,
 }) => {
-  const { t } = useTranslation('PokeApi');
+  const { t } = useTranslation('PokeInfo');
   const { getPokemonDetailsRequest } = callbacks;
 
   useEffect(() => {
@@ -65,7 +65,7 @@ PokemonDetailsBtn.propTypes = {
 const mapStateToProps = (state) => ({
   isPokemonDetailsLoading: state.pokemonDetails.isPokemonDetailsLoading,
   clickedButtonIndex: state.pokemonDetails.clickedButtonIndex,
-  isPending: state.pokeApi.isPending,
+  isPending: state.pokeInfo.isPending,
 });
 
 export default connect(mapStateToProps, {

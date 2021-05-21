@@ -1,6 +1,6 @@
 const menuItems = [
   { value: 'Home', href: '/' },
-  { value: 'Poke Api', href: '/PokeApi' },
+  { value: 'Poke Info', href: '/PokeInfo' },
   { value: 'Firm Structure', href: '/FirmStructure' },
 ];
 

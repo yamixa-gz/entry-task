@@ -60,9 +60,9 @@ MainDataListTableRow.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  mouseDownPressed: state.pokeApi.mouseDownPressed,
-  insertingElIndex: state.pokeApi.insertingElIndex,
-  activeElIndex: state.pokeApi.activeElIndex,
+  mouseDownPressed: state.pokeInfo.mouseDownPressed,
+  insertingElIndex: state.pokeInfo.insertingElIndex,
+  activeElIndex: state.pokeInfo.activeElIndex,
 });
 
 export default connect(mapStateToProps)(MainDataListTableRow);

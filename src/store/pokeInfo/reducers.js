@@ -11,9 +11,9 @@ import {
   SET_POKEMON_DETAILS_MODAL_SHOW,
   SET_RECEIVED_DATA, SET_NEXT_PAGE
 } from './types';
-import END_OF_NEXT_PAGE from '../../constants/pokeApiElements';
+import END_OF_NEXT_PAGE from '../../constants/pokeInfoElements';
 
-const pokeApiInitialState = {
+const pokeInfoInitialState = {
   isPending: false,
   fetchedDataArr: [],
   pageLimit: 20,
@@ -35,7 +35,7 @@ const pokemonDetailsInitialState = {
   clickedButtonIndex: -1,
 };
 
-export const pokeApi = (state = pokeApiInitialState, action) => {
+export const pokeInfo = (state = pokeInfoInitialState, action) => {
   switch (action.type) {
     case SET_PENDING:
       return { ...state, isPending: action.isPending };

@@ -2,7 +2,7 @@ const en = {
 
   Header: {
     Home: 'Home',
-    'Poke Api': 'Poke Api',
+    'Poke Info': 'Poke Info',
     'Firm Structure': 'Firm Structure',
     HeaderContactsText: 'address, location and stuff',
   },
@@ -80,7 +80,7 @@ const en = {
 `,
   },
 
-  PokeApi: {
+  PokeInfo: {
     'See details': 'See details',
     Description: 'Description',
     Loading: 'Loading',

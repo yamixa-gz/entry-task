@@ -4,7 +4,7 @@ import uuid from 'react-uuid';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from '../../constants/httpStatusCode';
-import PokeApiView from './PokeApiView';
+import PokeInfoView from './PokeInfoView';
 import {
   setActivePageActionCreator,
   setDataFromMouseDownEventActionCreator,
@@ -15,12 +15,12 @@ import {
   setPokemonDetailsActionCreator,
   setReceivedDataFromServerActionCreator,
   setNextPageFromServerActionCreator,
-} from '../../store/pokeApi/actions';
-import END_OF_NEXT_PAGE from '../../constants/pokeApiElements';
+} from '../../store/pokeInfo/actions';
+import END_OF_NEXT_PAGE from '../../constants/pokeInfoElements';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/';
 
-const PokeApi = ({
+const PokeInfo = ({
   state,
   setPending,
   setReceivedDataFromServer,
@@ -77,6 +77,7 @@ const PokeApi = ({
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
+      setPending(false);
     }
   };
 
@@ -89,8 +90,7 @@ const PokeApi = ({
         `${BASE_URL}pokemon?limit=${pageLimit}&offset=${activePage * pageLimit - pageLimit}`
       );
       if (response.ok) {
-        const receivedData = await response.json();
-        setDataFromServer(receivedData);
+        setDataFromServer(await response.json());
         setPending(false);
         return;
       }
@@ -176,14 +176,14 @@ const PokeApi = ({
   });
 
   return (
-    <PokeApiView
+    <PokeInfoView
       handlers={handlers}
       callbacks={callbacks}
     />
   );
 };
 
-PokeApi.propTypes = {
+PokeInfo.propTypes = {
   state: PropTypes.shape({
     isPending: PropTypes.bool.isRequired,
     fetchedDataArr: PropTypes.arrayOf(PropTypes.object),
@@ -206,14 +206,14 @@ PokeApi.propTypes = {
 };
 const mapStateToProps = (state) => ({
   state: {
-    isPending: state.pokeApi.isPending,
-    fetchedDataArr: state.pokeApi.fetchedDataArr,
-    pageLimit: state.pokeApi.pageLimit,
-    activePage: state.pokeApi.activePage,
-    newFetchedDataArr: state.pokeApi.newFetchedDataArr,
-    movingElement: state.pokeApi.movingElement,
-    insertingElIndex: state.pokeApi.insertingElIndex,
-    nextPage: state.pokeApi.nextPage,
+    isPending: state.pokeInfo.isPending,
+    fetchedDataArr: state.pokeInfo.fetchedDataArr,
+    pageLimit: state.pokeInfo.pageLimit,
+    activePage: state.pokeInfo.activePage,
+    newFetchedDataArr: state.pokeInfo.newFetchedDataArr,
+    movingElement: state.pokeInfo.movingElement,
+    insertingElIndex: state.pokeInfo.insertingElIndex,
+    nextPage: state.pokeInfo.nextPage,
   },
 });
 
@@ -227,4 +227,4 @@ export default connect(mapStateToProps, {
   setDataFromMouseUpEvent: setDataFromMouseUpEventActionCreator,
   setActivePage: setActivePageActionCreator,
   setNextPageFromServer: setNextPageFromServerActionCreator,
-})(PokeApi);
+})(PokeInfo);

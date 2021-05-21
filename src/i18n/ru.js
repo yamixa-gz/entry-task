@@ -2,7 +2,7 @@ const ru = {
 
   Header: {
     Home: 'Домашняя',
-    'Poke Api': 'Поке Апи',
+    'Poke Info': 'Поке Инфо',
     'Firm Structure': 'Структура фирмы',
     HeaderContactsText: 'адрес, локация и прочее',
   },
@@ -96,7 +96,7 @@ const ru = {
 `,
   },
 
-  PokeApi: {
+  PokeInfo: {
     'See details': 'Детальнее',
     Description: 'Описание',
     Loading: 'Загрузка',

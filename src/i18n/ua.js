@@ -2,7 +2,7 @@ const ua = {
 
   Header: {
     Home: 'Домашня',
-    'Poke Api': 'Поке Апі',
+    'Poke Info': 'Поке Інфо',
     'Firm Structure': 'Структура фірми',
     HeaderContactsText: 'адреса, локація та інше',
   },
@@ -92,7 +92,7 @@ const ua = {
 `,
   },
 
-  PokeApi: {
+  PokeInfo: {
     'See details': 'Детальніше',
     Description: 'Опис',
     Loading: 'Загрузка',

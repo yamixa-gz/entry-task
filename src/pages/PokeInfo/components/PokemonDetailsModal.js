@@ -9,7 +9,7 @@ import Ability from './Ability';
 import {
   setLoadedPokemonDetailsImageActionCreator,
   setPokemonDetailsModalShowActionCreator
-} from '../../../store/pokeApi/actions';
+} from '../../../store/pokeInfo/actions';
 
 const PokemonDetailsModal = ({
 
@@ -17,7 +17,7 @@ const PokemonDetailsModal = ({
   setPokemonDetailsModalShow, setLoadedPokemonDetailsImage,
   pokemonDetails,
 }) => {
-  const { t } = useTranslation('PokeApi');
+  const { t } = useTranslation('PokeInfo');
   const abilities = pokemonDetails && pokemonDetails
     .abilities.map((ability) => <Ability key={ability} ability={ability} />);
 
@@ -88,7 +88,7 @@ PokemonDetailsModal.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  pokemonDetails: state.pokeApi.pokemonDetails,
+  pokemonDetails: state.pokeInfo.pokemonDetails,
   isPokemonDetailsModalShow: state.pokemonDetails.isPokemonDetailsModalShow,
   isLoadedPokemonDetailsImage: state.pokemonDetails.isLoadedPokemonDetailsImage,
 });

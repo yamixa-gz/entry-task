@@ -5,13 +5,13 @@ import FirmStructure from './pages/FirmStructure/FirmStructure';
 import Description from './pages/Description/Description';
 import BurgerMenu from './layout/BurgerMenu/BurgerMenu';
 import menuItems from './data/menuItems';
-import PokeApi from './pages/PokeApi/PokeApi';
+import PokeInfo from './pages/PokeInfo/PokeInfo';
 
 const App = () => (
   <div className="wrapper">
     <BurgerMenu menuItems={menuItems} />
     <Switch>
-      <Route path="/PokeApi" component={PokeApi} />
+      <Route path="/PokeInfo" component={PokeInfo} />
       <Route path="/FirmStructure" component={FirmStructure} />
       <Route exect path="/" component={Description} />
     </Switch>

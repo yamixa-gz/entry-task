@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import noneAvatar from '../../../assets/images/FetchedDataTable/noneAvatar.png';
+import noneAvatar from '../../../assets/images/PokeInfo/noneAvatar.png';
 import s from '../scss/PokemonDetailsModal.module.scss';
 
 const AvatarHolder = ({ visibility = true }) => (
