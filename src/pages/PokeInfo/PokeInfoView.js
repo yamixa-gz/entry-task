@@ -20,7 +20,6 @@ const PokeInfoView = ({
   const fetchedDataComponents = fetchedDataArr.map((item, index) => (
     <MainDataListTableRow
       handlers={handlers}
-      callbacks={callbacks}
       isActive={index === activeElIndex}
       index={index}
       key={item.id}
@@ -70,7 +69,6 @@ const PokeInfoView = ({
 
 PokeInfoView.propTypes = {
   handlers: PropTypes.shape({
-    pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
     dragEnterHandler: PropTypes.func.isRequired,
     mouseUpEventHandler: PropTypes.func.isRequired,
@@ -78,7 +76,6 @@ PokeInfoView.propTypes = {
   }).isRequired,
   callbacks: PropTypes.shape({
     nameCapitalize: PropTypes.func.isRequired,
-    getPokemonDetailsRequest: PropTypes.func.isRequired,
   }).isRequired,
   isPending: PropTypes.bool.isRequired,
   fetchedDataArr: PropTypes.arrayOf(PropTypes.object).isRequired,

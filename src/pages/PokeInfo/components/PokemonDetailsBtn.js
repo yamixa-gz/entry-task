@@ -1,35 +1,30 @@
 import { Button } from 'react-bootstrap';
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PokemonDetailsModal from './PokemonDetailsModal';
 import {
-  setClickedButtonIndexActionCreator, setLoadedPokemonDetailsImageActionCreator,
-  setPokemonDetailsLoadingActionCreator, setPokemonDetailsModalShowActionCreator,
+  getPokemonDetails,
+  setClickedButtonIndex, setLoadedPokemonDetailsImage,
+  setPokemonDetailsModalShow,
 } from '../../../store/pokeInfo/actions';
 
 const PokemonDetailsBtn = ({
-  url, isPending, callbacks, isPokemonDetailsLoading,
-  setLoadedPokemonDetailsImage, setPokemonDetailsLoading,
-  setPokemonDetailsModalShow, index, setClickedButtonIndex,
+  url, isPending, isPokemonDetailsLoading,
+  setLoadedPokemonDetailsImageAction, getPokemonDetailsAction,
+  setPokemonDetailsModalShowAction, index, setClickedButtonIndexAction,
   clickedButtonIndex,
 }) => {
   const { t } = useTranslation('PokeInfo');
-  const { getPokemonDetailsRequest } = callbacks;
 
-  useEffect(() => {
-    if (isPokemonDetailsLoading && (clickedButtonIndex === index)) {
-      getPokemonDetailsRequest(url).then(() => setPokemonDetailsLoading(false));
-    }
-  }, [isPokemonDetailsLoading]);
   const onClickHandler = (e) => {
     e.stopPropagation();
     if (isPending) return;
-    setClickedButtonIndex(index);
-    setPokemonDetailsModalShow(true);
-    setPokemonDetailsLoading(true);
-    setLoadedPokemonDetailsImage(false);
+    setClickedButtonIndexAction(index);
+    setPokemonDetailsModalShowAction(true);
+    setLoadedPokemonDetailsImageAction(false);
+    getPokemonDetailsAction(url);
   };
   return (
     <>
@@ -50,16 +45,12 @@ PokemonDetailsBtn.propTypes = {
   index: PropTypes.number.isRequired,
   clickedButtonIndex: PropTypes.number.isRequired,
   isPokemonDetailsLoading: PropTypes.bool.isRequired,
-  setPokemonDetailsLoading: PropTypes.func.isRequired,
-  setPokemonDetailsModalShow: PropTypes.func.isRequired,
-  setLoadedPokemonDetailsImage: PropTypes.func.isRequired,
-  setClickedButtonIndex: PropTypes.func.isRequired,
+  getPokemonDetailsAction: PropTypes.func.isRequired,
+  setPokemonDetailsModalShowAction: PropTypes.func.isRequired,
+  setLoadedPokemonDetailsImageAction: PropTypes.func.isRequired,
+  setClickedButtonIndexAction: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   isPending: PropTypes.bool.isRequired,
-  callbacks: PropTypes.shape({
-    nameCapitalize: PropTypes.func.isRequired,
-    getPokemonDetailsRequest: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -69,8 +60,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  setPokemonDetailsLoading: setPokemonDetailsLoadingActionCreator,
-  setClickedButtonIndex: setClickedButtonIndexActionCreator,
-  setPokemonDetailsModalShow: setPokemonDetailsModalShowActionCreator,
-  setLoadedPokemonDetailsImage: setLoadedPokemonDetailsImageActionCreator,
+  setClickedButtonIndexAction: setClickedButtonIndex,
+  setPokemonDetailsModalShowAction: setPokemonDetailsModalShow,
+  setLoadedPokemonDetailsImageAction: setLoadedPokemonDetailsImage,
+  getPokemonDetailsAction: getPokemonDetails,
 })(PokemonDetailsBtn);

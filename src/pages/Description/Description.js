@@ -6,13 +6,13 @@ import s from './scss/Description.module.scss';
 import Card from './components/Card';
 import Layout from '../../layout/Layout';
 import cardDescription from '../../data/cardDescription';
-import setOpenCardIdActionCreator from '../../store/description/actions';
+import setOpenCardId from '../../store/description/actions';
 
-const Description = ({ openCardId, setOpenCardId }) => {
+const Description = ({ openCardId, setOpenCardIdAction }) => {
   const { Header, Footer } = Layout();
   const { t } = useTranslation('Description');
 
-  const clickHandler = (id) => setOpenCardId(id);
+  const clickHandler = (id) => setOpenCardIdAction(id);
 
   const makeShortTextForCardContent = (fullText, symbolsAmount = 140) => (
     fullText.length < symbolsAmount
@@ -56,7 +56,7 @@ const Description = ({ openCardId, setOpenCardId }) => {
 
 Description.propTypes = {
   openCardId: PropTypes.string.isRequired,
-  setOpenCardId: PropTypes.func.isRequired,
+  setOpenCardIdAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -64,5 +64,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  setOpenCardId: setOpenCardIdActionCreator,
+  setOpenCardIdAction: setOpenCardId,
 })(Description);

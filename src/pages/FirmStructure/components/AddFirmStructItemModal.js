@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddFirmStructItemForm from './AddFirmStructItemForm';
-import { setModalShowActionCreator } from '../../../store/firmStructure/actions';
+import { setModalShow } from '../../../store/firmStructure/actions';
 
 const AddFirmStructItemModal = ({
-  callbacks, isModalShow, tableStyle, setModalShow 
+  callbacks, isModalShow, tableStyle, setModalShowAction
 }) => {
   const { addDataFromFormToFirmStruct } = callbacks;
   const { t } = useTranslation('FirmStructure');
 
   return (
     <Modal
-      onHide={() => setModalShow(false)}
+      onHide={() => setModalShowAction(false)}
       show={isModalShow}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
@@ -25,7 +25,7 @@ const AddFirmStructItemModal = ({
           {t('Input item to FirmStruct')}
         </Modal.Title>
         <button
-          onClick={() => setModalShow(false)}
+          onClick={() => setModalShowAction(false)}
           type="button"
           className="btn-close"
           data-bs-dismiss="modal"
@@ -35,7 +35,7 @@ const AddFirmStructItemModal = ({
       <Modal.Body>
         <AddFirmStructItemForm
           tableStyle={tableStyle}
-          setModalShow={setModalShow}
+          setModalShowAction={setModalShowAction}
           addDataFromFormToFirmStruct={addDataFromFormToFirmStruct}
         />
       </Modal.Body>
@@ -50,7 +50,7 @@ AddFirmStructItemModal.propTypes = {
   }).isRequired,
   isModalShow: PropTypes.bool.isRequired,
   tableStyle: PropTypes.string.isRequired,
-  setModalShow: PropTypes.func.isRequired,
+  setModalShowAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -58,5 +58,5 @@ const mapStateToProps = (state) => ({
   tableStyle: state.firmStructure.tableStyle,
 });
 export default connect(mapStateToProps, {
-  setModalShow: setModalShowActionCreator,
+  setModalShowAction: setModalShow,
 })(AddFirmStructItemModal);

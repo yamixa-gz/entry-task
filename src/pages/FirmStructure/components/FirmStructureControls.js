@@ -3,16 +3,16 @@ import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { setModalShowActionCreator } from '../../../store/firmStructure/actions';
+import { setModalShow } from '../../../store/firmStructure/actions';
 
-const FirmStructureControls = ({ handlers, itemsIdForDelete, setModalShow }) => {
+const FirmStructureControls = ({ handlers, itemsIdForDelete, setModalShowAction }) => {
   const { removeDataFromFirmStructHandler } = handlers;
   const { t } = useTranslation('FirmStructure');
 
   return (
     <div className="d-grid gap-2 d-md-block">
       <Button
-        onClick={() => setModalShow(true)}
+        onClick={() => setModalShowAction(true)}
         variant="secondary"
       >
         {t('Add')}
@@ -36,12 +36,12 @@ FirmStructureControls.propTypes = {
     onClickTableRowHandler: PropTypes.func.isRequired,
   }).isRequired,
   itemsIdForDelete: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setModalShow: PropTypes.func.isRequired,
+  setModalShowAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   itemsIdForDelete: state.firmStructure.itemsIdForDelete,
 });
 export default connect(mapStateToProps, {
-  setModalShow: setModalShowActionCreator,
+  setModalShowAction: setModalShow,
 })(FirmStructureControls);

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PokemonDetailsBtn from './PokemonDetailsBtn';
 
 const MainDataListTableRow = ({
-  isActive, index, url, name, handlers, callbacks, insertingElIndex, activeElIndex, mouseDownPressed,
+  isActive, index, url, name, handlers, insertingElIndex, activeElIndex, mouseDownPressed,
 }) => {
   const {
     mouseDownEventHandler, dragEnterHandler,
@@ -30,7 +30,6 @@ const MainDataListTableRow = ({
       <td>{name}</td>
       <td colSpan="1">
         <PokemonDetailsBtn
-          callbacks={callbacks}
           url={url}
           index={index}
         />
@@ -47,15 +46,10 @@ MainDataListTableRow.propTypes = {
   insertingElIndex: PropTypes.number.isRequired,
   activeElIndex: PropTypes.number.isRequired,
   handlers: PropTypes.shape({
-    pageChangeHandler: PropTypes.func.isRequired,
     onClickHandler: PropTypes.func.isRequired,
     dragEnterHandler: PropTypes.func.isRequired,
     mouseDownEventHandler: PropTypes.func.isRequired,
     mouseUpEventHandler: PropTypes.func.isRequired,
-  }).isRequired,
-  callbacks: PropTypes.shape({
-    nameCapitalize: PropTypes.func.isRequired,
-    getPokemonDetailsRequest: PropTypes.func.isRequired,
   }).isRequired,
 };
 

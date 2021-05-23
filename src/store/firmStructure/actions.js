@@ -6,25 +6,25 @@ import {
   SET_SORTING
 } from './types';
 
-export const setModalShowActionCreator = (isModalShow) => (dispatch) => dispatch({
+export const setModalShow = (isModalShow) => (dispatch) => dispatch({
   type: SET_IS_MODAL_SHOW,
   isModalShow,
 });
 
-export const setSortDirectionByColumnActionCreator = (sortDirection, sortedColumnName) => (dispatch) => dispatch({
+export const setSortDirectionByColumn = (sortDirection, sortedColumnName) => (dispatch) => dispatch({
   type: SET_SORTING,
   sortDirection,
   sortedColumnName,
 });
-export const removeDataFromFirmStructActionCreator = (showingFirmStructSection) => (dispatch) => dispatch({
+export const removeDataFromFirmStruct = (showingFirmStructSection) => (dispatch) => dispatch({
   type: REMOVE_DATA_FROM_FIRM_STRUCT,
   showingFirmStructSection,
 });
-export const setItemsForDeleteActionCreator = (itemsIdForDelete) => (dispatch) => dispatch({
+export const setItemsForDelete = (itemsIdForDelete) => (dispatch) => dispatch({
   type: SET_ITEMS_FOR_DELETE,
   itemsIdForDelete,
 });
-export const setSelectedMenuItemActionCreator = (
+export const setSelectedMenuItem = (
   section, setSectionIndex, categoryName, tableStyle, showingFirmStructSection, setSectionValues
 ) => (dispatch) => dispatch({
   type: SET_ITEMS_SELECTED_MENU_ITEM,
@@ -35,20 +35,20 @@ export const setSelectedMenuItemActionCreator = (
   categoryName,
   showingFirmStructSection,
 });
-export const addDataToFirmStructActionCreator = (showingFirmStructSection) => (dispatch) => dispatch({
+export const addDataToFirmStruct = (showingFirmStructSection) => (dispatch) => dispatch({
   type: ADD_DATA_TO_FIRM_STRUCT,
   showingFirmStructSection,
 });
-export const modifyBranchesActionCreator = (showingFirmStructSection) => (dispatch) => dispatch({
+export const modifyBranches = (showingFirmStructSection) => (dispatch) => dispatch({
   type: MODIFY_BRANCHES,
   showingFirmStructSection,
 });
-export const modifySubBranchesActionCreator = (branchesIndex, showingFirmStructSection) => (dispatch) => dispatch({
+export const modifySubBranches = (branchesIndex, showingFirmStructSection) => (dispatch) => dispatch({
   type: MODIFY_SUB_BRANCHES,
   branchesIndex,
   showingFirmStructSection,
 });
-export const modifyEmployeesActionCreator = (
+export const modifyEmployees = (
   branchesIndex, subBranchesIndex, showingFirmStructSection
 ) => (dispatch) => dispatch({
   type: MODIFY_EMPLOYEES,

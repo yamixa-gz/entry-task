@@ -9,7 +9,7 @@ import {
 import { branchesValidationSchema, employeesValidationSchema } from '../../../validators/firmStructureShemas';
 import FormField from './FormField';
 
-const AddFirmStructItemForm = ({ tableStyle, setModalShow, addDataFromFormToFirmStruct }) => {
+const AddFirmStructItemForm = ({ tableStyle, setModalShowAction, addDataFromFormToFirmStruct }) => {
   const {
     handleSubmit, handleChange, values, handleBlur, handleReset, errors, touched
   } = useFormik({
@@ -23,7 +23,7 @@ const AddFirmStructItemForm = ({ tableStyle, setModalShow, addDataFromFormToFirm
     },
     onSubmit: (submitValues) => {
       addDataFromFormToFirmStruct({ ...submitValues, salary: +submitValues.salary });
-      setModalShow(false);
+      setModalShowAction(false);
     },
     validationSchema: tableStyle === EMPLOYEES_STYLE ? employeesValidationSchema : branchesValidationSchema,
   });
@@ -106,7 +106,7 @@ const AddFirmStructItemForm = ({ tableStyle, setModalShow, addDataFromFormToFirm
 };
 AddFirmStructItemForm.propTypes = {
   tableStyle: PropTypes.string.isRequired,
-  setModalShow: PropTypes.func.isRequired,
+  setModalShowAction: PropTypes.func.isRequired,
   addDataFromFormToFirmStruct: PropTypes.func.isRequired
 };
 

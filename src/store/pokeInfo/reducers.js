@@ -9,9 +9,8 @@ import {
   SET_POKEMON_DETAILS_LOADED_IMAGE,
   SET_POKEMON_DETAILS_LOADING,
   SET_POKEMON_DETAILS_MODAL_SHOW,
-  SET_RECEIVED_DATA, SET_NEXT_PAGE
+  SET_PAGE_PORTION_DATA, RESET_POKEMON_DETAILS,
 } from './types';
-import END_OF_NEXT_PAGE from '../../constants/pokeInfoElements';
 
 const pokeInfoInitialState = {
   isPending: false,
@@ -19,7 +18,7 @@ const pokeInfoInitialState = {
   pageLimit: 20,
   pagesAmount: 0,
   activePage: 1,
-  pokemonDetails: false,
+  pokemonDetails: '',
   activeElIndex: -1,
   newFetchedDataArr: [],
   movingElement: {},
@@ -40,23 +39,24 @@ export const pokeInfo = (state = pokeInfoInitialState, action) => {
     case SET_PENDING:
       return { ...state, isPending: action.isPending };
 
-    case SET_RECEIVED_DATA:
+    case SET_PAGE_PORTION_DATA:
       return {
         ...state,
         fetchedDataArr: [...state.fetchedDataArr, ...action.fetchedDataArr],
         pagesAmount: action.pagesAmount,
-      };
-
-    case SET_NEXT_PAGE:
-      return {
-        ...state,
-        nextPage: action.nextPage === null ? END_OF_NEXT_PAGE : action.nextPage,
+        nextPage: action.nextPage,
       };
 
     case SET_POKEMON_DETAILS_DATA:
       return {
         ...state,
         pokemonDetails: { ...action.pokemonDetails }
+      };
+
+    case RESET_POKEMON_DETAILS:
+      return {
+        ...state,
+        pokemonDetails: '',
       };
 
     case SET_ACTIVE_PAGE:

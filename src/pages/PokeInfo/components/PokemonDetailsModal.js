@@ -7,15 +7,15 @@ import s from '../scss/PokemonDetailsModal.module.scss';
 import AvatarHolder from './AvatarHolder';
 import Ability from './Ability';
 import {
-  setLoadedPokemonDetailsImageActionCreator,
-  setPokemonDetailsModalShowActionCreator
+  resetPokemonDetails,
+  setLoadedPokemonDetailsImage,
+  setPokemonDetailsModalShow
 } from '../../../store/pokeInfo/actions';
 
 const PokemonDetailsModal = ({
-
   isPokemonDetailsModalShow, isLoadedPokemonDetailsImage,
-  setPokemonDetailsModalShow, setLoadedPokemonDetailsImage,
-  pokemonDetails,
+  setPokemonDetailsModalShowAction, setLoadedPokemonDetailsImageAction,
+  pokemonDetails, resetPokemonDetailsAction
 }) => {
   const { t } = useTranslation('PokeInfo');
   const abilities = pokemonDetails && pokemonDetails
@@ -23,7 +23,8 @@ const PokemonDetailsModal = ({
 
   const onCloseHandler = (e) => {
     e.stopPropagation();
-    setPokemonDetailsModalShow(false);
+    setPokemonDetailsModalShowAction(false);
+    resetPokemonDetailsAction();
   };
   return (
     <Modal
@@ -52,7 +53,7 @@ const PokemonDetailsModal = ({
             src={pokemonDetails && pokemonDetails.avatarUrl}
             alt="Avatar"
             className={!isLoadedPokemonDetailsImage ? `${s.size} invisible d-none` : s.size}
-            onLoad={() => setLoadedPokemonDetailsImage(true)}
+            onLoad={() => setLoadedPokemonDetailsImageAction(true)}
           />
           <Card.Body>
             <Card.Title className="text-capitalize fw-bold fs-5">
@@ -77,14 +78,15 @@ const PokemonDetailsModal = ({
 PokemonDetailsModal.propTypes = {
   isPokemonDetailsModalShow: PropTypes.bool.isRequired,
   isLoadedPokemonDetailsImage: PropTypes.bool.isRequired,
-  setPokemonDetailsModalShow: PropTypes.func.isRequired,
-  setLoadedPokemonDetailsImage: PropTypes.func.isRequired,
+  setPokemonDetailsModalShowAction: PropTypes.func.isRequired,
+  setLoadedPokemonDetailsImageAction: PropTypes.func.isRequired,
+  resetPokemonDetailsAction: PropTypes.func.isRequired,
   pokemonDetails: PropTypes.oneOfType([PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
     abilities: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }), PropTypes.bool]).isRequired,
+  }), PropTypes.string]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -93,6 +95,7 @@ const mapStateToProps = (state) => ({
   isLoadedPokemonDetailsImage: state.pokemonDetails.isLoadedPokemonDetailsImage,
 });
 export default connect(mapStateToProps, {
-  setPokemonDetailsModalShow: setPokemonDetailsModalShowActionCreator,
-  setLoadedPokemonDetailsImage: setLoadedPokemonDetailsImageActionCreator,
+  setPokemonDetailsModalShowAction: setPokemonDetailsModalShow,
+  setLoadedPokemonDetailsImageAction: setLoadedPokemonDetailsImage,
+  resetPokemonDetailsAction: resetPokemonDetails,
 })(PokemonDetailsModal);

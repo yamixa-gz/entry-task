@@ -18,26 +18,26 @@ import {
 import { ASCENDING, DESCENDING } from '../../constants/sortHeading';
 import FirmStructureView from './FirmStructureView';
 import {
-  addDataToFirmStructActionCreator,
-  modifyBranchesActionCreator,
-  modifyEmployeesActionCreator,
-  modifySubBranchesActionCreator,
-  removeDataFromFirmStructActionCreator,
-  setItemsForDeleteActionCreator,
-  setSelectedMenuItemActionCreator,
-  setSortDirectionByColumnActionCreator,
+  addDataToFirmStruct,
+  modifyBranches,
+  modifyEmployees,
+  modifySubBranches,
+  removeDataFromFirmStruct,
+  setItemsForDelete,
+  setSelectedMenuItem,
+  setSortDirectionByColumn,
 } from '../../store/firmStructure/actions';
 
 const cx = classNames.bind(s);
 const FirmStructure = ({
-  setSortDirectionByColumn,
-  removeDataFromFirmStruct,
-  setItemsForDelete,
-  setSelectedMenuItem,
-  addDataToFirmStruct,
-  modifyBranches,
-  modifySubBranches,
-  modifyEmployees,
+  setSortDirectionByColumnAction,
+  removeDataFromFirmStructAction,
+  setItemsForDeleteAction,
+  setSelectedMenuItemAction,
+  addDataToFirmStructAction,
+  modifyBranchesAction,
+  modifySubBranchesAction,
+  modifyEmployeesAction,
   state,
 }) => {
   const { firmStruct } = state;
@@ -142,7 +142,7 @@ const FirmStructure = ({
     if (sortedColumnName !== columnName) {
       newSortDirection = ASCENDING;
     }
-    setSortDirectionByColumn(newSortDirection, columnName);
+    setSortDirectionByColumnAction(newSortDirection, columnName);
   };
 
   const removeDataFromFirmStructHandler = () => {
@@ -174,7 +174,7 @@ const FirmStructure = ({
           console.log('Source section \"branches\":', firmStruct.branches);
           // eslint-disable-next-line
           console.log('New modified section \"branches\":', newShowingFirmStructSection);
-          modifyBranches(newShowingFirmStructSection);
+          modifyBranchesAction(newShowingFirmStructSection);
           break;
         case firmStruct.branches[branchesIndex].subBranches[0].id:
           // eslint-disable-next-line
@@ -182,7 +182,7 @@ const FirmStructure = ({
             firmStruct.branches[branchesIndex].subBranches);
           // eslint-disable-next-line
           console.log('New modified section \"subBranches\":', newShowingFirmStructSection);
-          modifySubBranches(branchesIndex, newShowingFirmStructSection);
+          modifySubBranchesAction(branchesIndex, newShowingFirmStructSection);
           break;
         case firmStruct.branches[branchesIndex].subBranches[subBranchesIndex].employees[0].id:
           // eslint-disable-next-line
@@ -190,12 +190,12 @@ const FirmStructure = ({
             .subBranches[subBranchesIndex].employees);
           // eslint-disable-next-line
           console.log('New modified section \"employees\":', newShowingFirmStructSection);
-          modifyEmployees(branchesIndex, subBranchesIndex, newShowingFirmStructSection);
+          modifyEmployeesAction(branchesIndex, subBranchesIndex, newShowingFirmStructSection);
           break;
         default:
       }
     }
-    removeDataFromFirmStruct(newShowingFirmStructSection);
+    removeDataFromFirmStructAction(newShowingFirmStructSection);
   };
 
   const onClickTableRowHandler = (id) => {
@@ -207,7 +207,7 @@ const FirmStructure = ({
     } else {
       newArr.push(id);
     }
-    setItemsForDelete(newArr);
+    setItemsForDeleteAction(newArr);
   };
 
   const onMenuItemSelectHandler = (selectedMenuItem) => {
@@ -265,7 +265,7 @@ const FirmStructure = ({
         isEmployees: true,
       };
     }
-    setSelectedMenuItem(
+    setSelectedMenuItemAction(
       section, setSectionIndex, categoryName || stateCategoryName,
       tableStyle, showingFirmStructSection, setSectionValues
     );
@@ -371,7 +371,7 @@ const FirmStructure = ({
       showingFirmStructSection = cloneDeep(newModifiedEmployees);
     }
 
-    addDataToFirmStruct(showingFirmStructSection);
+    addDataToFirmStructAction(showingFirmStructSection);
   };
 
   const setColumnStyle = (columnName) => {
@@ -423,14 +423,6 @@ const FirmStructure = ({
 };
 
 FirmStructure.propTypes = {
-  setSortDirectionByColumn: PropTypes.func.isRequired,
-  removeDataFromFirmStruct: PropTypes.func.isRequired,
-  setItemsForDelete: PropTypes.func.isRequired,
-  setSelectedMenuItem: PropTypes.func.isRequired,
-  addDataToFirmStruct: PropTypes.func.isRequired,
-  modifyBranches: PropTypes.func.isRequired,
-  modifySubBranches: PropTypes.func.isRequired,
-  modifyEmployees: PropTypes.func.isRequired,
   state: PropTypes.shape({
     sortDirection: PropTypes.string.isRequired,
     sortedColumnName: PropTypes.string.isRequired,
@@ -446,6 +438,14 @@ FirmStructure.propTypes = {
       directors: PropTypes.objectOf(PropTypes.object).isRequired,
     }),
   }).isRequired,
+  setSortDirectionByColumnAction: PropTypes.func.isRequired,
+  removeDataFromFirmStructAction: PropTypes.func.isRequired,
+  setItemsForDeleteAction: PropTypes.func.isRequired,
+  setSelectedMenuItemAction: PropTypes.func.isRequired,
+  addDataToFirmStructAction: PropTypes.func.isRequired,
+  modifyBranchesAction: PropTypes.func.isRequired,
+  modifySubBranchesAction: PropTypes.func.isRequired,
+  modifyEmployeesAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -463,12 +463,12 @@ const mapStateToProps = (state) => ({
   },
 });
 export default connect(mapStateToProps, {
-  setSortDirectionByColumn: setSortDirectionByColumnActionCreator,
-  removeDataFromFirmStruct: removeDataFromFirmStructActionCreator,
-  setItemsForDelete: setItemsForDeleteActionCreator,
-  setSelectedMenuItem: setSelectedMenuItemActionCreator,
-  addDataToFirmStruct: addDataToFirmStructActionCreator,
-  modifyBranches: modifyBranchesActionCreator,
-  modifySubBranches: modifySubBranchesActionCreator,
-  modifyEmployees: modifyEmployeesActionCreator,
+  setSortDirectionByColumnAction: setSortDirectionByColumn,
+  removeDataFromFirmStructAction: removeDataFromFirmStruct,
+  setItemsForDeleteAction: setItemsForDelete,
+  setSelectedMenuItemAction: setSelectedMenuItem,
+  addDataToFirmStructAction: addDataToFirmStruct,
+  modifyBranchesAction: modifyBranches,
+  modifySubBranchesAction: modifySubBranches,
+  modifyEmployeesAction: modifyEmployees,
 })(FirmStructure);
