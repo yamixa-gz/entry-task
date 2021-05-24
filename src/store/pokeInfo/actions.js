@@ -33,11 +33,6 @@ const setPokemonDetailsLoading = (loadingStatus) => ({
   loadingStatus,
 });
 
-export const setPokemonDetailsLoadingStatusTrue = () => (dispatch) => dispatch({
-  type: SET_POKEMON_DETAILS_LOADING,
-  loadingStatus: true,
-});
-
 const setPokemonDetails = (id, name, avatarUrl, abilities) => ({
   type: SET_POKEMON_DETAILS_DATA,
   pokemonDetails: {
