@@ -16,9 +16,9 @@ const LanguageSwitcher = () => {
       variant="secondary"
       title={i18n.language.toUpperCase()}
     >
-      <Dropdown.Item onSelect={() => changeLanguage(EN)} eventKey={EN}>EN</Dropdown.Item>
-      <Dropdown.Item onSelect={() => changeLanguage(RU)} eventKey={RU}>RU</Dropdown.Item>
-      <Dropdown.Item onSelect={() => changeLanguage(UA)} eventKey={UA}>UA</Dropdown.Item>
+      <Dropdown.Item onSelect={() => changeLanguage(EN)}>EN</Dropdown.Item>
+      <Dropdown.Item onSelect={() => changeLanguage(RU)}>RU</Dropdown.Item>
+      <Dropdown.Item onSelect={() => changeLanguage(UA)}>UA</Dropdown.Item>
     </DropdownButton>
   );
 };

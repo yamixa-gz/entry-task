@@ -1,12 +1,12 @@
 import { Button } from 'react-bootstrap';
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PokemonDetailsModal from './PokemonDetailsModal';
 import {
   getPokemonDetails,
-  setClickedButtonIndex, setLoadedPokemonDetailsImage,
+  setClickedButtonIndex, setLoadedPokemonDetailsImage, setPokemonDetailsLoadingStatusTrue,
   setPokemonDetailsModalShow,
 } from '../../../store/pokeInfo/actions';
 
@@ -14,18 +14,25 @@ const PokemonDetailsBtn = ({
   url, isPending, isPokemonDetailsLoading,
   setLoadedPokemonDetailsImageAction, getPokemonDetailsAction,
   setPokemonDetailsModalShowAction, index, setClickedButtonIndexAction,
-  clickedButtonIndex,
+  clickedButtonIndex, setPokemonDetailsLoadingStatusTrueAction
 }) => {
   const { t } = useTranslation('PokeInfo');
-
   const onClickHandler = (e) => {
     e.stopPropagation();
     if (isPending) return;
     setClickedButtonIndexAction(index);
     setPokemonDetailsModalShowAction(true);
     setLoadedPokemonDetailsImageAction(false);
-    getPokemonDetailsAction(url);
+    // without next code string if we don`t use useEffect,
+    // 'isPokemonDetailsLoading' settingUp is at 'getPokemonDetailsAction'.
+    setPokemonDetailsLoadingStatusTrueAction();
+    // getPokemonDetailsAction(url); // Call attention! Uncomment if get compiled without useEffect.
   };
+  // Call attention to useEffect!
+  useEffect(() => {
+    if ((clickedButtonIndex === index) && isPokemonDetailsLoading) getPokemonDetailsAction(url);
+  }, [isPokemonDetailsLoading]);
+
   return (
     <>
       <Button
@@ -49,6 +56,7 @@ PokemonDetailsBtn.propTypes = {
   setPokemonDetailsModalShowAction: PropTypes.func.isRequired,
   setLoadedPokemonDetailsImageAction: PropTypes.func.isRequired,
   setClickedButtonIndexAction: PropTypes.func.isRequired,
+  setPokemonDetailsLoadingStatusTrueAction: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
   isPending: PropTypes.bool.isRequired,
 };
@@ -59,9 +67,12 @@ const mapStateToProps = (state) => ({
   isPending: state.pokeInfo.isPending,
 });
 
-export default connect(mapStateToProps, {
+const mapDispatchToProps = {
   setClickedButtonIndexAction: setClickedButtonIndex,
   setPokemonDetailsModalShowAction: setPokemonDetailsModalShow,
   setLoadedPokemonDetailsImageAction: setLoadedPokemonDetailsImage,
   getPokemonDetailsAction: getPokemonDetails,
-})(PokemonDetailsBtn);
+  setPokemonDetailsLoadingStatusTrueAction: setPokemonDetailsLoadingStatusTrue,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PokemonDetailsBtn);

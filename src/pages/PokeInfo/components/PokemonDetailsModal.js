@@ -94,8 +94,11 @@ const mapStateToProps = (state) => ({
   isPokemonDetailsModalShow: state.pokemonDetails.isPokemonDetailsModalShow,
   isLoadedPokemonDetailsImage: state.pokemonDetails.isLoadedPokemonDetailsImage,
 });
-export default connect(mapStateToProps, {
+
+const mapDispatchToProps = {
   setPokemonDetailsModalShowAction: setPokemonDetailsModalShow,
   setLoadedPokemonDetailsImageAction: setLoadedPokemonDetailsImage,
   resetPokemonDetailsAction: resetPokemonDetails,
-})(PokemonDetailsModal);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PokemonDetailsModal);

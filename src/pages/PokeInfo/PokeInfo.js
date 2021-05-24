@@ -115,11 +115,13 @@ const mapStateToProps = (state) => ({
   },
 });
 
-export default connect(mapStateToProps, {
+const mapDispatchToProps = {
   getPageAction: getPage,
   setActiveIndexAction: setActiveIndex,
   setInsertingElIndexAction: setInsertingElIndex,
   setDataFromMouseDownEventAction: setDataFromMouseDownEvent,
   setDataFromMouseUpEventAction: setDataFromMouseUpEvent,
   setActivePageAction: setActivePage,
-})(PokeInfo);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PokeInfo);

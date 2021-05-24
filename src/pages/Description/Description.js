@@ -63,6 +63,8 @@ const mapStateToProps = (state) => ({
   openCardId: state.description.openCardId,
 });
 
-export default connect(mapStateToProps, {
+const mapDispatchToProps = {
   setOpenCardIdAction: setOpenCardId,
-})(Description);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Description);

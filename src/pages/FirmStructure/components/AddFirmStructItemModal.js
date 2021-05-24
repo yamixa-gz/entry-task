@@ -57,6 +57,9 @@ const mapStateToProps = (state) => ({
   isModalShow: state.firmStructure.isModalShow,
   tableStyle: state.firmStructure.tableStyle,
 });
-export default connect(mapStateToProps, {
+
+const mapDispatchToProps = {
   setModalShowAction: setModalShow,
-})(AddFirmStructItemModal);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddFirmStructItemModal);

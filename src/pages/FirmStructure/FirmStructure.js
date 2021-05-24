@@ -462,7 +462,7 @@ const mapStateToProps = (state) => ({
     firmStruct: state.firmStructure.firmStruct,
   },
 });
-export default connect(mapStateToProps, {
+const mapDispatchToProps = {
   setSortDirectionByColumnAction: setSortDirectionByColumn,
   removeDataFromFirmStructAction: removeDataFromFirmStruct,
   setItemsForDeleteAction: setItemsForDelete,
@@ -471,4 +471,6 @@ export default connect(mapStateToProps, {
   modifyBranchesAction: modifyBranches,
   modifySubBranchesAction: modifySubBranches,
   modifyEmployeesAction: modifyEmployees,
-})(FirmStructure);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FirmStructure);

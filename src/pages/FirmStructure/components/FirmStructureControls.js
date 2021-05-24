@@ -42,6 +42,9 @@ FirmStructureControls.propTypes = {
 const mapStateToProps = (state) => ({
   itemsIdForDelete: state.firmStructure.itemsIdForDelete,
 });
-export default connect(mapStateToProps, {
+
+const mapDispatchToProps = {
   setModalShowAction: setModalShow,
-})(FirmStructureControls);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FirmStructureControls);
