@@ -27,8 +27,7 @@ const PokeInfo = ({
   const pokeInfoScrollHandler = () => {
     const { isPending, activePage, nextPage } = state;
     if (isPending) return;
-    if ((document.documentElement.offsetHeight + 160)
-      + document.documentElement.scrollTop >= document.documentElement.scrollHeight) {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
       if (nextPage !== END_OF_NEXT_PAGE) setActivePageAction(activePage + 1);
     }
   };
