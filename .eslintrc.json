@@ -5,10 +5,18 @@
         "es6": true,
         "jest/globals": true
     },
-    "plugins": ["jest"],
+    "plugins": [
+        "jest",
+        "react-hooks"
+    ],
     "parser": "babel-eslint",
-    "extends": "airbnb",
+    "extends": [
+        "airbnb",
+        "plugin:react-hooks/recommended"
+    ],
     "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn", // <--- THIS IS THE NEW RULE
         "react/jsx-filename-extension": 0,
         "arrow-body-style": 0,
         "react/prefer-stateless-function": 0,

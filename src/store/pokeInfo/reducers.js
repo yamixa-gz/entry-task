@@ -9,7 +9,7 @@ import {
   SET_POKEMON_DETAILS_LOADED_IMAGE,
   SET_POKEMON_DETAILS_LOADING,
   SET_POKEMON_DETAILS_MODAL_SHOW,
-  SET_PAGE_PORTION_DATA, RESET_POKEMON_DETAILS,
+  SET_PAGE_PORTION_DATA, RESET_POKEMON_DETAILS, SET_POKEMON_DETAILS_INFO_CARD,
 } from './types';
 
 const pokeInfoInitialState = {
@@ -19,6 +19,7 @@ const pokeInfoInitialState = {
   pagesAmount: 0,
   activePage: 1,
   pokemonDetails: '',
+  pokemonDetailsInfoCards: [],
   activeElIndex: -1,
   newFetchedDataArr: [],
   movingElement: {},
@@ -48,9 +49,18 @@ export const pokeInfo = (state = pokeInfoInitialState, action) => {
       };
 
     case SET_POKEMON_DETAILS_DATA:
+      return { ...state, pokemonDetails: { ...action.pokemonDetails } };
+
+    case SET_POKEMON_DETAILS_INFO_CARD:
       return {
         ...state,
-        pokemonDetails: { ...action.pokemonDetails }
+        pokemonDetails: {
+          id: action.pokemonDetailsInfoCard.id,
+          name: action.pokemonDetailsInfoCard.name,
+          avatarUrl: action.pokemonDetailsInfoCard.avatarUrl,
+          abilities: action.pokemonDetailsInfoCard.abilities,
+        },
+        pokemonDetailsInfoCards: [...state.pokemonDetailsInfoCards, { ...action.pokemonDetailsInfoCard }],
       };
 
     case RESET_POKEMON_DETAILS:

@@ -1,4 +1,5 @@
 import uuid from 'react-uuid';
+import { batch } from 'react-redux';
 import {
   SET_ACTIVE_PAGE, SET_CLICKED_BUTTON_INDEX,
   SET_ACTIVE_INDEX,
@@ -10,15 +11,16 @@ import {
   SET_POKEMON_DETAILS_LOADED_IMAGE,
   SET_POKEMON_DETAILS_LOADING,
   SET_POKEMON_DETAILS_MODAL_SHOW,
-  SET_PAGE_PORTION_DATA, RESET_POKEMON_DETAILS,
+  SET_PAGE_PORTION_DATA, RESET_POKEMON_DETAILS, SET_POKEMON_DETAILS_INFO_CARD,
 } from './types';
 import { END_OF_NEXT_PAGE } from '../../constants/pokeInfoElements';
 import pokeInfoApi from '../../services/pokeInfoApi';
 import { HTTP_OK, INTERNAL_SERVER_ERROR, NOT_FOUND } from '../../constants/httpStatusCode';
+import getPokemonDetailsFromInfoCards from '../../services/pokeInfoUtils';
 
-const setPending = (value) => ({
+const setPending = (pendingStatus) => ({
   type: SET_PENDING,
-  isPending: value,
+  isPending: pendingStatus,
 });
 
 const setPagePortionData = (data, fetchedDataArr) => ({
@@ -33,13 +35,19 @@ const setPokemonDetailsLoading = (loadingStatus) => ({
   loadingStatus,
 });
 
-const setPokemonDetails = (id, name, avatarUrl, abilities) => ({
+const setPokemonDetails = (pokemonDetails) => ({
   type: SET_POKEMON_DETAILS_DATA,
-  pokemonDetails: {
+  pokemonDetails,
+});
+
+const setPokemonDetailsInfoCard = (id, name, avatarUrl, abilities, detailsUrl) => ({
+  type: SET_POKEMON_DETAILS_INFO_CARD,
+  pokemonDetailsInfoCard: {
     id,
     name,
     avatarUrl,
     abilities,
+    detailsUrl,
   },
 });
 
@@ -91,15 +99,22 @@ export const setClickedButtonIndex = (clickedButtonIndex) => (dispatch) => dispa
 });
 
 export const getPokemonDetails = (detailsUrl) => (dispatch) => {
-  dispatch(setPending(true));
-  dispatch(setPokemonDetailsLoading(true));
+  const pokemonDetails = getPokemonDetailsFromInfoCards(detailsUrl);
+  if (pokemonDetails) {
+    dispatch(setPokemonDetails(pokemonDetails));
+    return;
+  }
+  batch(() => {
+    dispatch(setPending(true));
+    dispatch(setPokemonDetailsLoading(true));
+  });
   pokeInfoApi.getPokemonDetailsRequest(detailsUrl).then((response) => {
     switch (response.status) {
       case HTTP_OK:
         response.json().then((data) => {
-          const abilities = data.abilities.map((item) => item.ability?.name);
+          const abilities = data.abilities.map((item) => (item.ability?.name ? item.ability.name : 'unknown Name'));
           dispatch(
-            setPokemonDetails(data.id, data.species?.name, data.sprites?.front_default, abilities)
+            setPokemonDetailsInfoCard(data.id, data.species?.name, data.sprites?.front_default, abilities, detailsUrl)
           );
         })
           .catch((e) => {
@@ -128,8 +143,10 @@ export const getPokemonDetails = (detailsUrl) => (dispatch) => {
       console.error('Something went wrong...', e);
     })
     .finally(() => {
-      dispatch(setPending(false));
-      dispatch(setPokemonDetailsLoading(false));
+      batch(() => {
+        dispatch(setPending(false));
+        dispatch(setPokemonDetailsLoading(false));
+      });
     });
 };
 

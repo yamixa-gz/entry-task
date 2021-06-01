@@ -15,7 +15,7 @@ import {
 
 const initialState = {
   isModalShow: false,
-  sortDirection: EMPTY_STRING, // one of these -> EMPTY_STRING, ascending, descending
+  sortDirection: EMPTY_STRING, // one of these -> EMPTY_STRING, ASCENDING, DESCENDING
   sortedColumnName: EMPTY_STRING,
   categoryName: Object.keys(firmStruct).includes(BRANCHES) ? BRANCHES : EMPTY_STRING,
   branchesIndex: -1,

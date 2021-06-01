@@ -1,14 +1,10 @@
 import { BASE_URL } from '../constants/pokeInfoElements';
 
-const getPageRequest = async (pageNumber, pageLimit) => {
-  const response = await fetch(`${BASE_URL}pokemon?limit=${pageLimit}&offset=${pageNumber * pageLimit - pageLimit}`);
-  return response;
-};
+const getPageRequest = (pageNumber, pageLimit) => fetch(
+  `${BASE_URL}pokemon?limit=${pageLimit}&offset=${pageNumber * pageLimit - pageLimit}`
+);
 
-const getPokemonDetailsRequest = async (detailsUrl) => {
-  const response = await fetch(detailsUrl);
-  return response;
-};
+const getPokemonDetailsRequest = (detailsUrl) => fetch(detailsUrl);
 
 const pokeInfoApi = {
   getPageRequest,
